@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/dashboard.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <div id="sidebar"></div>
+    <div class="dashboard">
+        <header class="barra-superior">
+            <div class="admin">
+                <span>Administrador</span>
+                <i class="fa-solid fa-user"></i>
+                <div class="admin-icono"></div>
+            </div>
+        </header>
+
+        <main>
+            <div class="titulo">
+                <h1>Dashboard</h1>
+                <button class="btnTrabajo" id="btnTrabajoNuevo">+Nuevo trabajo</button>
+                <button class="btnCliente" id="btnClienteNuevo">+Nuevo cliente</button>
+            </div>
+
+            <section class="tarjetas">
+                <div class="card">
+                    <div class="card-info">
+                        <p class="label">Trabajos en curso / pendientes</p>
+                        <p class="valor" id="cardTrabajos">0</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-info">
+                        <p class="label">Pagos pendientes</p>
+                        <p class="valor" id="cardPagos">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="resumen">
+                <h2>Otros indicadores</h2>
+                <div class="resumen-card">
+                    <div class="resumen-item">
+                        <p class="resumen-titulo">Trabajos terminados</p>
+                        <p class="resumen-valor" id="resumenTerminados">0</p>
+                    </div>
+                    <div class="resumen-item">
+                        <p class="resumen-titulo">Trabajos entregados</p>
+                        <p class="resumen-valos" id="resumenEntregados">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="tabla-trabajos">
+                <h2>Últimos trabajos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Cliente</th>
+                            <th>Vehículo</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaTrabajos">
+
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+</body>
+<script src="../JS/sidebar.js"></script>
+</html>

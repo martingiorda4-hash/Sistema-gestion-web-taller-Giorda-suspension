@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/cuenta.css">
+    <title>Cuenta corriente</title>
+</head>
+<body>
+    <div id="sidebar"></div>
+    <main>
+        <div class="titulo">
+            <h1>Pagos(cuenta corriente)</h1>
+            <button class="btnPago" id="btnNuevoPago">+ Nuevo pago</button>
+        </div>
+
+        <div class="filtros">
+            <div class="campo-filtro">
+                <label for="filtroDesde">Desde</label>
+                <input type="date" id="fechaDesde">
+            </div>
+
+            <div class="campo-filtro">
+                <label for="filtroHasta">Hasta</label>
+                <input type="date" id="fechaHasta">
+            </div>
+            
+            <div class="campo-filtro">
+                <label for="filtroTipo">Tipo</label>
+                <select id="filtroTipo">
+                    <option value="todos">Todos</option>
+                    <option value="debito">Débito</option>
+                    <option value="credito">Crédito</option>
+                </select>
+            </div>
+            
+            <button class="btn-filtrar" id="btnFiltrar">Filtrar</button>
+        </div>
+
+        <section class="tabla-movimientos">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Débito</th>
+                        <th>Crédito</th>
+                        <th>Saldo</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+    <div class="modal-pago oculto" id="modalPagoNuevo">
+        <div class="modal">
+            <h2>Nuevo pago</h2>
+            
+            <form id="formPagoNuevo">
+                <label>Fecha</label>
+                <input type="date" id="fecha">
+                
+                <label>Cliente</label>
+                <select id="cliente"></select>
+                
+                <label>Importe</label>
+                <input type="number">
+                
+                <label>Método de pago</label>
+                <select>
+                    <option value="efectivo">Efectivo</option>
+                    <option value="transferencia">Transferencia</option>
+                    <option value="tarjeta">Tarjeta</option>
+                    <option value="mixto">Mixto</option>
+                </select>
+                
+                <div class="modal-botones">
+                    <button type="button" id="btnCancelarPago">Cancelar</button>
+                    <button type="submit" id="btnGuardarPago">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../JS/sidebar.js"></script>
+    <script src="../JS/cuenta.js"></script>
+</body>
+</html>

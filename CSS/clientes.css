@@ -1,0 +1,86 @@
+body{
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f3f4f6;
+    color: #1f2937;
+}
+main{
+    margin-left: 260px;
+    padding: 24px 32px;
+
+}
+.titulo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.titulo h1{
+    font-size: 26px;
+    margin: 0;
+}
+.btn-nuevo{
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-nuevo:hover{
+    background: #1d4ed8;
+}
+.buscador{
+    position: relative;
+    max-width: 320px;
+    margin-bottom: 20px;
+}
+.buscador input{
+    width: 100%;
+    padding: 10px 36px 10px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+}
+.buscador i{
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+.tabla-clientes{
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+thead th{
+    text-align: left;
+    font-size: 13px;
+    color: #6b7280;
+    padding: 0 10px 12px;
+    border-bottom: 1px solid #e4e7eb;
+}
+tbody td{
+    padding: 14px 10px;
+    font-size: 14px;
+    border-bottom: 1px solid #f3f4f6;
+}
+.acciones{
+    display: flex;
+    gap: 14px;
+}
+.acciones i{
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 15px;
+}
+.acciones i:hover{
+    color: #2563eb;
+}

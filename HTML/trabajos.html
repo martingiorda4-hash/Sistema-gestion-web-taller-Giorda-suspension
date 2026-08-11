@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/trabajos.css">
+    <title>Trabajos</title>
+</head>
+<body>
+    <div id="sidebar"></div>
+
+    <main>
+        <div class="titulo">
+
+            <h1>Trabajos</h1>
+            <button class="btn-trabajos" id="btnNuevoTrabajo">+ Nuevo trabajo</button>
+        </div>
+        <div class="filtros">
+
+            <div class="buscador">
+                <input type="text" id="inputBuscarTrabajos" placeholder="Buscar trabajos por cliente, vehículo, estado o fecha...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <select id="estado">
+                <option value="todos">Estado: Todos</option>
+                <option value="progreso">Estado: En progreso</option>
+                <option value="terminado">Estado: Terminado</option>
+                <option value="entregado">Estado: Entregado</option>
+            </select>
+
+            <div class="filtro-fecha">
+                <div class="campo-fecha">
+                    <span>Desde</span>
+                    <input type="date" id="fechaDesde">
+                </div>
+
+                <div class="campo-fecha">
+                    <span>Hasta</span>
+                    <input type="date" id="fechaHasta">
+                </div>
+            </div>
+        </div>
+
+        <section class="tabla-trabajos">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Vehículo</th>
+                        <th>Servicios</th>
+                        <th>Estado</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaTrabajos">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="acciones">
+                            <i class="fa-solid fa-eye" title="Ver detalle"></i>
+                            <i class="fa-solid fa-pen" title="Editar"></i>
+                            <i class="fa-solid fa-trash" title="Eliminar"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="../JS/sidebar.js"></script>
+    <script src="../JS/trabajos.js"></script>
+</body>
+</html>

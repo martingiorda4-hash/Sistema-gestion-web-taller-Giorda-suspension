@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/clientes.css">
+    <title>Clientes</title>
+</head>
+<body>
+    <div id="sidebar"></div>
+    <main>
+        <div class="titulo">
+
+            <h1>Clientes</h1>
+            <button class="btn-nuevo" id="btnNuevoCliente">+ Nuevo cliente</button>
+        </div>
+        <div class="buscador">
+            <input type="text" id="inputBuscarCliente" placeholder="Buscar cliente...">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <section class="tabla-clientes">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Telefono</th>
+                        <th>Total vehículos</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaClientes">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="acciones">
+                            <i class="fa-solid fa-eye" title="Ver detalle"></i>
+                            <i class="fa-solid fa-pen" title="Editar"></i>
+                            <i class="fa-solid fa-trash" title="Eliminar"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="paginacion">
+                <p id="infoPagina">Mostrando 1 a 5 de 25 clientes</p>
+                <div class="numero-pagina" id="numerosPagina">
+
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="../JS/sidebar.js"></script>
+</body>
+</html>
