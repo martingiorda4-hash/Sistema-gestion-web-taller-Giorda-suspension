@@ -72,7 +72,48 @@
             </table>
         </section>
     </main>
+    <div class="modal-trabajo oculto" id="modalNuevoTrabajo">
+        <div class="modal">
 
+            <h2>Nuevo trabajo</h2>
+            <form id="formNuevoTrabajo">
+                <label>Fecha</label>
+                <input type="date" id="fecha">
+                
+                <label>Cliente</label>
+                <select id="cliente">
+                    <option value="">Seleccione un cliente</option>
+                </select>
+                
+                <label>Vehículo</label>
+                <select id="vehiculoCliente">
+                    <option value="">Seleccione un vehiculo respecto al cliente</option>
+                </select>
+
+                <label>Estado</label>
+                    <select id="estadoModal">
+                        <option value="">Seleccione un estado</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="En progreso">En progreso</option>
+                        <option value="Terminado">Terminado</option>
+                        <option value="Entregado">Entregado</option>
+                    </select>
+            
+                <label>Servicio</label>
+                    <select id="servicio">
+                        <option value="">Seleccione un servicio</option>
+                    </select>
+            
+                <label>Observaciones</label>
+                <textarea id="observaciones" placeholder="Ingrese observaciones del trabajo..."></textarea>
+            
+                <div class="modal-botones">
+                    <button type="button" id="btnCancelarTrabajo">Cancelar</button>
+                    <button type="submit" id="btnGuardarTrabajo">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script src="../JS/sidebar.js"></script>
     <script src="../JS/trabajos.js"></script>
 </body>

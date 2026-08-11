@@ -54,6 +54,28 @@
             </div>
         </section>
     </main>
+    <div class="modal-clientes oculto" id="modalNuevoCliente">
+        <div class="modal">
+            <h2>Nuevo cliente</h2>
+            
+            <form id="formNuevoCliente">
+                <label>Nombre</label>
+                <input type="text" id="nombreCliente">
+
+                <label>Apellido</label>
+                <input type="text" id="apellidoCliente">
+
+                <label>Telefono</label>
+                <input type="tel" id="telefonoCliente">
+
+                <div class="modal-botones">
+                    <button type="button" id="btnCancelarCliente">Cancelar</button>
+                    <button type="submit" id="btnGuardarCliente">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script src="../JS/sidebar.js"></script>
+    <script src="../JS/clientes.js"></script>
 </body>
 </html>
