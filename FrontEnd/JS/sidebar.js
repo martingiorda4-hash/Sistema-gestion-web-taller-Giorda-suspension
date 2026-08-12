@@ -13,5 +13,24 @@ fetch("sidebar.html")
             }
         });
     
+        
+        const btnAceptarCerrarSesion = document.getElementById("btnAceptarCerrarSesion");
+        const btnCancelarCerrarSesion = document.getElementById("btnCancelarCerrarSesion");
+        const cerrarSesion = document.getElementById("cerrarSesion");
+        const modalCerrarSesion = document.getElementById("modalCerrarSesion");
+        
+        function abrirModal(){
+            modalCerrarSesion.classList.remove("oculto");
+        }
+        function cerrarModal(){
+            modalCerrarSesion.classList.add("oculto");
+        }
+        cerrarSesion.addEventListener("click", abrirModal);
+        btnCancelarCerrarSesion.addEventListener("click", cerrarModal);
+        
+        btnAceptarCerrarSesion.addEventListener("click", () =>{
+            window.location.href = "login.html";
+        })
+        
     });
 

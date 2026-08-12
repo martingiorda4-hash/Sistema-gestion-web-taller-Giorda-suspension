@@ -37,11 +37,24 @@
         </nav>
 
         <div class="cerrar-sesion">
-            <a href="login.html">
+            <button id="cerrarSesion">
                 <i class="fa-solid fa-right-from-bracket"></i>
                 <span>Cerrar sesión</span>
-            </a>
+            </button>
         </div>
+
     </aside>
+    <div id="modalCerrarSesion" class="modal-cerrar-sesion oculto">
+        <div class="modal-contenido">
+            <i class="fa-solid fa-exclamation-triangle"></i>
+            <h4>¿Estás seguro de que querés cerrar sesión?</h4>
+
+            <div class="modal-botones">
+                <button id="btnCancelarCerrarSesion">Cancelar</button>
+                <button id="btnAceptarCerrarSesion">Aceptar</button>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>

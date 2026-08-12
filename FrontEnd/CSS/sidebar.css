@@ -40,6 +40,8 @@ body{
 
     padding: 25px 15px;
 
+    z-index: 1000;
+
 }
 .menu{
     display: flex;
@@ -60,7 +62,7 @@ body{
     border-radius: 10px;
     transition: .3s;
 }
-.cerrar-sesion a{
+.cerrar-sesion button{
     text-decoration: none;
     color: white;
 
@@ -72,9 +74,15 @@ body{
 
     border-radius: 10px;
     transition: .3s;
+
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
 }
 .menu a i, 
-.cerrar-sesion a i{
+.cerrar-sesion button i{
     width: 20px;
     font-size: 18px;
 }
@@ -88,4 +96,64 @@ body{
     margin-top: auto;
 }
 
+.modal-cerrar-sesion{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    z-index: 99999;
+}
+.modal-contenido{
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 400px;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto ;
+}
+.oculto{
+    display: none;
+}
+.modal-contenido h4{
+    margin: 0 0 16px;
+    color: #c71f25;
+    text-align: center;
+}
+.modal-contenido i{
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    color: #f59e0b;
+    margin-bottom: 8px;
+}
+.modal-botones{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+}
+.modal-botones button{
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+}
+#btnCancelarCerrarSesion{
+    background: #6b7280;
+    color: #fff;
+    border: 1px solid #e5e7eb;
+}
+#btnAceptarCerrarSesion{
+    background: #c71f25;
+    color: #fff;
+}
