@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/historialClientes.css">
+    <title>Historial de cliente</title>
+</head>
+<body>
+    <div id="sidebar"></div>
+    <main>
+        <button class="btn-volver" type="button" id="btnVolver">←Volver</button>
+
+        <div class="contenedor-superior">
+            <section class="datos-cliente">
+                <h2>Datos del cliente</h2>
+                <div class="campo">
+                    <label>Tipo de cliente</label>
+                    <p id="tipoCliente"></p>
+                </div>
+                <div class="campo">
+                    <label>Nombre</label>
+                    <p id="nombreCliente"></p>
+                </div>
+            <div class="campo">
+                <label>Apellido</label>
+                <p id="apellidoCliente"></p>
+            </div>
+            <div class="campo">
+                <label>Teléfono</label>
+                <p id="telefonoCliente"></p>
+            </div>
+            <div class="campo">
+                <label>CUIT</label>
+                <p id="cuitCliente"></p>
+            </div>
+            <div class="campo">
+                <label>Razón social</label>
+                <p id="razonSocialCliente"></p>
+            </div>
+        </section>
+        
+        <section class="vehiculos">
+            <div class="seccion-vehiculos">
+                <h2>Vehículos</h2>
+                <button type="button" id="btnAgregarVehiculo">+ Agregar vehículo</button>
+            </div>
+            <div id="listaVehiculos">
+                
+            </div>
+        </section>
+    </div>
+    <section class="historial"> 
+        <h2>Historial</h2>
+        <table>
+            <thead>
+                <tr>
+                    
+                    <th>Fecha</th>
+                    <th>Vehiculo</th>
+                    <th>Trabajo</th>
+                    <th>Estado</th>
+                    <th>Importe</th>
+                </tr>
+            </thead>
+            <tbody id="historialCliente">
+                
+            </tbody>
+        </table>
+    </section>
+</main>
+<script src="../JS/sidebar.js"></script>
+<script src="../JS/historialClientes.js"></script>
+</body>
+</html>

@@ -23,7 +23,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Nombre</th>
+                        <th>Cliente</th>
                         <th>Telefono</th>
                         <th>Total vehículos</th>
                         <th>Estado</th>
@@ -38,9 +38,9 @@
                         <td></td>
                         <td></td>
                         <td class="acciones">
-                            <i class="fa-solid fa-eye" title="Ver detalle"></i>
-                            <i class="fa-solid fa-pen" title="Editar"></i>
-                            <i class="fa-solid fa-trash" title="Eliminar"></i>
+                            <i class="fa-solid fa-eye" id="verCliente" title="Ver detalle"></i>
+                            <i class="fa-solid fa-pen" id="editarCliente" title="Editar"></i>
+                            <i class="fa-solid fa-trash" id="eliminarCliente" title="Eliminar"></i>
                         </td>
                     </tr>
                 </tbody>
@@ -54,25 +54,58 @@
             </div>
         </section>
     </main>
-    <div class="modal-clientes oculto" id="modalNuevoCliente">
+    <div class="modal-clientes oculto" id="modalCliente">
         <div class="modal">
             <h2>Nuevo cliente</h2>
             
-            <form id="formNuevoCliente">
-                <label>Nombre</label>
-                <input type="text" id="nombreCliente">
+            <form id="formCliente">
+                <input type="hidden" id="clienteId" value="">
+                <select id="tipoCliente">
+                    <option value="">Seleccione el tipo de cliente</option>
+                    <option value="particular">Particular</option>
+                    <option value="empresa">Empresa</option>
+                </select>
 
-                <label>Apellido</label>
-                <input type="text" id="apellidoCliente">
+                <div id="camposParticular" class="oculto">
+                    <label>Nombre</label>
+                    <input type="text" id="nombreCliente">
 
-                <label>Telefono</label>
-                <input type="tel" id="telefonoCliente">
+                    <label>Apellido</label>
+                    <input type="text" id="apellidoCliente">
+
+                    <label>Telefono</label>
+                <input type="tel" id="telefonoParticular">
+                </div>
+                
+                <div id="camposEmpresa" class="oculto">
+                    <label>Razón social</label>
+                    <input type="text" id="razonSocialCliente">
+                    
+                    <label>CUIT</label>
+                    <input type="text" id="cuitCliente">
+
+                    <label>Telefono</label>
+                <input type="tel" id="telefonoEmpresa">
+                </div>
+                
 
                 <div class="modal-botones">
                     <button type="button" id="btnCancelarCliente">Cancelar</button>
                     <button type="submit" id="btnGuardarCliente">Guardar</button>
                 </div>
             </form>
+        </div>
+    </div>
+    <div id="modalEliminarCliente" class="modal-eliminar-cliente oculto">
+        <div class="modal-contenido">
+            <i class="fa-solid fa-exclamation-triangle"></i>
+            <h4>¿Estás seguro de eliminar este cliente?</h4>
+
+            <div class="modal-botones">
+                <button id="btnCancelarEliminar">Cancelar</button>
+                <button id="btnAceptarEliminar">Eliminar</button>
+            </div>
+
         </div>
     </div>
     <script src="../JS/sidebar.js"></script>
