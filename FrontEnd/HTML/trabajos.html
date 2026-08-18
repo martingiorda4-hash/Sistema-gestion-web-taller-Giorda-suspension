@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,20 +63,21 @@
                         <td></td>
                         <td></td>
                         <td class="acciones">
-                            <i class="fa-solid fa-eye" title="Ver detalle"></i>
-                            <i class="fa-solid fa-pen" title="Editar"></i>
-                            <i class="fa-solid fa-trash" title="Eliminar"></i>
+                            <i class="fa-solid fa-eye" id="verTrabajo" title="Ver detalle"></i>
+                            <i class="fa-solid fa-pen editarTrabajo" title="Editar"></i>
+                            <i class="fa-solid fa-trash eliminar" title="Eliminar""></i>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </section>
     </main>
-    <div class="modal-trabajo oculto" id="modalNuevoTrabajo">
+    <div class="modal-trabajo oculto" id="modalTrabajo">
         <div class="modal">
 
             <h2>Nuevo trabajo</h2>
-            <form id="formNuevoTrabajo">
+            <form id="formTrabajo">
+                <input type="hidden" id="trabajoId">
                 <label>Fecha</label>
                 <input type="date" id="fecha">
                 
@@ -112,6 +113,47 @@
                     <button type="submit" id="btnGuardarTrabajo">Guardar</button>
                 </div>
             </form>
+        </div>
+    </div>
+    <div class="modal-detalle-trabajo oculto" id="modalDetalleTrabajo">
+        <div class="modal-detalle-contenido">
+            <button type="button" class="cerrar-detalle" id="btnCerrarModalDetalle">X</button>
+            <h2>Detalle del trabajo</h2>
+            <div class="campos-detalle">
+                <label>Cliente: </label>
+                <p id="clienteDetalle"></p>
+            </div>
+            <div class="campos-detalle">
+                <label>Vehiculo: </label>
+                <p id="vehiculoDetalle"></p>
+            </div>
+            <div class="campos-detalle">
+                <label>Fecha: </label>
+                <p id="fechaDetalle"></p>
+            </div>
+            <div class="campos-detalle">
+                <label>Estado: </label>
+                <p id="estadoDetalle"></p>
+            </div>
+            <div class="campos-detalle">
+                <label>Servicios: </label>
+                <p id="serviciosDetalle"></p>
+            </div>  
+            <div class="campos-detalle-observaciones">
+                <label>Observaciones: </label>
+                <p id="observacionesDetalle"></p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-eliminarTrabajo oculto" id="modalEliminarTrabajo">
+        <div class="modal-eliminar_contenido">
+            <i class="fa-solid fa-exclamation-triangle"></i>
+            <h4>¿Estás seguro de eliminar este trabajo?</h4>
+
+            <div class="botones-modal-eliminar-trabajo">
+                <button type="button" id="btnCancelarEliminarTrabajo">Cancelar</button>
+                <button type="submit" id="btnAceptarEliminarTrabajo">Eliminar</button>
+            </div>
         </div>
     </div>
     <script src="../JS/sidebar.js"></script>

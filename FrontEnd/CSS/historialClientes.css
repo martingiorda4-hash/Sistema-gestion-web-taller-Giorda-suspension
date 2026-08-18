@@ -100,4 +100,77 @@ tbody td{
     margin-bottom: 10px;
 }
 
+/* MODAL NUEVO VEHICULO */
+
+.modal-nuevo-vehiculo{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-contenido{
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 400px;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto ;
+}
+.oculto{
+    display: none;
+}
+.modal-contenido h2{
+    margin: 0 0 16px;
+}
+.modal-contenido form{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.modal-contenido label{
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+.modal-contenido input{
+    border: 1px solid #e4e7eb;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.botones-modal-nuevo-vehiculo{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+}
+.botones-modal-nuevo-vehiculo button{
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+}
+#btnCancelar{
+    background: #6b7280;
+    border: 1px solid #e5e7eb;
+    color: #fff;
+}
+#btnGuardar{
+    color: #fff;
+    background: #2563eb;
+}
 

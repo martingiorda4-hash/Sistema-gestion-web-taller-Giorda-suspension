@@ -65,6 +65,18 @@ main{
     margin-top: 19px;
     width: 80px;
 }
+.btn-exportar{
+    background: #166534;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px 16px;
+    border-radius: 8px;
+    margin-top: 19px;
+}
+.btn-exportar:hover{
+    background: #14532d;
+}
 table{
     width: 100%;
     border-collapse: collapse;

@@ -12,14 +12,67 @@
     const btnVerClientes = document.getElementById("verCliente");
 
     const clienteIdInput = document.getElementById("clienteId");
-    const tituloModalCliente = document.querySelector(".modal h2")
+    const tituloModalCliente = document.querySelector(".modal h2");
 
     const modalEliminarCliente = document.getElementById("modalEliminarCliente");
     const eliminarCliente = document.getElementById("eliminarCliente");
     const btnCancelar = document.getElementById("btnCancelarEliminar");
 
+    const formNuevoCliente = document.getElementById("formCliente");
+    const tablaClientes = document.getElementById("tablaClientes");
 
     //LOGICA ABRIR MODAL PARA CREAR Y EDITAR CLIENTE
+
+    //Validaciones
+    function ValidarClientes(){
+        const tipoCliente = document.getElementById("tipoCliente").value;
+
+        const nombre = document.getElementById("nombreCliente").value;
+        const apellido = document.getElementById("apellidoCliente").value;
+        const telefonoParticular = document.getElementById("telefonoParticular").value;
+
+        const razonSocial = document.getElementById("razonSocialCliente").value;
+        const cuit = document.getElementById("cuitCliente").value;
+        const telefonoEmpresa = document.getElementById("telefonoEmpresa").value;
+
+        if(tipoCliente === ""){
+            alert("Debe seleccionar el tipo de cliente");
+            return false;
+        }
+        if(tipoCliente === "particular"){
+            
+            if(nombre === ""){
+                alert("Debe ingresar un nombre");
+                return false;
+            }
+            if(apellido === ""){
+                alert("Debe ingresar un apellido");
+                return false;
+            }
+            if(telefonoParticular === ""){
+                alert("Debe ingresar un teléfono");
+                return false;
+            }
+        }
+
+        if(tipoCliente === "empresa"){
+            
+            if(razonSocial === ""){
+                alert("Debe ingresar una razón social");
+                return false;
+            }
+            if(cuit === ""){
+                alert("Debe ingresar un CUIT");
+                return false;
+            }
+            if(telefonoEmpresa === ""){
+                alert("Debe ingresar un teléfono");
+                return false;
+            }
+        }
+        return true;
+    }
+
     function abrirModalCrear(){
         clienteIdInput.value = "";
         tituloModalCliente.textContent = "Nuevo cliente";
@@ -96,3 +149,46 @@
     btnVerClientes.addEventListener("click", () =>{
         window.location.href = "historialClientes.html"
     });
+
+
+    formNuevoCliente.addEventListener("submit", (e) =>{
+    e.preventDefault();
+
+    if(!ValidarClientes()){
+        return;
+    }
+    const tipoCliente = document.getElementById("tipoCliente").value;
+
+    const nombre = document.getElementById("nombreCliente").value;
+    const apellido = document.getElementById("apellidoCliente").value;
+    const telefonoParticular = document.getElementById("telefonoParticular").value;
+
+    const razonSocial = document.getElementById("razonSocialCliente").value;
+    const cuit = document.getElementById("cuitCliente").value;
+    const telefonoEmpresa = document.getElementById("telefonoEmpresa").value;
+
+    let cliente;
+    let telefono;
+
+    if(tipoCliente === "particular"){
+        cliente = `${nombre} ${apellido}`;
+        telefono = telefonoParticular;
+    }else{
+        cliente = razonSocial;
+        telefono = telefonoEmpresa;
+    }
+
+
+    const fila = document.createElement("tr");
+
+    fila.innerHTML = `
+        <td>${cliente}</td>
+        <td>${telefono}</td>
+        <td>0</td>
+        <td>Activo</td>
+    `;
+    tablaClientes.appendChild(fila);
+    formNuevoCliente.reset();
+
+    cerrarModal();
+})

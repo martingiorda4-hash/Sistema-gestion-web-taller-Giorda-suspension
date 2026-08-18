@@ -201,3 +201,142 @@ tbody td{
     border: 1px solid #e5e7eb;
     color: #fff;
 }
+
+/* MODAL ELIMINAR TRABAJO */
+
+.modal-eliminarTrabajo{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 99999;
+}
+.modal-eliminar_contenido{
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 400px;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.oculto{
+    display: none;
+}
+.modal-eliminar_contenido h4{
+    margin: 0 0 16px;
+    color: #c71f25;
+    text-align: center;
+}
+.modal-eliminar_contenido i{
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+    color: #f59e0b;
+    margin-bottom: 8px;
+}
+.botones-modal-eliminar-trabajo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: flex;
+    gap: 20px;
+}
+.modal-eliminar_contenido button{
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+}   
+#btnCancelarEliminarTrabajo{
+    background: #6b7280;
+    color: #fff;
+    border: 1px solid #e5e7eb;
+}
+#btnAceptarEliminarTrabajo{
+    background: #c71f25;
+    color: #fff;
+}
+
+/* MODAL DETALLE */
+
+.modal-detalle-trabajo{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal-detalle-contenido{
+    position: relative;
+    background: white;
+    width: 500px;
+    padding: 28px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+.modal-detalle-contenido h2{
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 22px;
+}
+.campos-detalle{
+    display: flex;
+    margin-bottom: 15px;
+    align-items: flex-start;
+}
+.campos-detalle label{
+    width: 120px;
+    font-weight: 600;
+}
+.campos-detalle p{
+    margin: 0;
+    color: #4b5563;
+    flex: 1;
+}
+.campos-detalle-observaciones{
+    margin-top: 20px;
+}
+.campos-detalle-observaciones label{
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.campos-detalle-observaciones p{
+    margin: 0;
+    padding: 12px;
+    background: #f4f4f6;
+    border-radius: 6px;
+    line-height: 1.5;
+}
+.cerrar-detalle{
+    position: absolute;
+    top: 12px;
+    right: 15px;
+
+    border: none;
+    background: none;
+
+    font-size: 24px;
+    color: #6b7280;
+    cursor: pointer;
+
+
+}
+.cerrar-detalle:hover{
+    color: #111827;
+}
