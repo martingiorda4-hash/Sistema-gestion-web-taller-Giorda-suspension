@@ -228,3 +228,30 @@ tbody td{
     background: #c71f25;
     color: #fff;
 }
+.paginacion{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+#infoPagina{
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+}
+.numero-pagina{
+    display: flex;
+    gap: 8px;
+    margin-right: 200px;
+}
+.numero-pagina button{
+    width: 35px;
+    height: 35px;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.numero-pagina button:hover{
+    background-color: #f3f4f6;
+}
