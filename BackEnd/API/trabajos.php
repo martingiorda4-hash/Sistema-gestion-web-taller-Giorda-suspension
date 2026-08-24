@@ -1,5 +1,5 @@
 <?php
-require "Controllers/TrabajoController.php";
+require_once "Controllers/TrabajoController.php";
 
 $controller = new TrabajoController();
 

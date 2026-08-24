@@ -1,3 +1,11 @@
+    //IMPORTA FUNCIONES DE ARCHIVO CLIENTEAPI.JS
+    import{
+        ObtenerClientes,
+        CrearCliente,
+        ModificarCliente,
+        EliminarCliente
+    }from "./API/clienteAPI.js";
+    
     const botonNuevoCliente = document.getElementById("btnNuevoCliente");
     const botonCancelarModalCliente = document.getElementById("btnCancelarCliente");
     const modalCliente = document.getElementById("modalCliente");
@@ -9,13 +17,13 @@
     const campoParticular = document.getElementById("camposParticular");
     const campoEmpresa = document.getElementById("camposEmpresa");
 
-    const btnVerClientes = document.getElementById("verCliente");
+    //const btnVerClientes = document.getElementById("verCliente");
 
     const clienteIdInput = document.getElementById("clienteId");
     const tituloModalCliente = document.querySelector(".modal h2");
 
     const modalEliminarCliente = document.getElementById("modalEliminarCliente");
-    const eliminarCliente = document.getElementById("eliminarCliente");
+
     const btnCancelar = document.getElementById("btnCancelarEliminar");
 
     const formNuevoCliente = document.getElementById("formCliente");
@@ -113,7 +121,7 @@
     function cerrarModalEliminar(){
         modalEliminarCliente.classList.add("oculto");
     }
-    eliminarCliente.addEventListener("click", abrirModalEliminar);
+
     btnCancelar.addEventListener("click", cerrarModalEliminar);
 
     
@@ -146,10 +154,10 @@
         }
     });
 
-    btnVerClientes.addEventListener("click", () =>{
+    /*btnVerClientes.addEventListener("click", () =>{
         window.location.href = "historialClientes.html"
     });
-
+    */
 
     formNuevoCliente.addEventListener("submit", (e) =>{
     e.preventDefault();
@@ -179,16 +187,67 @@
     }
 
 
-    const fila = document.createElement("tr");
+    // const fila = document.createElement("tr");
 
-    fila.innerHTML = `
-        <td>${cliente}</td>
-        <td>${telefono}</td>
-        <td>0</td>
-        <td>Activo</td>
-    `;
-    tablaClientes.appendChild(fila);
-    formNuevoCliente.reset();
+    // fila.innerHTML = `
+    //     <td>${cliente}</td>
+    //     <td>${telefono}</td>
+    //     <td>0</td>
+    //     <td>Activo</td>
+    // `;
+    // tablaClientes.appendChild(fila);
+    // formNuevoCliente.reset();
 
-    cerrarModal();
+    // cerrarModal();
+})
+
+//logica para consumir api
+
+async function CargarClientes() {
+    
+    const clientes = await ObtenerClientes();
+
+    tablaClientes.innerHTML = "";
+
+    clientes.forEach(cliente => {
+        const fila = document.createElement("tr");
+
+
+        fila.innerHTML = `
+            <td>${cliente.nombre} ${cliente.apellido}</td>
+            <td>${cliente.telefono}</td>
+            <td>0</td>
+            <td>Activo</td>
+            <td class="acciones">
+                        <i class="fa-solid fa-eye" data-id="${cliente.id}" title="Ver detalle"></i>
+                        <i class="fa-solid fa-pen" data-id="${cliente.id}" title="Editar"></i>
+                        <i class="fa-solid fa-trash" data-id="${cliente.id}" title="Eliminar"></i>
+            </td>
+        `;
+        tablaClientes.appendChild(fila);
+    });
+}
+CargarClientes();
+
+tablaClientes.addEventListener("click", (e)=>{
+    if(e.target.classList.contains("fa-trash")){
+        const id = e.target.dataset.id;
+
+        console.log("Eliminar cliente: ", id);
+
+        abrirModalEliminar();
+    }
+
+    if(e.target.classList.contains("fa-pen")){
+        const id = e.target.dataset.id;
+
+        console.log("Editar cliente: ", id);
+
+
+    }
+    if(e.target.classList.contains("fa-eye")){
+        const id = e.target.dataset.id;
+
+        console.log("Ver cliente" , id);
+    }
 })

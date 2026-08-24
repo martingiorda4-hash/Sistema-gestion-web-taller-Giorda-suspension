@@ -1,5 +1,5 @@
 <?php
-require "Controllers/VehiculoController.php";
+require_once "Controllers/VehiculoController.php";
 
 $controller = new VehiculoController();
 

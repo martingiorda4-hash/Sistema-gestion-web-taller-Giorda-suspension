@@ -1,5 +1,5 @@
 <?php
-require "Controllers/ServicioController.php";
+require_once "Controllers/ServicioController.php";
 
 $controller = new ServicioController();
 

@@ -1,6 +1,6 @@
 <?php
-require __DIR__ . "/../Models/Vehiculo.php";
-require __DIR__ . "/../../PDO/database.php";
+require_once __DIR__ . "/../Models/Vehiculo.php";
+require_once __DIR__ . "/../../PDO/database.php";
 
 class VehiculoController{
     private $vehiculo;
