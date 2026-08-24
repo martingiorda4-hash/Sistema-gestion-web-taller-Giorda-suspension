@@ -18,6 +18,7 @@ const btnCancelarEliminar = document.getElementById("btnCancelarEliminarTrabajo"
 const modalDetalleTrabajo = document.getElementById("modalDetalleTrabajo");
 const modalDetalle = document.getElementById("verTrabajo");
 const btnCerrarModalDetalle = document.getElementById("btnCerrarModalDetalle");
+const btnCerrarModalNuevo = document.getElementById("btnCerrarModalNuevoTrabajo");
 
 const formNuevoTrabajo = document.getElementById("formTrabajo");
 const tablaTrabajos = document.getElementById("tablaTrabajos");
@@ -86,6 +87,7 @@ function cerrarModalDetalle(){
 
 modalDetalle.addEventListener("click", abrirModalDetalle);
 btnCerrarModalDetalle.addEventListener("click", cerrarModalDetalle);
+btnCerrarModalNuevo.addEventListener("click", cerrarModal);
 
 //eliminarTrabajo.addEventListener("click", abrirModalEliminar);
 btnCancelarEliminar.addEventListener("click", cerrarModalEliminar);

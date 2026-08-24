@@ -1,0 +1,48 @@
+<?php
+require __DIR__ . "/../Models/Trabajo.php";
+require __DIR__ . "/../../PDO/database.php";
+
+class TrabajoController{
+    private $trabajo;
+
+    public function __construct()
+    {
+        global $pdo;
+
+        $this->trabajo = new Trabajo($pdo);
+    }
+    public function ObtenerTodos(){
+        return $this->trabajo->ObtenerTodos();
+    }
+    
+    public function CrearTrabajo($datos){
+         $this->trabajo->CrearTrabajo(
+            $datos["id_cliente"],
+            $datos["id_vehiculo"],
+            $datos["id_servicio"],
+            $datos["estado"],
+            $datos["importe"],
+            $datos["observaciones"]
+        );
+        echo json_encode("Trabajo creado correctamente");
+    }
+
+    public function ModificarTrabajo($datos){
+          $this->trabajo->ModificarTrabajo(
+            $datos["id"],
+            $datos["id_cliente"],
+            $datos["id_vehiculo"],
+            $datos["id_servicio"],
+            $datos["estado"],
+            $datos["importe"],
+            $datos["observaciones"]
+        );
+        echo json_encode("Trabajo modificado correctamente");
+    }
+
+    public function EliminarTrabajo($id){
+         $this->trabajo->EliminarTrabajo($id);
+        echo json_encode("Trabajo eliminado correctamente");
+    }
+
+}

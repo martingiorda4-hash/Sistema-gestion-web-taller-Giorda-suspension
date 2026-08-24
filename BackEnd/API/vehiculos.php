@@ -1,0 +1,21 @@
+<?php
+require "Controllers/VehiculoController.php";
+
+$controller = new VehiculoController();
+
+$method = $_SERVER['REQUEST_METHOD'];
+
+header("Content-Type: application/json");
+
+$datos = json_decode(file_get_contents("php://input"), true);
+
+$resultado = match($method){
+    'GET' => $controller->ObtenerTodos(),
+    'POST' => $controller->CrearVehiculo($datos),
+    'PUT' => $controller->ModificarVehiculo($datos),
+    'DELETE' => $controller->EliminarVehiculo($datos["id"])
+};
+
+if($method === "GET"){
+    echo json_encode($resultado);
+}

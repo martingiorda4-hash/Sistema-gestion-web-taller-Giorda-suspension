@@ -148,19 +148,32 @@ tbody td{
     justify-content: center;
 }
 .modal{
+    position: relative;
     background: #fff;
     border-radius: 12px;
     padding: 24px;
-    width: 400px;
+    width: 650px;
     max-width: 90%;
     max-height: 90vh;
     overflow-y: auto ;
+}
+.columnas{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.columna-derecha,
+.columna-izquierda{
+    display: flex;
+    flex-direction: column;
 }
 .oculto{
     display: none;
 }
 .modal h2{
     margin: 0 0 16px;
+    text-align: center;
+    margin-bottom: 15px;
 }
 .modal form{
     display: flex;
@@ -182,7 +195,7 @@ tbody td{
     font-size: 14px;
 }
 .modal textarea{
-    min-height: 80px;
+    min-height: 60px;
     resize: vertical;
 }
 .modal-botones button{
@@ -191,6 +204,7 @@ tbody td{
     font-size: 14px;
     cursor: pointer;
     border: none;
+    margin-top: 20px;
 }
 #btnGuardarTrabajo{
     background: #2563eb;
@@ -201,7 +215,21 @@ tbody td{
     border: 1px solid #e5e7eb;
     color: #fff;
 }
+.cerrar{
+    position: absolute;
+    top: 5px;
+    right: 15px;
 
+    border: none;
+    background: none;
+
+    font-size: 24px;
+    color: #6b7280;
+    cursor: pointer;
+}
+.cerrar:hover{
+    color: #111827;
+}
 /* MODAL ELIMINAR TRABAJO */
 
 .modal-eliminarTrabajo{
