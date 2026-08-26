@@ -9,7 +9,12 @@ class Cliente {
     }
 
     public function ObtenerTodos(){
-        $sql = "SELECT * FROM clientes";
+        $sql = "SELECT 
+                    c.*,
+                    COUNT(v.id) AS cantidad_vehiculos
+                FROM clientes c
+                LEFT JOIN vehiculos v ON v.cliente_id = c.id
+                GROUP BY c.id";
 
         $consulta = $this->pdo->prepare($sql);
         $consulta->execute();
@@ -62,7 +67,9 @@ class Cliente {
 
     }
     public function EliminarCliente($id){
-        $sql = "DELETE FROM clientes WHERE id = :id";
+        $sql = "UPDATE clientes 
+                SET estado = 'Inactivo'
+                WHERE id = :id";
 
         $consulta = $this->pdo->prepare($sql);
 

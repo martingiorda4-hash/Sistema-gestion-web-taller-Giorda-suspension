@@ -27,8 +27,9 @@ export async function ModificarCliente(cliente) {
         body: JSON.stringify(cliente)
     });
     return await response.json();
-
 }
+
+
 
 export async function EliminarCliente(id) {
     const response = await fetch(url, {

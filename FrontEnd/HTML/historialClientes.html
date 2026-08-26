@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/historialClientes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Historial de cliente</title>
 </head>
 <body>
@@ -46,9 +47,23 @@
                 <h2>Vehículos</h2>
                 <button type="button" id="btnAgregarVehiculo">+ Agregar vehículo</button>
             </div>
-            <div id="listaVehiculos">
-                
-            </div>
+            <section class="tabla-vehiculos">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patente</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Año</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaVehiculos">
+                    </tbody>
+                </table>
+
+            </section>
         </section>
     </div>
     <section class="historial"> 
@@ -94,6 +109,17 @@
         </form>
     </div>
     
+</div>
+<div class="modal-eliminar-vehiculo oculto" id="modalEliminarVehiculo">
+    <div class="modal-contenido">
+        <i class="fa-solid fa-exclamation-triangle"></i>
+            <h4>¿Estás seguro de eliminar este vehiculo?</h4>
+
+            <div class="modal-botones">
+                <button id="btnCancelarEliminarVehiculo">Cancelar</button>
+                <button id="btnAceptarEliminarVehiculo">Eliminar</button>
+            </div>
+    </div>
 </div>
 <script src="../JS/sidebar.js"></script>
 <script type="module" src="../JS/historialClientes.js"></script>

@@ -61,9 +61,29 @@ class Vehiculo{
 
         $consulta = $this->pdo->prepare($sql);
 
-       return $consulta->execute([
+    return $consulta->execute([
             ":id" => $id
         ]);
     }
 
+    public function ObtenerVehiculoPorId($id){
+        $sql = "SELECT * FROM vehiculos WHERE id = :id";
+        
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":id", $id);
+
+        $consulta->execute();
+
+        return $consulta->fetch(PDO::FETCH_ASSOC);
+    }
+    public function ObtenerVehiculoPorCliente($cliente_id){
+        $sql = "SELECT * FROM vehiculos WHERE cliente_id = :cliente_id";
+        
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":cliente_id", $cliente_id);
+
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

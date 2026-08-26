@@ -18,31 +18,31 @@ class ClienteController{
     public function CrearCliente($datos){
         $this->cliente->CrearCliente(
             $datos["tipo_cliente"],
-            $datos["nombre"],
-            $datos["apellido"],
+            $datos["nombre"] ?? null,
+            $datos["apellido"] ?? null,
             $datos["telefono"],
-            $datos["razon_social"],
-            $datos["cuit"]
+            $datos["razon_social"] ?? null,
+            $datos["cuit"] ?? null
         );
-        echo json_encode("Cliente creado correctamente");
+        return "Cliente creado correctamente";
     }
 
     public function ModificarCliente($datos){
         $this->cliente->ModificarCliente(
             $datos["id"],
             $datos["tipo_cliente"],
-            $datos["nombre"],
-            $datos["apellido"],
+            $datos["nombre"] ?? null,
+            $datos["apellido"] ?? null,
             $datos["telefono"],
-            $datos["razon_social"],
-            $datos["cuit"]
+            $datos["razon_social"] ?? null,
+            $datos["cuit"] ?? null
         );
-        echo json_encode("Cliente modificado correctamente");
+        return "Cliente modificado correctamente";
     }
 
     public function EliminarCliente($id){
         $this->cliente->EliminarCliente($id);
-        echo json_encode("Cliente eliminado correctamente");
+        return "Cliente eliminado correctamente";
     }
 
     public function ObtenerPorId($id){

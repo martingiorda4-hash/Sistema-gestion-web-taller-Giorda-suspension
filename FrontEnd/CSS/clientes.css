@@ -74,6 +74,7 @@ tbody td{
 }
 .acciones{
     display: flex;
+    align-items: center;
     gap: 14px;
 }
 .acciones i{

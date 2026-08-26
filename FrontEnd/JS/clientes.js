@@ -30,6 +30,8 @@
     const formNuevoCliente = document.getElementById("formCliente");
     const tablaClientes = document.getElementById("tablaClientes");
 
+    
+
     //LOGICA ABRIR MODAL PARA CREAR Y EDITAR CLIENTE
 
     //Validaciones
@@ -83,6 +85,9 @@
     }
 
     function abrirModalCrear(){
+        modoEdicion = false;
+        clienteEditando = null;
+
         clienteIdInput.value = "";
         tituloModalCliente.textContent = "Nuevo cliente";
         document.getElementById("formCliente").reset();
@@ -92,6 +97,10 @@
     }
 
     function abrirModalEditar(cliente){
+
+        modoEdicion = true;
+        clienteEditando = cliente;
+
         clienteIdInput.value = cliente.id;
         tituloModalCliente.textContent = "Editar cliente";
 
@@ -160,47 +169,6 @@
     });
     */
 
-    formNuevoCliente.addEventListener("submit", (e) =>{
-    e.preventDefault();
-
-    if(!ValidarClientes()){
-        return;
-    }
-    const tipoCliente = document.getElementById("tipoCliente").value;
-
-    const nombre = document.getElementById("nombreCliente").value;
-    const apellido = document.getElementById("apellidoCliente").value;
-    const telefonoParticular = document.getElementById("telefonoParticular").value;
-
-    const razonSocial = document.getElementById("razonSocialCliente").value;
-    const cuit = document.getElementById("cuitCliente").value;
-    const telefonoEmpresa = document.getElementById("telefonoEmpresa").value;
-
-    let cliente;
-    let telefono;
-
-    if(tipoCliente === "particular"){
-        cliente = `${nombre} ${apellido}`;
-        telefono = telefonoParticular;
-    }else{
-        cliente = razonSocial;
-        telefono = telefonoEmpresa;
-    }
-
-
-    // const fila = document.createElement("tr");
-
-    // fila.innerHTML = `
-    //     <td>${cliente}</td>
-    //     <td>${telefono}</td>
-    //     <td>0</td>
-    //     <td>Activo</td>
-    // `;
-    // tablaClientes.appendChild(fila);
-    // formNuevoCliente.reset();
-
-    // cerrarModal();
-})
 
 //logica para consumir api
 
@@ -211,18 +179,26 @@ async function CargarClientes() {
     tablaClientes.innerHTML = "";
 
     clientes.forEach(cliente => {
+        let nombreCliente;
+
+        if(cliente.tipo_cliente === "particular"){
+            nombreCliente = `${cliente.nombre} ${cliente.apellido}`;
+        }else{
+            nombreCliente = cliente.razon_social;
+        }
         const fila = document.createElement("tr");
 
-
         fila.innerHTML = `
-            <td>${cliente.nombre} ${cliente.apellido}</td>
+            <td>${nombreCliente}</td>
             <td>${cliente.telefono}</td>
-            <td>0</td>
-            <td>Activo</td>
-            <td class="acciones">
+            <td>${cliente.cantidad_vehiculos}</td>
+            <td>${cliente.estado}</td>
+            <td>
+                <div class="acciones">
                         <i class="fa-solid fa-eye" data-id="${cliente.id}" title="Ver detalle"></i>
                         <i class="fa-solid fa-pen" data-id="${cliente.id}" title="Editar"></i>
                         <i class="fa-solid fa-trash" data-id="${cliente.id}" title="Eliminar"></i>
+                </div>
             </td>
         `;
         tablaClientes.appendChild(fila);
@@ -254,4 +230,48 @@ tablaClientes.addEventListener("click", async (e)=>{
 
         window.location.href = `historialClientes.html?id=${id}`;
     }
+})
+let modoEdicion = false;
+let clienteEditando = null;
+
+async function EditarCliente(cliente) {
+    
+    await ModificarCliente(cliente);
+
+}
+
+formNuevoCliente.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    if(!ValidarClientes()){
+        return;
+    }
+
+    const tipoCliente = document.getElementById("tipoCliente").value;
+
+    const cliente ={
+        tipo_cliente: tipoCliente
+    };
+
+    if(tipoCliente === "particular"){
+        cliente.nombre = document.getElementById("nombreCliente").value;
+        cliente.apellido = document.getElementById("apellidoCliente").value;
+        cliente.telefono = document.getElementById("telefonoParticular").value;
+    }else{
+        cliente.razon_social = document.getElementById("razonSocialCliente").value;
+        cliente.cuit = document.getElementById("cuitCliente").value;
+        cliente.telefono = document.getElementById("telefonoEmpresa").value;
+    }
+
+    if(modoEdicion){
+        cliente.id = clienteEditando.id;
+        await EditarCliente(cliente);
+        alert("Cliente modificado con éxito");
+        
+    }else{
+        await CrearCliente(cliente);
+        alert("Cliente cargado con éxito");
+    }
+    cerrarModal();
+    await CargarClientes();
 })
