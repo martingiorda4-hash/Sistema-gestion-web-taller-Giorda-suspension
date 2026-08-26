@@ -70,4 +70,15 @@ class Cliente {
             ":id" => $id
         ]);
     }
+
+    public function ObtenerPorId($id){
+        $sql = "SELECT * FROM clientes WHERE id = :id";
+
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->bindParam(":id", $id);
+
+        $consulta->execute();
+
+        return $consulta->fetch(PDO::FETCH_ASSOC);
+    }
 }

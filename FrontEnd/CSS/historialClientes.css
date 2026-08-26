@@ -99,6 +99,11 @@ tbody td{
     cursor: pointer;
     margin-bottom: 10px;
 }
+#cliente{
+    font-size: 24px;
+    font-weight: 700;
+    margin: 8px 0 18px;
+}
 
 /* MODAL NUEVO VEHICULO */
 

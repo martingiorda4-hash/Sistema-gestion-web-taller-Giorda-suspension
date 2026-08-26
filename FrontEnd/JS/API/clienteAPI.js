@@ -1,4 +1,4 @@
-const url = "http://localhost/GiordaSuspension/BackEnd/API/clientes.php";
+const url = "http://giordasuspension/BackEnd/API/clientes.php";
 
 export async function ObtenerClientes() {
     const response = await fetch(url);
@@ -38,5 +38,11 @@ export async function EliminarCliente(id) {
         },
         body: JSON.stringify({id:id})
     })
+    return await response.json();
+}
+
+export async function ObtenerPorId(id) {
+    const response = await fetch(`${url}?id=${id}`);
+
     return await response.json();
 }

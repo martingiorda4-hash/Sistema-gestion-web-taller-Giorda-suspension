@@ -9,13 +9,12 @@ header("Content-Type: application/json");
 
 $datos = json_decode(file_get_contents("php://input"), true);
 
-$resultado = match($method){
-    'GET' => $controller->ObtenerTodos(),
+$resultado = match($method){ 
+    'GET' => isset($_GET["id"]) //ISSET-> SI LA URL VIENE CON UN PARAMETRO ID
+            ? $controller->ObtenerPorId($_GET["id"]) // -> OBTIENE POR ID
+            : $controller->ObtenerTodos(),          // -> : SINO, OBTIENE TODOS
     'POST' => $controller->CrearCliente($datos),
     'PUT' => $controller->ModificarCliente($datos),
     'DELETE' => $controller->EliminarCliente($datos["id"])
 };
-
-if($method === 'GET'){
-    echo json_encode($resultado);
-}
+echo json_encode($resultado);

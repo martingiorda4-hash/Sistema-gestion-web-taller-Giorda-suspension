@@ -3,7 +3,8 @@
         ObtenerClientes,
         CrearCliente,
         ModificarCliente,
-        EliminarCliente
+        EliminarCliente,
+        ObtenerPorId
     }from "./API/clienteAPI.js";
     
     const botonNuevoCliente = document.getElementById("btnNuevoCliente");
@@ -94,12 +95,12 @@
         clienteIdInput.value = cliente.id;
         tituloModalCliente.textContent = "Editar cliente";
 
-        tipoCliente.value = cliente.tipo;
+        tipoCliente.value = cliente.tipo_cliente;
 
         tipoCliente.dispatchEvent(new Event("change"));
 
-        if(cliente.tipo === "empresa"){
-            document.getElementById("razonSocialCliente").value = cliente.razonSocial;
+        if(cliente.tipo_cliente === "empresa"){
+            document.getElementById("razonSocialCliente").value = cliente.razon_social;
             document.getElementById("cuitCliente").value = cliente.cuit;
             document.getElementById("telefonoEmpresa").value = cliente.telefono;
         }else{
@@ -229,7 +230,7 @@ async function CargarClientes() {
 }
 CargarClientes();
 
-tablaClientes.addEventListener("click", (e)=>{
+tablaClientes.addEventListener("click", async (e)=>{
     if(e.target.classList.contains("fa-trash")){
         const id = e.target.dataset.id;
 
@@ -241,13 +242,16 @@ tablaClientes.addEventListener("click", (e)=>{
     if(e.target.classList.contains("fa-pen")){
         const id = e.target.dataset.id;
 
-        console.log("Editar cliente: ", id);
+        const cliente = await ObtenerPorId(id);
 
+        abrirModalEditar(cliente);
 
     }
     if(e.target.classList.contains("fa-eye")){
         const id = e.target.dataset.id;
 
         console.log("Ver cliente" , id);
+
+        window.location.href = `historialClientes.html?id=${id}`;
     }
 })

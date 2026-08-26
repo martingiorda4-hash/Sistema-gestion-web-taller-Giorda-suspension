@@ -3,7 +3,7 @@ const contrasenia = document.getElementById("contraseña");
 const btnIngresar = document.getElementById("btnIngresar");
 const formLogin = document.getElementById("form-login");
 
-formLogin.addEventListener("submit", function(event){
+formLogin.addEventListener("submit", async function(event){
 
     event.preventDefault();
 
@@ -17,5 +17,31 @@ formLogin.addEventListener("submit", function(event){
         contrasenia.focus();
         return;
     }
-    window.location.href = "dashboard.html";
+    const datos = {
+        usuario: usuario.value,
+        contrasenia: contrasenia.value
+    };
+
+    const response = await fetch("http://giordasuspension/BackEnd/API/usuarios.php", 
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(datos)
+        }
+    );
+    const resultado = await response.json();
+
+    console.log(resultado);
+
+    if(resultado === true){
+        
+        window.location.href = "dashboard.html";
+    }else{
+        alert("Usuario o contraseña incorrectos");
+    }
+
 });
+
+

@@ -9,34 +9,35 @@
 <body>
     <div id="sidebar"></div>
     <main>
-        <button class="btn-volver" type="button" id="btnVolver">←Volver</button>
+        <button class="btn-volver" type="button" id="btnVolver">←Volver</button> 
+        <h4 class="nombre-cliente" id="cliente"></h4>
 
         <div class="contenedor-superior">
             <section class="datos-cliente">
                 <h2>Datos del cliente</h2>
                 <div class="campo">
-                    <label>Tipo de cliente</label>
-                    <p id="tipoCliente"></p>
+                    <span>Tipo de cliente:</span>
+                    <strong id="tipoCliente"></strong>
                 </div>
-                <div class="campo">
-                    <label>Nombre</label>
-                    <p id="nombreCliente"></p>
+                <div class="campo" id="campoNombre">
+                    <span>Nombre:</span>
+                    <strong id="nombreCliente"></strong>
                 </div>
-            <div class="campo">
-                <label>Apellido</label>
-                <p id="apellidoCliente"></p>
+            <div class="campo" id="campoApellido">
+                <span>Apellido:</span>
+                <strong id="apellidoCliente"></strong>
             </div>
             <div class="campo">
-                <label>Teléfono</label>
-                <p id="telefonoCliente"></p>
+                <span>Teléfono:</span>
+                <strong id="telefonoCliente"></strong>
             </div>
-            <div class="campo">
-                <label>CUIT</label>
-                <p id="cuitCliente"></p>
+            <div class="campo" id="campoCuit">
+                <span>CUIT:</span>
+                <strong id="cuitCliente"></strong>
             </div>
-            <div class="campo">
-                <label>Razón social</label>
-                <p id="razonSocialCliente"></p>
+            <div class="campo" id="campoRazonSocial">
+                <span>Razón social:</span>
+                <strong id="razonSocialCliente"></strong>
             </div>
         </section>
         
@@ -95,6 +96,6 @@
     
 </div>
 <script src="../JS/sidebar.js"></script>
-<script src="../JS/historialClientes.js"></script>
+<script type="module" src="../JS/historialClientes.js"></script>
 </body>
 </html>
