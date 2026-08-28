@@ -56,18 +56,6 @@
                 </thead>
 
                 <tbody id="tablaTrabajos">
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="acciones">
-                            <i class="fa-solid fa-eye" id="verTrabajo" title="Ver detalle"></i>
-                            <i class="fa-solid fa-pen editarTrabajo" title="Editar"></i>
-                            <i class="fa-solid fa-trash eliminar" title="Eliminar""></i>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </section>
@@ -81,9 +69,7 @@
                     <div class="columna-derecha">
 
                         <input type="hidden" id="trabajoId">
-                        <label>Fecha</label>
-                        <input type="date" id="fecha">
-                        
+                    
                         <label>Cliente</label>
                         <select id="cliente">
                             <option value="">Seleccione un cliente</option>
@@ -111,11 +97,25 @@
                         <select id="servicio">
                             <option value="">Seleccione un servicio</option>
                         </select>
-                        
+
+                        <button type="button" id="btnAgregarServicio" class="btn-Agregar-Servicio">
+                            +Agregar
+                        </button>
+
+                    </div>
+                </div>
+                    <div class="servicios-container">
+                        <label>Servicios seleccionados</label>
+                        <div id="serviciosSeleccionados" class="servicios-seleccionados"></div>
+
+                    </div>
+                    
+                    <div class="observaciones-container">
                         <label>Observaciones</label>
                         <textarea id="observaciones" placeholder="Ingrese observaciones del trabajo..."></textarea>
                     </div>
-                </div>
+
+                    
                     
                     <div class="modal-botones">
                         <button type="button" id="btnCancelarTrabajo">Cancelar</button>
@@ -166,6 +166,6 @@
         </div>
     </div>
     <script src="../JS/sidebar.js"></script>
-    <script src="../JS/trabajos.js"></script>
+    <script type="module" src="../JS/trabajos.js"></script>
 </body>
 </html>

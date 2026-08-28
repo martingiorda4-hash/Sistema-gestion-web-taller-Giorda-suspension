@@ -47,3 +47,9 @@ export async function ObtenerPorId(id) {
 
     return await response.json();
 }
+
+export async function BuscarCliente(txt) {
+    const response = await fetch(`${url}?buscar=${encodeURIComponent(txt)}`); //URI COMPONENT CONVIERTE EL TEXTO EN FORMATO CORRECTO PAR LA URL.
+
+    return await response.json();
+}

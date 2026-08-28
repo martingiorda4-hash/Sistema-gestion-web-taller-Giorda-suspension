@@ -155,6 +155,7 @@ async function CargarVehiculos() {
 }
 CargarVehiculos();
 let vehiculoAEliminar = null;
+
 tablaVehiculos.addEventListener("click", async (e)=>{
     if(e.target.classList.contains("fa-trash")){
         vehiculoAEliminar = e.target.dataset.id;

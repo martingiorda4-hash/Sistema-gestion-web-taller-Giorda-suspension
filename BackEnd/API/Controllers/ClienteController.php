@@ -48,5 +48,7 @@ class ClienteController{
     public function ObtenerPorId($id){
         return $this->cliente->ObtenerPorId($id);
     }
-
+    public function BuscarCliente($txt){
+        return $this->cliente->BuscarCliente($txt);
+    }
 }

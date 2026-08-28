@@ -16,19 +16,18 @@ class TrabajoController{
     }
     
     public function CrearTrabajo($datos){
-         $this->trabajo->CrearTrabajo(
+        $this->trabajo->CrearTrabajo(
             $datos["id_cliente"],
             $datos["id_vehiculo"],
             $datos["id_servicio"],
             $datos["estado"],
-            $datos["importe"],
             $datos["observaciones"]
         );
-        echo json_encode("Trabajo creado correctamente");
+        return "Trabajo creado correctamente";
     }
 
     public function ModificarTrabajo($datos){
-          $this->trabajo->ModificarTrabajo(
+        $this->trabajo->ModificarTrabajo(
             $datos["id"],
             $datos["id_cliente"],
             $datos["id_vehiculo"],
@@ -37,12 +36,15 @@ class TrabajoController{
             $datos["importe"],
             $datos["observaciones"]
         );
-        echo json_encode("Trabajo modificado correctamente");
+        return "Trabajo modificado correctamente";
     }
 
     public function EliminarTrabajo($id){
-         $this->trabajo->EliminarTrabajo($id);
-        echo json_encode("Trabajo eliminado correctamente");
+        $this->trabajo->EliminarTrabajo($id);
+        return "Trabajo eliminado correctamente";
+    }
+    public function ObtenerPorId($id){
+        return $this->trabajo->ObtenerPorId($id);
     }
 
 }

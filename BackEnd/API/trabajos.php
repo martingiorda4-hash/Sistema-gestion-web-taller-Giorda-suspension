@@ -10,12 +10,12 @@ header("Content-Type: application/json");
 $datos = json_decode(file_get_contents("php://input"), true);
 
 $resultado = match($method){
-    'GET' => $controller->ObtenerTodos(),
+    'GET' => isset($_GET["id"])
+                ?$controller->ObtenerPorId($_GET["id"])
+                :$controller->ObtenerTodos(),
     'POST' => $controller->CrearTrabajo($datos),
     'PUT' => $controller->ModificarTrabajo($datos),
     'DELETE' => $controller->EliminarTrabajo($datos["id"])
 };
 
-if($method === "GET"){
-    echo json_encode($resultado);
-}
+echo json_encode($resultado);

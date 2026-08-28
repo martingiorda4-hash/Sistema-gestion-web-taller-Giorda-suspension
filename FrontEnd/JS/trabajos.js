@@ -1,3 +1,14 @@
+import { ObtenerClientes } from "./API/clienteAPI";
+import {ObtenerVehiculoPorCliente} from "./API/vehiculoAPI";
+import { 
+    ObtenerTrabajos,
+    ObtenerPorId,
+    ModificarTrabajo,
+    EliminarTrabajo,
+    CrearTrabajo
+} from "./API/trabajoAPI";
+import { ObtenerTodosServicios } from "./API/serviciosAPI";
+
 const fechaDesde = document.getElementById("fechaDesde");
 const fechaHasta = document.getElementById("fechaHasta");
 
@@ -14,9 +25,9 @@ const trabajoIdInput = document.getElementById("trabajoId");
 const modalEliminarTrabajo = document.getElementById("modalEliminarTrabajo");
 //const eliminarTrabajo = document.getElementById("eliminar");
 const btnCancelarEliminar = document.getElementById("btnCancelarEliminarTrabajo");
+const btnAceptarEliminar = document.getElementById("btnAceptarEliminarTrabajo");
 
 const modalDetalleTrabajo = document.getElementById("modalDetalleTrabajo");
-const modalDetalle = document.getElementById("verTrabajo");
 const btnCerrarModalDetalle = document.getElementById("btnCerrarModalDetalle");
 const btnCerrarModalNuevo = document.getElementById("btnCerrarModalNuevoTrabajo");
 
@@ -24,6 +35,10 @@ const formNuevoTrabajo = document.getElementById("formTrabajo");
 const tablaTrabajos = document.getElementById("tablaTrabajos");
 
 const parametros = new URLSearchParams(window.location.search);
+
+const selectCliente = document.getElementById("cliente");
+const selectVehiculo = document.getElementById("vehiculoCliente");
+const selectServicios = document.getElementById("servicio");
 
 fechaDesde.addEventListener("change", function() {
     if(this.value !== ""){
@@ -45,14 +60,77 @@ fechaHasta.addEventListener("change", function() {
     }
 })
 
-function abrirModalCrear(){
+let modoEdicion = false;
+let trabajoEditando = null;
+
+async function abrirModalCrear(){
+    modoEdicion = false;
+    trabajoEditando = null;
+
+
     trabajoIdInput.value = "";
     tituloModalTrabajo.textContent = "Nuevo trabajo";
     document.getElementById("formTrabajo").reset();
+
+    //Cargar clientes en select
+    const clientes = await ObtenerClientes();
+    const selectCliente = document.getElementById("cliente");
+
+    selectCliente.innerHTML = ` <option value="">Seleccione un cliente</option>`;
+
+    clientes.forEach(cliente => {
+        let nombreCliente;
+
+        if(cliente.tipo_cliente === "particular"){
+            nombreCliente = `${cliente.nombre} ${cliente.apellido}`;
+        }else{
+            nombreCliente = `${cliente.razon_social}`;
+        }
+
+        selectCliente.innerHTML += `
+            <option value="${cliente.id}">${nombreCliente}</option>;
+        `;
+    });
+
+    //Cargar servicios en select
+    selectServicios.innerHTML = `<option value="">Seleccione un servicio</option>`;
+
+    const servicios = await ObtenerTodosServicios();
+
+    servicios.forEach(servicio => {
+
+        selectServicios.innerHTML += `
+            <option value="${servicio.id}">
+                ${servicio.nombre}
+            </option>
+        `;
+    });
     modalTrabajo.classList.remove("oculto");
 }
+selectCliente.addEventListener("change", async () => {
+    const clienteId = selectCliente.value;
+
+    selectVehiculo.innerHTML = `<option value="">Seleccione un vehiculo respecto al cliente</option>`;
+
+    if(clienteId === ""){
+        return;
+    }
+    const vehiculos = await ObtenerVehiculoPorCliente(clienteId);
+
+    vehiculos.forEach(vehiculo => {
+        selectVehiculo.innerHTML += `
+            <option value="${vehiculo.id}">
+                ${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.patente}
+            </option>
+        `;
+    });
+});
+
 
 function abrirModalEditar(trabajo){
+    modoEdicion = true;
+    trabajoEditando = trabajo;
+
     trabajoIdInput.value = trabajo.id;
     tituloModalTrabajo.textContent = "Editar trabajo";
 
@@ -85,7 +163,7 @@ function cerrarModalDetalle(){
     modalDetalleTrabajo.classList.add("oculto");
 }
 
-modalDetalle.addEventListener("click", abrirModalDetalle);
+
 btnCerrarModalDetalle.addEventListener("click", cerrarModalDetalle);
 btnCerrarModalNuevo.addEventListener("click", cerrarModal);
 
@@ -111,16 +189,14 @@ botonCancelar.addEventListener("click", () => {
 
 });
 
-
-// OBTENER VALORES DEL FORMULARIO Y MOSTRARLOS EN LA TABLA
+//LOGICA PARA CONSUMIR API, OBTENER VALORES DEL FORMULARIO Y MOSTRARLOS EN LA TABLA
 
 function ValidarTrabajos(){
     const cliente = document.getElementById("cliente").value;
     const vehiculo = document.getElementById("vehiculoCliente").value;
     const servicio = document.getElementById("servicio").value;
     const estado = document.getElementById("estadoModal").value;
-    const fecha = document.getElementById("fecha").value;
-
+    
     if(cliente === ""){
         alert("Debe seleccionar un cliente");
         return false;
@@ -137,37 +213,103 @@ function ValidarTrabajos(){
         alert("Debe seleccionar un estado");
         return false;
     }
-    if(fecha === ""){
-        alert("Debe seleccionar una fecha");
-        return false;
-    }
     return true;
 }
 
-formNuevoTrabajo.addEventListener("submit", (e) =>{
-    e.preventDefault();
+function MostrarTrabajos(trabajos){
+    //LOGICA PAGINACION
+
+    tablaTrabajos.innerHTML = "";
+
+    trabajos.forEach(trabajo => {
+        const fila = document.createElement("tr");
+
+        fila.innerHTML = `
+            <td>${trabajo.nombre_cliente}</td>
+            <td>${trabajo.marca} ${trabajo.modelo} ${trabajo.patente}</td>
+            <td>${trabajo.servicio}</td>
+            <td>${trabajo.estado}</td>
+            <td>${trabajo.fecha}</td>
+            <td>
+                <div class="acciones">
+                        <i class="fa-solid fa-eye" data-id="${trabajo.id}" title="Ver detalle"></i>
+                        <i class="fa-solid fa-pen" data-id="${trabajo.id}" title="Editar"></i>
+                        <i class="fa-solid fa-trash" data-id="${trabajo.id}" title="Eliminar"></i>
+                </div>
+            </td>
+        `
+        tablaTrabajos.appendChild(fila);
+    });
+}
+async function CargarTrabajos(){
+    const trabajos = await ObtenerTrabajos();
+    console.log(trabajos);
+    MostrarTrabajos(trabajos);
+}
+
+let trabajoAEliminar = null;
+tablaTrabajos.addEventListener("click", async (e)=>{
+    if(e.target.classList.contains("fa-trash")){
+        trabajoAEliminar = e.target.dataset.id;
+
+        
+        abrirModalEliminar();
+    }
+
+    if(e.target.classList.contains("fa-pen")){
+        const id = e.target.dataset.id;
+
+        const trabajo = await ObtenerPorId(id);
+
+        abrirModalEditar(trabajo);
+
+    }
+    if(e.target.classList.contains("fa-eye")){
+        const id = e.target.dataset.id;
+
+        abrirModalDetalle(id);
+    }
+})
+async function EditarTrabajo(trabajo) {
+    await ModificarTrabajo(trabajo);
+}
+btnAceptarEliminar.addEventListener("click", async() =>{
+    await EliminarTrabajo(trabajoAEliminar);
+
+    alert("Trabajo eliminado");
+    trabajoAEliminar = null;
+
+    cerrarModalEliminar();
+
+    await CargarTrabajos();
+})
+formNuevoTrabajo.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
     if(!ValidarTrabajos()){
         return;
     }
-    const cliente = document.getElementById("cliente").value;
-    const vehiculo = document.getElementById("vehiculoCliente").value;
-    const servicio = document.getElementById("servicio").value;
-    const estado = document.getElementById("estadoModal").value;
-    const fecha = document.getElementById("fecha").value;
-    const observaciones = document.getElementById("observaciones").value;
 
-    const fila = document.createElement("tr");
+        const trabajo ={
+            id_cliente: document.getElementById("cliente").value,
+            id_vehiculo: document.getElementById("vehiculoCliente").value,
+            id_servicio: document.getElementById("servicio").value,
+            estado: document.getElementById("estadoModal").value,
+            observaciones: document.getElementById("observaciones").value
+        };
 
-    fila.innerHTML = `
-        <td>${cliente}</td>
-        <td>${vehiculo}</td>
-        <td>${servicio}</td>
-        <td>${estado}</td>
-        <td>${fecha}</td>
-    `;
-    tablaTrabajos.appendChild(fila);
-    formNuevoTrabajo.reset();
 
+    if(modoEdicion){
+        trabajo.id = trabajoEditando.id;
+        await EditarTrabajo(trabajo);
+        alert("Trabajo modificado con éxito");
+        
+    }else{
+        await CrearTrabajo(trabajo);
+        alert("Trabajo cargado con éxito");
+    }
+    cerrarModal();
+    await CargarTrabajos();
 })
+CargarTrabajos();
 

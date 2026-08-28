@@ -76,6 +76,8 @@ class Cliente {
         return $consulta->execute([
             ":id" => $id
         ]);
+
+        
     }
 
     public function ObtenerPorId($id){
@@ -87,5 +89,25 @@ class Cliente {
         $consulta->execute();
 
         return $consulta->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function BuscarCliente($txt){
+        $sql = "SELECT 
+                    c.*,
+                    COUNT(v.id) AS cantidad_vehiculos
+                FROM clientes c
+                LEFT JOIN vehiculos v ON v.cliente_id = c.id
+                WHERE c.nombre LIKE :txt
+                    OR c.apellido LIKE :txt
+                    OR c.razon_social LIKE :txt
+                GROUP BY c.id";
+
+        $consulta = $this->pdo->prepare($sql);
+
+        $consulta->execute([
+            ":txt" => "%" . $txt . "%"
+        ]);
+
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 }

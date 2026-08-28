@@ -36,13 +36,19 @@
             </table>
 
             <div class="paginacion">
-                <p id="infoPagina">Mostrando 1 a 5 de 25 clientes</p>
-                <div class="numero-pagina" id="numerosPagina">
-                    <button>1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>4</button>
-                    <button>5</button>
+                <p id="infoPagina"></p>
+                <div class="botones-paginacion">
+                    <button id="btnAnterior">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    
+                    <button class="numero-pagina activo" data-pagina="1">1</button>
+                    <button class="numero-pagina" data-pagina="2">2</button>
+                    <button class="numero-pagina" data-pagina="3">3</button>
+                    
+                    <button id="btnSiguiente">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
         </section>
@@ -92,7 +98,7 @@
     <div id="modalEliminarCliente" class="modal-eliminar-cliente oculto">
         <div class="modal-contenido">
             <i class="fa-solid fa-exclamation-triangle"></i>
-            <h4>¿Estás seguro de eliminar este cliente?</h4>
+            <h4>¿Estás seguro que desea dar de baja este cliente?</h4>
 
             <div class="modal-botones">
                 <button id="btnCancelarEliminar">Cancelar</button>

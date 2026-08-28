@@ -12,7 +12,10 @@ $datos = json_decode(file_get_contents("php://input"), true);
 $resultado = match($method){ 
     'GET' => isset($_GET["id"]) //ISSET-> SI LA URL VIENE CON UN PARAMETRO ID
             ? $controller->ObtenerPorId($_GET["id"]) // -> OBTIENE POR ID
-            : $controller->ObtenerTodos(),          // -> : SINO, OBTIENE TODOS
+            : (isset($_GET["buscar"])
+                ?$controller->BuscarCliente($_GET["buscar"])
+                :$controller->ObtenerTodos()), // -> : SINO, OBTIENE TODOS
+
     'POST' => $controller->CrearCliente($datos),
     'PUT' => $controller->ModificarCliente($datos),
     'DELETE' => $controller->EliminarCliente($datos["id"])

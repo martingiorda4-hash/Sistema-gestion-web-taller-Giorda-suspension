@@ -4,7 +4,8 @@
         CrearCliente,
         ModificarCliente,
         EliminarCliente,
-        ObtenerPorId
+        ObtenerPorId,
+        BuscarCliente
     }from "./API/clienteAPI.js";
     
     const botonNuevoCliente = document.getElementById("btnNuevoCliente");
@@ -26,11 +27,22 @@
     const modalEliminarCliente = document.getElementById("modalEliminarCliente");
 
     const btnCancelar = document.getElementById("btnCancelarEliminar");
+    const btnAceptarEliminar = document.getElementById("btnAceptarEliminar");
 
     const formNuevoCliente = document.getElementById("formCliente");
     const tablaClientes = document.getElementById("tablaClientes");
 
-    
+    const buscarCliente = document.getElementById("inputBuscarCliente");
+
+    const btnAnterior = document.getElementById("btnAnterior");
+    const btnSiguiente = document.getElementById("btnSiguiente");
+    const botonesPagina = document.querySelectorAll(".numero-pagina");
+
+    const infoPagina = document.getElementById("infoPagina");
+
+    let paginaActual = 1;
+    const clientesPorPagina = 20;
+    let clientesActuales = [];
 
     //LOGICA ABRIR MODAL PARA CREAR Y EDITAR CLIENTE
 
@@ -84,6 +96,8 @@
         return true;
     }
 
+    let modoEdicion = false;
+    let clienteEditando = null;
     function abrirModalCrear(){
         modoEdicion = false;
         clienteEditando = null;
@@ -172,13 +186,24 @@
 
 //logica para consumir api
 
-async function CargarClientes() {
-    
-    const clientes = await ObtenerClientes();
+function MostrarClientes(clientes){
+
+    clientesActuales = clientes;
+
+    const inicio = (paginaActual - 1) * clientesPorPagina;
+    const fin = inicio + clientesPorPagina;
+
+    const clientesPagina = clientes.slice(inicio, fin);
+
+    const desde = inicio + 1;
+    const hasta = Math.min(fin, clientes.length);
+
+    infoPagina.textContent = `Mostrando ${desde} a ${hasta} de ${clientes.length} clientes`;
+
 
     tablaClientes.innerHTML = "";
 
-    clientes.forEach(cliente => {
+    clientesPagina.forEach(cliente => {
         let nombreCliente;
 
         if(cliente.tipo_cliente === "particular"){
@@ -204,14 +229,61 @@ async function CargarClientes() {
         tablaClientes.appendChild(fila);
     });
 }
-CargarClientes();
+async function CargarClientes() {
+    
+    const clientes = await ObtenerClientes();
+    MostrarClientes(clientes);
+}
+//BOTONES PAGINACION
+btnSiguiente.addEventListener("click", () => {
 
+    const totalPaginas = Math.ceil(clientesActuales.length / clientesPorPagina);
+
+    if(paginaActual < totalPaginas){
+        paginaActual++;
+
+        MostrarClientes(clientesActuales);
+        ActualizarBotonActivo();
+    }
+})
+
+btnAnterior.addEventListener("click", () => {
+    if(paginaActual > 1){
+        paginaActual--;
+
+        MostrarClientes(clientesActuales);
+        ActualizarBotonActivo();
+    }
+})
+botonesPagina.forEach(boton => {
+
+    boton.addEventListener("click", () => {
+        paginaActual = Number(boton.dataset.pagina);
+    
+        MostrarClientes(clientesActuales);
+    
+        botonesPagina.forEach(botones => {
+            botones.classList.remove("activo");
+        });
+        boton.classList.add("activo");
+    });
+});
+function ActualizarBotonActivo(){
+    botonesPagina.forEach(boton => {
+        boton.classList.remove("activo");
+
+        if(Number(boton.dataset.pagina) === paginaActual){
+            boton.classList.add("activo");
+        }
+    });
+}
+
+let clienteAEliminar = null;
 tablaClientes.addEventListener("click", async (e)=>{
     if(e.target.classList.contains("fa-trash")){
-        const id = e.target.dataset.id;
+        clienteAEliminar = e.target.dataset.id;
 
-        console.log("Eliminar cliente: ", id);
-
+        
         abrirModalEliminar();
     }
 
@@ -231,15 +303,22 @@ tablaClientes.addEventListener("click", async (e)=>{
         window.location.href = `historialClientes.html?id=${id}`;
     }
 })
-let modoEdicion = false;
-let clienteEditando = null;
 
 async function EditarCliente(cliente) {
     
     await ModificarCliente(cliente);
 
 }
+btnAceptarEliminar.addEventListener("click", async() =>{
+    await EliminarCliente(clienteAEliminar);
 
+    alert("El cliente se a dado de baja");
+    clienteAEliminar = null;
+
+    cerrarModalEliminar();
+
+    await CargarClientes();
+})
 formNuevoCliente.addEventListener("submit", async function (event) {
     event.preventDefault();
 
@@ -275,3 +354,25 @@ formNuevoCliente.addEventListener("submit", async function (event) {
     cerrarModal();
     await CargarClientes();
 })
+
+buscarCliente.addEventListener("input", async () => {
+    const texto = buscarCliente.value.trim();
+
+
+    if(texto === ""){
+        await CargarClientes();
+        return;
+    }
+
+    const clientes  = await BuscarCliente(texto);
+
+    const totalPaginas = Math.ceil(clientes.length / clientesPorPagina);
+
+    if(paginaActual > totalPaginas && totalPaginas > 0){
+        paginaActual = totalPaginas;
+        ActualizarBotonActivo();
+    }
+
+    MostrarClientes(clientes);
+}) 
+CargarClientes();
