@@ -8,6 +8,12 @@ import {
     CrearTrabajo
 } from "./API/trabajoAPI";
 import { ObtenerTodosServicios } from "./API/serviciosAPI";
+import { 
+    ObtenerServicioPorTrabajo,
+    AgregarServicio
+} from "./API/trabajoServicioAPI";
+
+let serviciosSeleccionados = [];
 
 const fechaDesde = document.getElementById("fechaDesde");
 const fechaHasta = document.getElementById("fechaHasta");
@@ -30,6 +36,8 @@ const btnAceptarEliminar = document.getElementById("btnAceptarEliminarTrabajo");
 const modalDetalleTrabajo = document.getElementById("modalDetalleTrabajo");
 const btnCerrarModalDetalle = document.getElementById("btnCerrarModalDetalle");
 const btnCerrarModalNuevo = document.getElementById("btnCerrarModalNuevoTrabajo");
+const btnAgregarServicio = document.getElementById("btnAgregarServicio");
+const contenedorServiciosSeleccionados = document.getElementById("serviciosSeleccionados");
 
 const formNuevoTrabajo = document.getElementById("formTrabajo");
 const tablaTrabajos = document.getElementById("tablaTrabajos");
@@ -39,6 +47,8 @@ const parametros = new URLSearchParams(window.location.search);
 const selectCliente = document.getElementById("cliente");
 const selectVehiculo = document.getElementById("vehiculoCliente");
 const selectServicios = document.getElementById("servicio");
+
+const contenedorServiciosDetalle = document.getElementById("serviciosDetalle");
 
 fechaDesde.addEventListener("change", function() {
     if(this.value !== ""){
@@ -73,6 +83,48 @@ async function abrirModalCrear(){
     document.getElementById("formTrabajo").reset();
 
     //Cargar clientes en select
+    await cargarClienteSelect();
+    //Cargar servicios en select
+    await cargarServiciosSelect();
+    
+    modalTrabajo.classList.remove("oculto");
+
+}
+selectCliente.addEventListener("change", async () => {
+    const clienteId = selectCliente.value;
+
+    await cargarVehiculosSelect(clienteId);
+});
+
+
+
+async function abrirModalEditar(trabajo){
+    modoEdicion = true;
+    trabajoEditando = trabajo;
+
+    trabajoIdInput.value = trabajo.id;
+    tituloModalTrabajo.textContent = "Editar trabajo";
+
+    await cargarClienteSelect();
+
+    selectCliente.value = trabajo.id_cliente;
+
+    await cargarVehiculosSelect(trabajo.id_cliente);
+
+    selectVehiculo.value = trabajo.id_vehiculo;
+
+    await cargarServiciosSelect();
+
+    selectServicios.value = trabajo.id_servicio;
+
+    document.getElementById("estadoModal").value = trabajo.estado;
+    document.getElementById("observaciones").value = trabajo.observaciones;
+
+    modalTrabajo.classList.remove("oculto");
+}
+
+async function cargarClienteSelect() {
+     //Cargar clientes en select
     const clientes = await ObtenerClientes();
     const selectCliente = document.getElementById("cliente");
 
@@ -91,25 +143,8 @@ async function abrirModalCrear(){
             <option value="${cliente.id}">${nombreCliente}</option>;
         `;
     });
-
-    //Cargar servicios en select
-    selectServicios.innerHTML = `<option value="">Seleccione un servicio</option>`;
-
-    const servicios = await ObtenerTodosServicios();
-
-    servicios.forEach(servicio => {
-
-        selectServicios.innerHTML += `
-            <option value="${servicio.id}">
-                ${servicio.nombre}
-            </option>
-        `;
-    });
-    modalTrabajo.classList.remove("oculto");
 }
-selectCliente.addEventListener("change", async () => {
-    const clienteId = selectCliente.value;
-
+async function cargarVehiculosSelect(clienteId) {
     selectVehiculo.innerHTML = `<option value="">Seleccione un vehiculo respecto al cliente</option>`;
 
     if(clienteId === ""){
@@ -124,26 +159,22 @@ selectCliente.addEventListener("change", async () => {
             </option>
         `;
     });
-});
-
-
-function abrirModalEditar(trabajo){
-    modoEdicion = true;
-    trabajoEditando = trabajo;
-
-    trabajoIdInput.value = trabajo.id;
-    tituloModalTrabajo.textContent = "Editar trabajo";
-
-    document.getElementById("fecha").value = trabajo.fecha;
-    document.getElementById("cliente").value = trabajo.clienteId;
-    document.getElementById("vehiculoCliente").value = trabajo.vehiculoId;
-    document.getElementById("estadoModal").value = trabajo.estado;
-    document.getElementById("servicio").value = trabajo.servicioId;
-    document.getElementById("observaciones").value = trabajo.observaciones;
-
-    modalTrabajo.classList.remove("oculto");
 }
+async function cargarServiciosSelect() {
+    //Cargar servicios en select
+    selectServicios.innerHTML = `<option value="">Seleccione un servicio</option>`;
 
+    const servicios = await ObtenerTodosServicios();
+
+    servicios.forEach(servicio => {
+
+        selectServicios.innerHTML += `
+            <option value="${servicio.id}">
+                ${servicio.nombre}
+            </option>
+        `;
+    });
+}
 
 function cerrarModal(){
     modalTrabajo.classList.add("oculto")
@@ -156,7 +187,9 @@ function cerrarModalEliminar(){
     modalEliminarTrabajo.classList.add("oculto");
 }
 
-function abrirModalDetalle(){
+function abrirModalDetalle(trabajo, servicios){
+    CargarDatosDetalle(trabajo, servicios);
+    
     modalDetalleTrabajo.classList.remove("oculto");
 }
 function cerrarModalDetalle(){
@@ -227,7 +260,6 @@ function MostrarTrabajos(trabajos){
         fila.innerHTML = `
             <td>${trabajo.nombre_cliente}</td>
             <td>${trabajo.marca} ${trabajo.modelo} ${trabajo.patente}</td>
-            <td>${trabajo.servicio}</td>
             <td>${trabajo.estado}</td>
             <td>${trabajo.fecha}</td>
             <td>
@@ -245,6 +277,35 @@ async function CargarTrabajos(){
     const trabajos = await ObtenerTrabajos();
     console.log(trabajos);
     MostrarTrabajos(trabajos);
+}
+function CargarDatosDetalle(trabajo, servicios){
+    if(trabajo.tipo_cliente === "particular"){
+        
+        document.getElementById("clienteDetalle").textContent = trabajo.nombre + " " + trabajo.apellido;
+    }else{
+        document.getElementById("clienteDetalle").textContent = trabajo.razon_social;
+    }
+    document.getElementById("vehiculoDetalle").textContent = trabajo.marca + " " + trabajo.modelo + " " + trabajo.patente;
+    document.getElementById("fechaDetalle").textContent = trabajo.fecha;
+    document.getElementById("estadoDetalle").textContent = trabajo.estado;
+
+    contenedorServiciosDetalle.innerHTML = "";
+    servicios.forEach(servicio => {
+        
+        const fila = document.createElement("div");
+        const nombre = document.createElement("p");
+        const precio = document.createElement("p");
+
+        nombre.textContent = servicio.nombre;
+        precio.textContent = "$" + servicio.precio;
+
+        fila.appendChild(nombre);
+        fila.appendChild(precio);
+
+        contenedorServiciosDetalle.appendChild(fila);
+    })
+
+    document.getElementById("observacionesDetalle").textContent = trabajo.observaciones;
 }
 
 let trabajoAEliminar = null;
@@ -267,7 +328,12 @@ tablaTrabajos.addEventListener("click", async (e)=>{
     if(e.target.classList.contains("fa-eye")){
         const id = e.target.dataset.id;
 
-        abrirModalDetalle(id);
+        
+        const trabajos = await ObtenerPorId(id)
+        const servicios = await ObtenerServicioPorTrabajo(id);
+
+
+        abrirModalDetalle(trabajos, servicios);
     }
 })
 async function EditarTrabajo(trabajo) {
@@ -283,6 +349,52 @@ btnAceptarEliminar.addEventListener("click", async() =>{
 
     await CargarTrabajos();
 })
+btnAgregarServicio.addEventListener("click", () =>{
+    const idServicio = selectServicios.value;
+
+    if(idServicio === ""){
+        return;
+    }
+    serviciosSeleccionados.push(idServicio);
+
+    
+    mostrarServiciosSeleccionados();
+})
+function eliminarServicio(idServicio) {
+    serviciosSeleccionados.forEach((id, indice) => {
+        if(id === idServicio){
+            serviciosSeleccionados.splice(indice, 1) // desde la posicion indice, elimina 1 elemento
+        }
+    });
+    mostrarServiciosSeleccionados();
+}
+function mostrarServiciosSeleccionados(){
+    contenedorServiciosSeleccionados.innerHTML = "";
+    serviciosSeleccionados.forEach(idServicio => {
+        const opcion = selectServicios.querySelector(
+            `option[value="${idServicio}"]`
+        );
+        const nombre = opcion.textContent;
+
+        const servicio = document.createElement("div");
+
+        servicio.classList.add("servicio-seleccionado");
+
+        servicio.textContent = nombre;
+
+        const btnEliminar = document.createElement("button");
+        btnEliminar.type = "button";
+        btnEliminar.textContent = "X";
+
+        btnEliminar.addEventListener("click", () => {
+            eliminarServicio(idServicio)
+        })
+
+        servicio.appendChild(btnEliminar);
+
+        contenedorServiciosSeleccionados.appendChild(servicio);
+    });
+}
 formNuevoTrabajo.addEventListener("submit", async function (event) {
     event.preventDefault();
 
@@ -305,7 +417,12 @@ formNuevoTrabajo.addEventListener("submit", async function (event) {
         alert("Trabajo modificado con éxito");
         
     }else{
-        await CrearTrabajo(trabajo);
+        const idTrabajo = await CrearTrabajo(trabajo);
+
+        for(const idServicio of serviciosSeleccionados){
+            await AgregarServicio(idTrabajo, idServicio);
+        }
+        
         alert("Trabajo cargado con éxito");
     }
     cerrarModal();

@@ -8,6 +8,8 @@
         BuscarCliente
     }from "./API/clienteAPI.js";
     
+
+
     const botonNuevoCliente = document.getElementById("btnNuevoCliente");
     const botonCancelarModalCliente = document.getElementById("btnCancelarCliente");
     const modalCliente = document.getElementById("modalCliente");
@@ -298,8 +300,6 @@ tablaClientes.addEventListener("click", async (e)=>{
     if(e.target.classList.contains("fa-eye")){
         const id = e.target.dataset.id;
 
-        console.log("Ver cliente" , id);
-
         window.location.href = `historialClientes.html?id=${id}`;
     }
 })
@@ -319,6 +319,7 @@ btnAceptarEliminar.addEventListener("click", async() =>{
 
     await CargarClientes();
 })
+
 formNuevoCliente.addEventListener("submit", async function (event) {
     event.preventDefault();
 

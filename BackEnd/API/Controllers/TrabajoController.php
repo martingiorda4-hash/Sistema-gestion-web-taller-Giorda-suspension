@@ -16,14 +16,14 @@ class TrabajoController{
     }
     
     public function CrearTrabajo($datos){
-        $this->trabajo->CrearTrabajo(
+        $idTrabajo =  $this->trabajo->CrearTrabajo(
             $datos["id_cliente"],
             $datos["id_vehiculo"],
             $datos["id_servicio"],
             $datos["estado"],
             $datos["observaciones"]
         );
-        return "Trabajo creado correctamente";
+        return $idTrabajo;
     }
 
     public function ModificarTrabajo($datos){
@@ -33,7 +33,6 @@ class TrabajoController{
             $datos["id_vehiculo"],
             $datos["id_servicio"],
             $datos["estado"],
-            $datos["importe"],
             $datos["observaciones"]
         );
         return "Trabajo modificado correctamente";

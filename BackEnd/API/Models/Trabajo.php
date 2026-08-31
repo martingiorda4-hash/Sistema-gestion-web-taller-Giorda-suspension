@@ -67,13 +67,12 @@ class Trabajo {
         return $this->pdo->lastInsertId();
     }
 
-    public function ModificarTrabajo($id, $idCliente, $idVehiculo, $idServicio, $estado, $importe, $observaciones){
+    public function ModificarTrabajo($id, $idCliente, $idVehiculo, $idServicio, $estado, $observaciones){
         $sql = "UPDATE trabajos
                 SET id_cliente = :id_cliente,
                     id_vehiculo = :id_vehiculo,
                     id_servicio = :id_servicio,
                     estado = :estado,
-                    importe = :importe,
                     observaciones = :observaciones
                 WHERE id = :id";
         
@@ -85,7 +84,6 @@ class Trabajo {
             ":id_vehiculo" => $idVehiculo,
             ":id_servicio" => $idServicio,
             ":estado" => $estado,
-            ":importe" => $importe,
             ":observaciones" => $observaciones
         ]);
 
@@ -100,7 +98,24 @@ class Trabajo {
         ]);
     }
     public function ObtenerPorId($id){
-        $sql = "SELECT * FROM trabajos WHERE id = :id";
+        $sql = $sql = "SELECT 
+                            t.id,
+                            t.id_cliente,
+                            c.tipo_cliente,
+                            c.nombre,
+                            c.apellido,
+                            c.razon_social,
+                            v.marca,
+                            v.modelo,
+                            v.patente,
+                            t.estado,
+                            t.fecha,
+                            t.observaciones
+                        FROM trabajos t
+                        INNER JOIN clientes c ON t.id_cliente = c.id
+                        INNER JOIN vehiculos v ON t.id_vehiculo = v.id
+                        WHERE t.id = :id";
+        
         $consulta = $this->pdo->prepare($sql);
 
         $consulta->bindParam(":id", $id);

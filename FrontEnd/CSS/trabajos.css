@@ -260,6 +260,25 @@ tbody td{
     background: #1d4ed8;
     color: #ddd;
 }
+.servicio-seleccionado{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    margin-bottom: 5px;
+}
+.servicio-seleccionado button{
+    border: none;
+    background: transparent;
+    color: #dc2626;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 2px 6px;
+}
+.servicio-seleccionado button:hover{
+    color: #991b1b;
+}
+
 /* MODAL ELIMINAR TRABAJO */
 
 .modal-eliminarTrabajo{
