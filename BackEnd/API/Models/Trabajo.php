@@ -12,6 +12,7 @@ class Trabajo {
         $sql = "SELECT 
                     t.id,
                     t.id_cliente,
+                    t.id_vehiculo,
                     c.tipo_cliente,
                     c.nombre,
                     c.apellido,
@@ -101,6 +102,7 @@ class Trabajo {
         $sql = $sql = "SELECT 
                             t.id,
                             t.id_cliente,
+                            t.id_vehiculo,
                             c.tipo_cliente,
                             c.nombre,
                             c.apellido,
@@ -122,5 +124,55 @@ class Trabajo {
         $consulta->execute();
 
         return $consulta->fetch(PDO::FETCH_ASSOC);
+    }
+    public function BuscarTrabajo($txt, $estado, $fechaDesde, $fechaHasta){
+        $sql = "SELECT 
+                    t.*,
+                    c.tipo_cliente,
+                    c.nombre,
+                    c.apellido,
+                    c.razon_social,
+                    v.marca,
+                    v.modelo,
+                    v.patente
+                FROM trabajos t
+                INNER JOIN clientes c ON t.id_cliente = c.id
+                INNER JOIN vehiculos v ON t.id_vehiculo = v.id
+                WHERE (c.nombre LIKE :txt
+                    OR c.apellido LIKE :txt
+                    OR c.razon_social LIKE :txt
+                    OR v.marca LIKE :txt
+                    OR v.modelo LIKE :txt
+                    OR v.patente LIKE :txt
+                )
+                AND (:estado = 'todos' OR t.estado = :estado)";
+                
+                $parametros  = [
+                    ":txt" => "%" . $txt . "%",
+                    ":estado" => $estado
+                ];
+
+                if($fechaDesde !== null){
+                    $sql .= " AND t.fecha >= :fechaDesde";
+                    $parametros[":fechaDesde"] = $fechaDesde;
+                }
+                if($fechaHasta !== null){
+                    $sql .= " AND t.fecha <= :fechaHasta";
+                    $parametros[":fechaHasta"] = $fechaHasta;
+                }
+    
+        $consulta = $this->pdo->prepare($sql);
+
+        $consulta->execute($parametros);
+        $trabajos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+        for($i = 0; $i < count($trabajos); $i++){
+            if($trabajos[$i]["tipo_cliente"] === "particular"){
+                $trabajos[$i]["nombre_cliente"] = $trabajos[$i]["nombre"] . " " . $trabajos[$i]["apellido"];
+            }else{
+                $trabajos[$i]["nombre_cliente"] = $trabajos[$i]["razon_social"];
+            }
+        }
+        return $trabajos;
     }
 }

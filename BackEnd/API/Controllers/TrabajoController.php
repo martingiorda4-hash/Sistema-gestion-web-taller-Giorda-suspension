@@ -45,5 +45,15 @@ class TrabajoController{
     public function ObtenerPorId($id){
         return $this->trabajo->ObtenerPorId($id);
     }
+    public function BuscarTrabajo($txt, $estado, $fechaDesde, $fechaHasta){
+        $txt = trim($txt);
+        $estado = trim($estado);
+        $fechaDesde = trim($fechaDesde);
+        $fechaHasta = trim($fechaHasta);
 
+        $fechaDesde = $fechaDesde === "" ? null :$fechaDesde;
+        $fechaHasta = $fechaHasta === ""? null :$fechaHasta;
+        
+        return $this->trabajo->BuscarTrabajo($txt, $estado, $fechaDesde, $fechaHasta);
+    }
 }

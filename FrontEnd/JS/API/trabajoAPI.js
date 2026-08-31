@@ -48,8 +48,9 @@ export async function ObtenerPorId(id) {
     return await response.json();
 }
 
-export async function BuscarTrabajo(txt) {
-    const response = await fetch(`${url}?buscar=${encodeURIComponent(txt)}`); //URI COMPONENT CONVIERTE EL TEXTO EN FORMATO CORRECTO PAR LA URL.
+export async function BuscarTrabajo(txt, estado, fechaDesde, fechaHasta) {
+    const response = await fetch(`${url}?buscar=${encodeURIComponent(txt)}&estado=${encodeURIComponent(estado)}&fechaDesde=${encodeURIComponent(fechaDesde)}&fechaHasta=${encodeURIComponent(fechaHasta)}`); 
+                                        //URI COMPONENT CONVIERTE EL TEXTO EN FORMATO CORRECTO PARA LA URL.
 
     return await response.json();
 }
