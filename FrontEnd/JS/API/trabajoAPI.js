@@ -1,6 +1,6 @@
 const url = "http://giordasuspension/BackEnd/API/trabajos.php";
 
-export async function ObtenerTrabajos(trabajos){
+export async function ObtenerTrabajos(){
     const response = await fetch(url);
 
     return await response.json();
@@ -53,4 +53,8 @@ export async function BuscarTrabajo(txt, estado, fechaDesde, fechaHasta) {
                                         //URI COMPONENT CONVIERTE EL TEXTO EN FORMATO CORRECTO PARA LA URL.
 
     return await response.json();
+}
+export async function ObtenerTrabajoPorCliente(idCliente) {
+    const response = await fetch(`${url}?id_cliente=${idCliente}`);
+    return response.json();
 }

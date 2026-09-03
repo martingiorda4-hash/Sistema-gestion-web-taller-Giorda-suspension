@@ -16,18 +16,17 @@ class Trabajo {
                     c.tipo_cliente,
                     c.nombre,
                     c.apellido,
-                    c.razon_social,
+                    c.razon_social, 
                     v.marca,
                     v.modelo,
                     v.patente,
-                    s.nombre AS servicio,
                     t.estado,
                     t.fecha,
                     t.observaciones
                 FROM trabajos t
                 INNER JOIN clientes c ON t.id_cliente = c.id
                 INNER JOIN vehiculos v ON t.id_vehiculo = v.id
-                INNER JOIN servicios s ON t.id_servicio = s.id";
+                ORDER BY t.fecha DESC, t.id DESC";
 
         $consulta = $this->pdo->prepare($sql);
         $consulta->execute();
@@ -145,7 +144,8 @@ class Trabajo {
                     OR v.modelo LIKE :txt
                     OR v.patente LIKE :txt
                 )
-                AND (:estado = 'todos' OR t.estado = :estado)";
+                AND (:estado = 'todos' OR t.estado = :estado)
+                ORDER BY t.fecha DESC";
                 
                 $parametros  = [
                     ":txt" => "%" . $txt . "%",
@@ -174,5 +174,29 @@ class Trabajo {
             }
         }
         return $trabajos;
+    }
+    public function ObtenerTrabajosPorCliente($id){
+        $sql = "SELECT
+                    t.fecha,
+                    v.marca,
+                    v.modelo,
+                    v.patente,
+                    COUNT(ts.id_servicio) AS cantidad_servicios,
+                    t.estado,
+                    SUM(ts.precio) AS importe_total
+                FROM trabajos t
+                INNER JOIN vehiculos v ON t.id_vehiculo = v.id
+                INNER JOIN trabajo_servicio ts ON ts.id_trabajo= t.id
+                WHERE t.id_cliente = :id_cliente
+                GROUP BY t.id
+                ORDER BY t.fecha DESC";
+
+        $consulta = $this->pdo->prepare($sql);
+
+        $consulta->execute([
+            ":id_cliente" => $id
+        ]);
+
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 }

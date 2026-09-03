@@ -449,3 +449,44 @@ tbody td{
 .cerrar-detalle:hover{
     color: #111827;
 }
+
+/* PAGINACION */
+.paginacion{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 40px;
+}
+.botones-paginacion{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.botones-paginacion button{
+    width: 34px;
+    height: 34px;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    border-radius: 6px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.botones-paginacion button:hover{
+    background-color: #f3f4f6;
+}
+.botones-paginacion .activo{
+    background-color: #2b63d3;
+    color: white;
+    border-color: #9ca3af;
+    font-weight: 600;
+}
+.botones-paginacion .activo:hover{
+    background-color: #1d4ed8;
+}
+.numero-pagina{
+    font-size: 14px;
+}

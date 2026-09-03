@@ -57,6 +57,21 @@ class Vehiculo{
 
     }
     public function EliminarVehiculo($id){
+        //VERIFICO SI EL VEHICULO TIENE TRABAJOS
+        $sqlVehiculo = "SELECT COUNT(*) FROM trabajos WHERE id_vehiculo = :id";
+        $consultaVehiculo =$this->pdo->prepare($sqlVehiculo);
+
+        $consultaVehiculo->execute([
+            ":id" => $id
+        ]);
+
+        $cantidad = $consultaVehiculo->fetchColumn();
+
+        if($cantidad > 0){
+            return false;
+        }
+
+        // si no tiene trabajos, elimina
         $sql = "DELETE FROM vehiculos WHERE id = :id";
 
         $consulta = $this->pdo->prepare($sql);

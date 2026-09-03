@@ -52,6 +52,15 @@ const selectServicios = document.getElementById("servicio");
 
 const contenedorServiciosDetalle = document.getElementById("serviciosDetalle");
 
+const infoPagina = document.getElementById("infoPagina");
+const btnSiguiente = document.getElementById("btnSiguiente");
+const btnAnterior = document.getElementById("btnAnterior");
+const botonesPagina = document.querySelectorAll(".numero-pagina");
+
+let paginaActual = 1;
+const trabajosporPagina = 20;
+let trabajosActuales = [];
+
 fechaDesde.addEventListener("change", function() {
     if(this.value !== ""){
         textoDesde.style.display = "none";
@@ -238,7 +247,6 @@ botonCancelar.addEventListener("click", () => {
 function ValidarTrabajos(){
     const cliente = document.getElementById("cliente").value;
     const vehiculo = document.getElementById("vehiculoCliente").value;
-    const servicio = document.getElementById("servicio").value;
     const estado = document.getElementById("estadoModal").value;
     
     if(cliente === ""){
@@ -262,17 +270,28 @@ function ValidarTrabajos(){
 
 function MostrarTrabajos(trabajos){
     //LOGICA PAGINACION
+    trabajosActuales = trabajos;
+
+    const inicio = (paginaActual -1) * trabajosporPagina;
+    const fin = inicio + trabajosporPagina;
+
+    const trabajosPagina = trabajos.slice(inicio, fin);
+
+    const desde = inicio + 1;
+    const hasta = Math.min(fin, trabajos.length);
+
+    infoPagina.textContent = `Mostrando ${desde} a ${hasta} de ${trabajos.length} trabajos`
 
     tablaTrabajos.innerHTML = "";
 
-    trabajos.forEach(trabajo => {
+    trabajosPagina.forEach(trabajo => {
         const fila = document.createElement("tr");
 
         fila.innerHTML = `
             <td>${trabajo.nombre_cliente}</td>
             <td>${trabajo.marca} ${trabajo.modelo} ${trabajo.patente}</td>
             <td>${trabajo.estado}</td>
-            <td>${trabajo.fecha}</td>
+            <td>${new Date(trabajo.fecha + "T00:00:00").toLocaleDateString("es-AR")}</td>
             <td>
                 <div class="acciones">
                         <i class="fa-solid fa-eye" data-id="${trabajo.id}" title="Ver detalle"></i>
@@ -282,6 +301,50 @@ function MostrarTrabajos(trabajos){
             </td>
         `
         tablaTrabajos.appendChild(fila);
+    });
+}
+//BOTONES PAGINACION
+btnSiguiente.addEventListener("click", () => {
+
+
+    const totalPaginas = Math.ceil(trabajosActuales.length / trabajosporPagina);
+
+    if(paginaActual < totalPaginas){
+        paginaActual++;
+
+        MostrarTrabajos(trabajosActuales);
+        ActualizarBotonActivo();
+    }
+})
+
+btnAnterior.addEventListener("click", () => {
+    if(paginaActual > 1){
+        paginaActual--;
+
+        MostrarTrabajos(trabajosActuales);
+        ActualizarBotonActivo();
+    }
+})
+botonesPagina.forEach(boton => {
+
+    boton.addEventListener("click", () => {
+        paginaActual = Number(boton.dataset.pagina);
+    
+        MostrarTrabajos(trabajosActuales);
+    
+        botonesPagina.forEach(botones => {
+            botones.classList.remove("activo");
+        });
+        boton.classList.add("activo");
+    });
+});
+function ActualizarBotonActivo(){
+    botonesPagina.forEach(boton => {
+        boton.classList.remove("activo");
+
+        if(Number(boton.dataset.pagina) === paginaActual){
+            boton.classList.add("activo");
+        }
     });
 }
 async function CargarTrabajos(){
@@ -456,6 +519,8 @@ formNuevoTrabajo.addEventListener("submit", async function (event) {
     await CargarTrabajos();
 })
 async function FiltrarTrabajos() {
+    paginaActual = 1;
+
     const texto = buscadorTrabajos.value.trim();
     const estado = document.getElementById("estado").value;
     const fechaDesde = document.getElementById("fechaDesde").value;

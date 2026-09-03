@@ -45,3 +45,4 @@ export async function EliminarVehiculo(id) {
     });
     return await response.json();
 }
+

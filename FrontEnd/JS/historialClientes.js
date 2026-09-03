@@ -1,4 +1,5 @@
 import { ObtenerPorId } from "./API/clienteAPI.js";
+import { ObtenerTrabajoPorCliente } from "./API/trabajoAPI.js";
 import {
     ObtenerVehiculoPorCliente,
     CrearVehiculo,
@@ -26,9 +27,13 @@ const formNuevoVehiculo = document.getElementById("formNuevoVehiculo");
 const tablaVehiculos = document.getElementById("tablaVehiculos");
 const parametros = new URLSearchParams(window.location.search);
 
-const id = parametros.get("id");
+const tablaHistorialTrabajos = document.getElementById("historialCliente");
 
-const cliente = await ObtenerPorId(id);
+//const id = parametros.get("id");
+
+const idCliente = parametros.get("id");
+
+const cliente = await ObtenerPorId(idCliente);
 
 const campoNombre = document.getElementById("campoNombre");
 const campoApellido = document.getElementById("campoApellido");
@@ -127,9 +132,8 @@ function abrirModalEditarVehiculo(vehiculo){
 //CONSUMO DE API DE VEHICULOS Y CARGA EN LA TABLA
 
 async function CargarVehiculos() {
-    const clienteId = parametros.get("id");
 
-    const vehiculos = await ObtenerVehiculoPorCliente(clienteId);
+    const vehiculos = await ObtenerVehiculoPorCliente(idCliente);
 
     tablaVehiculos.innerHTML = "";
 
@@ -154,6 +158,7 @@ async function CargarVehiculos() {
     });
 }
 CargarVehiculos();
+cargarHistorialTrabajos();
 let vehiculoAEliminar = null;
 
 tablaVehiculos.addEventListener("click", async (e)=>{
@@ -173,7 +178,14 @@ tablaVehiculos.addEventListener("click", async (e)=>{
     }
 })
 btnConfirmarEliminar.addEventListener("click", async () => {
-        await EliminarVehiculo(vehiculoAEliminar);
+
+    const resultado = await EliminarVehiculo(vehiculoAEliminar);
+
+    if(resultado === false){
+        alert("No se puede eliminar el vehiculo porque tiene trabajos registrados");
+        return;
+    }    
+
 
         alert("Vehiculo eliminado correctamente");
 
@@ -195,7 +207,7 @@ formNuevoVehiculo.addEventListener("submit", async function (event) {
         modelo: vehiculoModelo.value,
         marca: vehiculoMarca.value,
         anio: vehiculoAnio.value,
-        cliente_id: id
+        cliente_id: idCliente
     };
 
     if(modoEdicion){
@@ -209,3 +221,23 @@ formNuevoVehiculo.addEventListener("submit", async function (event) {
     cerrarModalVehiculo();
     await CargarVehiculos();
 })
+async function cargarHistorialTrabajos() {
+    const trabajos = await ObtenerTrabajoPorCliente(idCliente);
+
+    tablaHistorialTrabajos.innerHTML = "";
+
+    trabajos.forEach(trabajo => {
+
+        const fila = document.createElement("tr");
+
+        fila.innerHTML = `
+            <td>${new Date(trabajo.fecha + "T00:00:00").toLocaleDateString("es-AR")}</td>
+            <td>${trabajo.marca} ${trabajo.modelo} ${trabajo.patente}</td>
+            <td>${trabajo.cantidad_servicios} servicios</td>
+            <td>${trabajo.estado}</td>
+            <td>$ ${Number(trabajo.importe_total).toLocaleString("es-AR")}</td>
+        `;
+
+        tablaHistorialTrabajos.appendChild(fila);
+    })
+}

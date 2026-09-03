@@ -9,18 +9,26 @@ header("Content-Type: application/json");
 
 $datos = json_decode(file_get_contents("php://input"), true);
 
-$resultado = match($method){
-    'GET' => isset($_GET["id"]) //ISSET-> SI LA URL VIENE CON UN PARAMETRO ID
-                ?$controller->ObtenerPorId($_GET["id"])// -> OBTIENE POR ID
-                :(isset($_GET["buscar"])
-                    ?$controller->BuscarTrabajo(
+function cargarGet($controller){
+    if(isset($_GET["id"])){
+        return $controller->ObtenerPorId($_GET["id"]);
+    }
+    if(isset($_GET["id_cliente"])){
+        return $controller->ObtenerTrabajosPorCliente($_GET["id_cliente"]);
+    }
+    if(isset($_GET["buscar"])){
+        return $controller->BuscarTrabajo(
                         $_GET["buscar"] ?? "",
                         $_GET["estado"] ?? "todos",
                         $_GET["fechaDesde"] ?? "",
                         $_GET["fechaHasta"] ?? ""
-                    )
-                    :$controller->ObtenerTodos()),  //: SINO, OBTIENE TODOS
-                    
+        );
+    }
+    return $controller->ObtenerTodos();
+}
+
+$resultado = match($method){
+    'GET' => cargarGet($controller),
     'POST' => $controller->CrearTrabajo($datos),
     'PUT' => $controller->ModificarTrabajo($datos),
     'DELETE' => $controller->EliminarTrabajo($datos["id"])

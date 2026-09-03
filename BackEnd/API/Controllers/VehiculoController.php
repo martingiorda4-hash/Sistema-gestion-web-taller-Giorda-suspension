@@ -39,10 +39,8 @@ class VehiculoController{
     }
 
     public function EliminarVehiculo($id){
-        $this->vehiculo->EliminarVehiculo($id);
-
-        echo json_encode("Vehiculo eliminado correctamente");
-    }
+        return $this->vehiculo->EliminarVehiculo($id);
+    }   
     public function ObtenerVehiculoPorId($id){
         return $this->vehiculo->ObtenerVehiculoPorId($id);
     }

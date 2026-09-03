@@ -180,11 +180,6 @@
         }
     });
 
-    /*btnVerClientes.addEventListener("click", () =>{
-        window.location.href = "historialClientes.html"
-    });
-    */
-
 
 //logica para consumir api
 

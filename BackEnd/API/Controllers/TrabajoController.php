@@ -56,4 +56,7 @@ class TrabajoController{
         
         return $this->trabajo->BuscarTrabajo($txt, $estado, $fechaDesde, $fechaHasta);
     }
+    public function ObtenerTrabajosPorCliente($id){
+        return $this->trabajo->ObtenerTrabajosPorCliente($id);
+    }
 }
