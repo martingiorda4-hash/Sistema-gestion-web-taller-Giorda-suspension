@@ -490,3 +490,31 @@ tbody td{
 .numero-pagina{
     font-size: 14px;
 }
+
+.estado{
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+}
+.estado-pendiente{
+    background-color: #fff7d5;
+    color: #c99200;
+    border: 1px solid #f5dea0;
+}
+.estado-en-progreso{
+    background-color: #dff4ff;
+    color: #2995c9;
+    border: 1px solid #b8e4f7;
+}
+.estado-terminado{
+    background-color: #ddf7e5;
+    color: #35a85a;
+    border: 1px solid #b5e8c4;
+}
+.estado-entregado{
+    background-color: #f1f3f5;
+    color: #6b7280;
+    border: 1px solid #e1e4e8;
+}

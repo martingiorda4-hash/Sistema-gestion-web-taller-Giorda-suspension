@@ -20,10 +20,14 @@ class UsuarioController{
         if(!$usuario){
             return false;
         }
+        $contraseniaCorrecta = password_verify($datos["contrasenia"], $usuario["contrasenia"]);
+        
+        if($contraseniaCorrecta === false){
+            return false;
+        }
 
-        return password_verify(
-            $datos["contrasenia"],
-            $usuario["contrasenia"]
-        );
+        unset($usuario["contrasenia"]);
+        
+        return $usuario;
     }
 }

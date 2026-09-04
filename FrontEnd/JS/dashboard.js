@@ -12,6 +12,8 @@ const cardTerminados = document.getElementById("resumenTerminados");
 
 const tablaTrabajos = document.getElementById("tablaTrabajos");
 
+const nombreAdmin = document.getElementById("nombreAdmin");
+
 btnNuevoCliente.addEventListener("click", () => {
     window.location.href = "clientes.html?abrirModal=true"
 });
@@ -25,7 +27,6 @@ btnNuevoTrabajo.addEventListener("click", () => {
 async function CargarDashboard() {
     const datos = await ObtenerDatos();
 
-    console.log(datos);
 
     cardTrabajos.textContent = datos.trabajosEnCurso;
 
@@ -57,5 +58,10 @@ async function cargarTablaTrabajos() {
         tablaTrabajos.appendChild(fila);
     });
 }
+function MostrarNombreUsuario() {
+
+    nombreAdmin.textContent = localStorage.getItem("usuario"); 
+}
 CargarDashboard();
 cargarTablaTrabajos();
+MostrarNombreUsuario();

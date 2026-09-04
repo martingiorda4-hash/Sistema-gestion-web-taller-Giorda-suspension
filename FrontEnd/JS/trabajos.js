@@ -31,7 +31,6 @@ const tituloModalTrabajo = document.querySelector(".modal-trabajo .modal h2");
 const trabajoIdInput = document.getElementById("trabajoId");
 
 const modalEliminarTrabajo = document.getElementById("modalEliminarTrabajo");
-//const eliminarTrabajo = document.getElementById("eliminar");
 const btnCancelarEliminar = document.getElementById("btnCancelarEliminarTrabajo");
 const btnAceptarEliminar = document.getElementById("btnAceptarEliminarTrabajo");
 
@@ -197,8 +196,13 @@ async function cargarServiciosSelect() {
 }
 
 function cerrarModal(){
+    if(parametros.get("abrirModal") === "true"){
+        window.location.href = "dashboard.html";
+        return;
+    }
     modalTrabajo.classList.add("oculto")
 }
+
 
 function abrirModalEliminar(){
     modalEliminarTrabajo.classList.remove("oculto");
@@ -220,7 +224,7 @@ function cerrarModalDetalle(){
 btnCerrarModalDetalle.addEventListener("click", cerrarModalDetalle);
 btnCerrarModalNuevo.addEventListener("click", cerrarModal);
 
-//eliminarTrabajo.addEventListener("click", abrirModalEliminar);
+
 btnCancelarEliminar.addEventListener("click", cerrarModalEliminar);
 
 
@@ -241,6 +245,7 @@ botonCancelar.addEventListener("click", () => {
     }
 
 });
+
 
 //LOGICA PARA CONSUMIR API, OBTENER VALORES DEL FORMULARIO Y MOSTRARLOS EN LA TABLA
 
@@ -285,12 +290,19 @@ function MostrarTrabajos(trabajos){
     tablaTrabajos.innerHTML = "";
 
     trabajosPagina.forEach(trabajo => {
+
+        const claseEstado = obtenerClaseEstados(trabajo.estado);
         const fila = document.createElement("tr");
 
         fila.innerHTML = `
             <td>${trabajo.nombre_cliente}</td>
             <td>${trabajo.marca} ${trabajo.modelo} ${trabajo.patente}</td>
-            <td>${trabajo.estado}</td>
+            <td>
+                <span class="estado ${claseEstado}">
+                    ${trabajo.estado}
+                </span>
+            </td>
+            </td>
             <td>${new Date(trabajo.fecha + "T00:00:00").toLocaleDateString("es-AR")}</td>
             <td>
                 <div class="acciones">
@@ -541,5 +553,19 @@ document.getElementById("estado").addEventListener("change", FiltrarTrabajos);
 document.getElementById("fechaDesde").addEventListener("change", FiltrarTrabajos);
 document.getElementById("fechaHasta").addEventListener("change", FiltrarTrabajos);
 
+function obtenerClaseEstados(estado){
+    if(estado === "Pendiente"){
+        return "estado-pendiente";
+    }
+    if(estado === "En progreso"){
+        return "estado-en-progreso";
+    }
+    if(estado === "Terminado"){
+        return "estado-terminado";
+    }
+    if(estado === "Entregado"){
+        return "estado-entregado";
+    }
+}
 CargarTrabajos();
 

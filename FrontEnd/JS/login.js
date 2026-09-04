@@ -1,3 +1,5 @@
+import { IniciarSesion } from "./API/loginAPI";
+
 const usuario = document.getElementById("usuario");
 const contrasenia = document.getElementById("contraseña");
 const btnIngresar = document.getElementById("btnIngresar");
@@ -22,20 +24,9 @@ formLogin.addEventListener("submit", async function(event){
         contrasenia: contrasenia.value
     };
 
-    const response = await fetch("http://giordasuspension/BackEnd/API/usuarios.php", 
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(datos)
-        }
-    );
-    const resultado = await response.json();
-
-    console.log(resultado);
-
-    if(resultado === true){
+    const resultado = await IniciarSesion(datos);   
+    if(resultado){
+        localStorage.setItem("usuario", resultado.usuario);
         
         window.location.href = "dashboard.html";
     }else{

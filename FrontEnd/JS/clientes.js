@@ -208,13 +208,18 @@ function MostrarClientes(clientes){
         }else{
             nombreCliente = cliente.razon_social;
         }
+        const claseEstado = obtenerClaseEstados(cliente.estado);
         const fila = document.createElement("tr");
 
         fila.innerHTML = `
             <td>${nombreCliente}</td>
             <td>${cliente.telefono}</td>
             <td>${cliente.cantidad_vehiculos}</td>
-            <td>${cliente.estado}</td>
+            <td>
+                <span class="estado ${claseEstado}">
+                    ${cliente.estado}
+                </span>
+            </td>
             <td>
                 <div class="acciones">
                         <i class="fa-solid fa-eye" data-id="${cliente.id}" title="Ver detalle"></i>
@@ -370,5 +375,13 @@ buscarCliente.addEventListener("input", async () => {
     }
 
     MostrarClientes(clientes);
-}) 
+})
+function obtenerClaseEstados(estado){
+    if(estado === "Activo"){
+        return "estado-activo";
+    }
+    if(estado === "Inactivo"){
+        return "estado-inactivo";
+    }
+}
 CargarClientes();

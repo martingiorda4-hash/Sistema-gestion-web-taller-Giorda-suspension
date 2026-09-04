@@ -268,3 +268,20 @@ tbody td{
 .numero-pagina{
     font-size: 14px;
 }
+.estado{
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+}
+.estado-activo{
+    background-color: #ddf7e5;
+    color: #35a85a;
+    border: 1px solid #b5e8c4;
+}
+.estado-inactivo{
+    background-color: #f1f3f5;
+    color: #6b7280;
+    border: 1px solid #e1e4e8;
+}
