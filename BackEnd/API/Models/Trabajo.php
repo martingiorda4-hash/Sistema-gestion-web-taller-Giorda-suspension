@@ -44,34 +44,28 @@ class Trabajo {
 
     }
 
-    public function CrearTrabajo($idCliente, $idVehiculo, $idServicio, $estado, $observaciones){
+    public function CrearTrabajo($idCliente, $idVehiculo, $estado, $observaciones){
         $sql = "INSERT INTO trabajos
-                (id_cliente, id_vehiculo, id_servicio, estado, importe, observaciones)
-                SELECT
-                :id_cliente, :id_vehiculo, :id_servicio, :estado, precio_base, :observaciones
-                
-                FROM servicios 
-                WHERE id = :id_servicio_busqueda";
+                (id_cliente, id_vehiculo, estado, observaciones)
+                VALUES
+                (:id_cliente, :id_vehiculo, :estado, :observaciones)";
 
         $consulta = $this->pdo->prepare($sql);
 
         $consulta->execute([
             ":id_cliente" => $idCliente,
             ":id_vehiculo" => $idVehiculo,
-            ":id_servicio" => $idServicio,
             ":estado" => $estado,
-            ":observaciones" => $observaciones,
-            ":id_servicio_busqueda" => $idServicio
+            ":observaciones" => $observaciones
         ]);
 
         return $this->pdo->lastInsertId();
     }
 
-    public function ModificarTrabajo($id, $idCliente, $idVehiculo, $idServicio, $estado, $observaciones){
+    public function ModificarTrabajo($id, $idCliente, $idVehiculo, $estado, $observaciones){
         $sql = "UPDATE trabajos
                 SET id_cliente = :id_cliente,
                     id_vehiculo = :id_vehiculo,
-                    id_servicio = :id_servicio,
                     estado = :estado,
                     observaciones = :observaciones
                 WHERE id = :id";
@@ -82,7 +76,6 @@ class Trabajo {
             ":id" => $id,
             ":id_cliente" => $idCliente,
             ":id_vehiculo" => $idVehiculo,
-            ":id_servicio" => $idServicio,
             ":estado" => $estado,
             ":observaciones" => $observaciones
         ]);
@@ -98,7 +91,7 @@ class Trabajo {
         ]);
     }
     public function ObtenerPorId($id){
-        $sql = $sql = "SELECT 
+        $sql = "SELECT 
                             t.id,
                             t.id_cliente,
                             t.id_vehiculo,

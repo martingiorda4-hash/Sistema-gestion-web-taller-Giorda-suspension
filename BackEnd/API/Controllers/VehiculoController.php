@@ -23,7 +23,7 @@ class VehiculoController{
             $datos["modelo"],
             $datos["anio"]
         );
-        echo json_encode("Vehiculo creado correctamente");
+        return "Vehiculo creado correctamente";
     }
 
     public function ModificarVehiculo($datos){
@@ -35,7 +35,7 @@ class VehiculoController{
             $datos["modelo"],
             $datos["anio"]
         );
-        echo json_encode("Vehiculo modificado correctamente");
+        return "Vehiculo modificado correctamente";
     }
 
     public function EliminarVehiculo($id){

@@ -25,4 +25,7 @@ class TrabajoServicioController{
 
         return "Servicio agregado correctamente";
     }
+    public function EliminarServicio($id){
+        return $this->trabajoServicio->EliminarServicio($id);
+    }
 }

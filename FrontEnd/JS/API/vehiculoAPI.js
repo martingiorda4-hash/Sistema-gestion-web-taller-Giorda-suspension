@@ -16,6 +16,7 @@ export async function CrearVehiculo(vehiculo) {
         body: JSON.stringify(vehiculo)
     });
     return await response.json();
+
 }
 
 export async function ModificarVehiculo(vehiculo) {

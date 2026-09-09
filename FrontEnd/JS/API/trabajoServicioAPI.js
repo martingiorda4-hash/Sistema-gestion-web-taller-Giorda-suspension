@@ -18,8 +18,17 @@ export async function AgregarServicio(idTrabajo, idServicio) {
             id_trabajo: idTrabajo
         })
     });
-    //return await response.json();
-    const texto = await  response.text();
-    console.log(texto);
-    return texto;
+    return await response.json();
+}
+export async function EliminarServicio(idServicio) {
+    const response = await fetch(url, {
+        method: 'DELETE', 
+        headers: {
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            id_servicio:idServicio
+        })
+    });
+    return await response.json();
 }

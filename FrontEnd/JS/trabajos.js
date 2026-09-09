@@ -11,9 +11,11 @@ import {
 import { ObtenerTodosServicios } from "./API/serviciosAPI";
 import { 
     ObtenerServicioPorTrabajo,
-    AgregarServicio
+    AgregarServicio,
+    EliminarServicio
 } from "./API/trabajoServicioAPI";
 
+let serviciosOriginales = [];
 let serviciosSeleccionados = [];
 
 const fechaDesde = document.getElementById("fechaDesde");
@@ -87,6 +89,8 @@ async function abrirModalCrear(){
     modoEdicion = false;
     trabajoEditando = null;
 
+    serviciosOriginales = [];
+    serviciosSeleccionados = [];
 
     trabajoIdInput.value = "";
     tituloModalTrabajo.textContent = "Nuevo trabajo";
@@ -128,10 +132,15 @@ async function abrirModalEditar(trabajo){
 
     const servicios = await ObtenerServicioPorTrabajo(trabajo.id);
 
+    serviciosOriginales = [];
     serviciosSeleccionados = [];
 
     servicios.forEach(servicio => {
-        serviciosSeleccionados.push(servicio.id_servicio);
+        serviciosOriginales.push({
+            id: servicio.id,
+            id_servicio: servicio.id_servicio
+        });
+        serviciosSeleccionados.push(String(servicio.id_servicio));
     })
     mostrarServiciosSeleccionados();
 
@@ -507,7 +516,6 @@ formNuevoTrabajo.addEventListener("submit", async function (event) {
         const trabajo ={
             id_cliente: document.getElementById("cliente").value,
             id_vehiculo: document.getElementById("vehiculoCliente").value,
-            id_servicio: document.getElementById("servicio").value,
             estado: document.getElementById("estadoModal").value,
             observaciones: document.getElementById("observaciones").value
         };
@@ -516,6 +524,20 @@ formNuevoTrabajo.addEventListener("submit", async function (event) {
     if(modoEdicion){
         trabajo.id = trabajoEditando.id;
         await EditarTrabajo(trabajo);
+
+        //Eliminar servicios quitados
+        for(const servicio of serviciosOriginales){
+            if(!serviciosSeleccionados.includes(String(servicio.id_servicio))){
+                await EliminarServicio(servicio.id);
+            }
+        }
+
+        //Agregar servicios nuevos
+        for(const idServicio of serviciosSeleccionados){
+            if(!serviciosOriginales.some(servicio => String(servicio.id_servicio) === idServicio)){
+                await AgregarServicio(trabajo.id, idServicio);
+            }
+        }
         alert("Trabajo modificado con éxito");
         
     }else{

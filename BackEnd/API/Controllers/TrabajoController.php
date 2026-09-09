@@ -19,7 +19,6 @@ class TrabajoController{
         $idTrabajo =  $this->trabajo->CrearTrabajo(
             $datos["id_cliente"],
             $datos["id_vehiculo"],
-            $datos["id_servicio"],
             $datos["estado"],
             $datos["observaciones"]
         );
@@ -31,7 +30,6 @@ class TrabajoController{
             $datos["id"],
             $datos["id_cliente"],
             $datos["id_vehiculo"],
-            $datos["id_servicio"],
             $datos["estado"],
             $datos["observaciones"]
         );

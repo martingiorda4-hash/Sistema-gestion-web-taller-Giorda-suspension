@@ -57,4 +57,14 @@ class TrabajoServicio{
             ":precio" => $servicio["precio_base"]
         ]);
     }
+    public function EliminarServicio($id){
+        $sql = "DELETE FROM trabajo_servicio WHERE id = :id";
+
+        $consulta = $this->pdo->prepare($sql);
+
+        $consulta->execute([
+            ":id" => $id
+        ]);
+        return "Servicio eliminado correctamente"; 
+    }
 }
