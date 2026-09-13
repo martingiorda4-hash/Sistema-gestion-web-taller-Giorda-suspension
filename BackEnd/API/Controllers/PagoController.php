@@ -20,9 +20,16 @@ class PagoController{
     public function CrearPago($datos){
         $this->pago->CrearPago(
             $datos["id_cliente"],
+            $datos["id_trabajo"],
             $datos["importe"],
             $datos["metodo_pago"]
         );
-        echo json_encode("Pago creado correctamente");
+        return "Pago creado correctamente";
+    }
+    public function ObtenerPagoPorCliente($idCliente){
+        return $this->pago->ObtenerPagoPorCliente($idCliente);
+    }
+    public function ObtenerPagoPorTrabajo($idTrabajo){
+        return $this->pago->ObtenerPagoPorTrabajo($idTrabajo);
     }
 }

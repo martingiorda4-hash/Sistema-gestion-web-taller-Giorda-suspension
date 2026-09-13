@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/detalleTrabajo.css">
+    <title>Detalle de trabajos</title>
+</head>
+<body>
+    <div id="sidebar"></div>
+
+    <main>
+        <div class="titulo">
+            <div>
+                <h1>Detalle trabajo</h1>
+                <p>Fecha de ingreso: <span id="fechaDetalleTrabajo"></span></p>
+                <p>Estado: <span id="estadoDetalle"></span></p>
+            </div>
+
+            <div class="acciones-trabajo">
+                <button type="button" id="btnVolver">
+                    ← Volver
+                </button>
+
+                <button type="button" id="modificarTrabajo">
+                    <i class="fa-solid fa-pen"></i>  
+                    Modificar
+                </button>
+
+                <button type="button" id="eliminarTrabajo">
+                    <i class="fa-solid fa-trash"></i>
+                    Eliminar
+                </button>
+            </div>
+        </div>
+
+        <div class="detalle-parteSuperior">
+            <section class="detalle-card">
+                <h2 class="titulo-cliente">
+
+                    <i class="fa-solid fa-user"></i>
+                    Cliente
+                </h2>
+                <div class="dato-detalle">
+                    <label>Nombre:</label>
+                    <p id="clienteDetalle"></p>
+                </div>
+            </section>
+
+            <section class="detalle-card">
+                <h2 class="titulo-vehiculo">
+                    <i class="fa-solid fa-car"></i>
+                    Datos del vehiculo
+                </h2>
+
+                <div class="dato-detalle">
+                    <label>Marca:</label>
+                    <p id="marcaDetalle"></p>
+                </div>
+
+                <div class="dato-detalle">
+                    <label>Modelo:</label>
+                    <p id="modeloDetalle"></p>
+                </div>
+
+                <div class="dato-detalle">
+                    <label>Patente</label>
+                    <p id="patenteDetalle"></p>
+                </div>
+            </section>
+        </div>
+
+        <section class="detalle-card servicios-detalle">
+            <div class="titulo-seccion-servicios">
+                <h2 class="titulo-servicios">
+                    <i class="fa-solid fa-wrench"></i>
+                    Servicios / Tareas
+                </h2>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Servicio</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tablaServiciosDetalleTrabajo">
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td colspan="2">Total:</td>
+                        <td id="totalServiciosDetalleTrabajo">$0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+
+        <section class="detalle-card pagos-detalle">
+            <h2 class="titulo-pagos">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                Pagos
+            </h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Método de pago</th>
+                        <th>Importe</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaPagosDetalleTrabajo">
+                </tbody>
+            </table>
+        </section>
+
+        <section class="detalle-card observaciones-detalle">
+            <h2 class="titulo-observaciones">
+                <i class="fa-solid fa-clipboard"></i>
+                Observaciones
+            </h2>
+            <p id="observacionesDetalleTrabajo"></p>
+        </section>
+    </main>
+    <script src="../JS/sidebar.js"></script>
+    <script type="module" src="../JS/detalleTrabajo.js"></script>
+</body>
+</html>

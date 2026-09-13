@@ -9,11 +9,20 @@ header("Content-Type: application/json");
 
 $datos = json_decode(file_get_contents("php://input"), true);
 
+function CargarGet($controller){
+    if(isset($_GET["id_cliente"])){
+        return $controller->ObtenerPagoPorCliente($_GET["id_cliente"]);
+    }
+    if(isset($_GET["id_trabajo"])){
+        return $controller->ObtenerPagoPorTrabajo($_GET["id_trabajo"]);
+    }
+    return $controller->ObtenerTodos();
+}
+
 $resultado = match($method){
-    'GET' => $controller->ObtenerTodos(),
+    'GET' => CargarGet($controller),
     'POST' => $controller->CrearPago($datos)
 };
 
-if($method === "GET"){
-    echo json_encode($resultado);
-}
+echo json_encode($resultado);
+

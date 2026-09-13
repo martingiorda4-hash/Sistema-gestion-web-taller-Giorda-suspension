@@ -46,11 +46,10 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Fecha</th>
                         <th>Cliente</th>
                         <th>Vehículo</th>
                         <th>Estado</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
 
@@ -122,8 +121,17 @@
                     <div class="servicios-container">
                         <label>Servicios seleccionados</label>
                         <div id="serviciosSeleccionados" class="servicios-seleccionados"></div>
+                    </div>
+
+                    <div class="pago-containter">
+
+                        <div id="pagoSeleccionado"></div>
+                        <button type="button" id="registrarNuevoPago">
+                            + Registrar pago
+                        </button>
 
                     </div>
+
                     
                     <div class="observaciones-container">
                         <label>Observaciones</label>
@@ -139,6 +147,30 @@
             </form>
         </div>
     </div>
+    <div class="modal-trabajo oculto" id="modalNuevoPago">
+        <div class="modal modal-nuevoPago">
+            <button type="button" class="cerrar" id="btnCerrarModalPago">X</button>
+
+            <h2>Registrar pago</h2>
+            <label>Importe</label>
+            <input type="number" id="importePago" placeholder="Ej: 25000" min="0" step="0.01">
+
+            <label>Método de pago</label>
+            <select id="metodoPago">
+                <option value="">Seleccione un método de pago</option>
+                <option value="Débito">Débito</option>
+                <option value="Crédito">Crédito</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="QR">QR</option>
+                <option value="Transferencia">Transferencia</option>
+            </select>
+
+            <div class="modal-botones">
+                <button type="button" id="btnCancelarPago">Cancelar</button>
+                <button type="button" id="btnGuardarPago">Guardar</button>
+            </div>
+        </div>
+    </div> 
     <div class="modal-detalle-trabajo oculto" id="modalDetalleTrabajo">
         <div class="modal-detalle-contenido">
             <button type="button" class="cerrar-detalle" id="btnCerrarModalDetalle">X</button>

@@ -14,6 +14,7 @@ import {
     AgregarServicio,
     EliminarServicio
 } from "./API/trabajoServicioAPI";
+import { CrearPago } from "./API/pagoAPI";
 
 let serviciosOriginales = [];
 let serviciosSeleccionados = [];
@@ -50,6 +51,7 @@ const parametros = new URLSearchParams(window.location.search);
 const selectCliente = document.getElementById("cliente");
 const selectVehiculo = document.getElementById("vehiculoCliente");
 const selectServicios = document.getElementById("servicio");
+const totalServicios = document.getElementById("totalServicios");
 
 const contenedorServiciosDetalle = document.getElementById("serviciosDetalle");
 
@@ -58,6 +60,16 @@ const btnSiguiente = document.getElementById("btnSiguiente");
 const btnAnterior = document.getElementById("btnAnterior");
 const botonesPagina = document.querySelectorAll(".numero-pagina");
 
+const btnRegistrarPago = document.getElementById("registrarNuevoPago");
+const modalPago = document.getElementById("modalNuevoPago");
+const btnCerrarModalPago = document.getElementById("btnCerrarModalPago");
+const btnCancelarPago = document.getElementById("btnCancelarPago");
+const btnGuardarPago = document.getElementById("btnGuardarPago");
+const importePago = document.getElementById("importePago");
+const metodoPago = document.getElementById("metodoPago");
+const pagoSeleccionado = document.getElementById("pagoSeleccionado");
+
+let pagoTemporal = null;
 let paginaActual = 1;
 const trabajosporPagina = 20;
 let trabajosActuales = [];
@@ -197,7 +209,7 @@ async function cargarServiciosSelect() {
     servicios.forEach(servicio => {
 
         selectServicios.innerHTML += `
-            <option value="${servicio.id}">
+            <option value="${servicio.id}" data-precio="${servicio.precio_base}">
                 ${servicio.nombre}
             </option>
         `;
@@ -255,6 +267,37 @@ botonCancelar.addEventListener("click", () => {
 
 });
 
+btnRegistrarPago.addEventListener("click", function () {
+    modalPago.classList.remove("oculto");
+});
+btnCerrarModalPago.addEventListener("click", function () {
+    modalPago.classList.add("oculto");
+})
+btnCancelarPago.addEventListener("click", function () {
+    modalPago.classList.add("oculto");
+})
+btnGuardarPago.addEventListener("click", function(){
+    const importe = importePago.value;
+    const metodo = metodoPago.value;
+
+    if(importe === "" || metodo === ""){
+        alert("Complete todos los campos");
+        return;
+    }
+
+    pagoTemporal = {
+        importe: importe,
+        metodo_pago: metodo
+    };
+
+    pagoSeleccionado.innerHTML = `
+        <div class="pago-registrado">
+            <strong>✓ Pago registrado</strong>
+            Pago: $${importe} - ${metodo}
+        </div>
+    `;
+    modalPago.classList.add("oculto");
+})
 
 //LOGICA PARA CONSUMIR API, OBTENER VALORES DEL FORMULARIO Y MOSTRARLOS EN LA TABLA
 
@@ -304,6 +347,7 @@ function MostrarTrabajos(trabajos){
         const fila = document.createElement("tr");
 
         fila.innerHTML = `
+            <td>${new Date(trabajo.fecha + "T00:00:00").toLocaleDateString("es-AR")}</td>
             <td>${trabajo.nombre_cliente}</td>
             <td>${trabajo.marca} ${trabajo.modelo} ${trabajo.patente}</td>
             <td>
@@ -312,15 +356,20 @@ function MostrarTrabajos(trabajos){
                 </span>
             </td>
             </td>
-            <td>${new Date(trabajo.fecha + "T00:00:00").toLocaleDateString("es-AR")}</td>
-            <td>
-                <div class="acciones">
-                        <i class="fa-solid fa-eye" data-id="${trabajo.id}" title="Ver detalle"></i>
-                        <i class="fa-solid fa-pen" data-id="${trabajo.id}" title="Editar"></i>
-                        <i class="fa-solid fa-trash" data-id="${trabajo.id}" title="Eliminar"></i>
-                </div>
-            </td>
-        `
+            `
+            // <td>
+            //     <div class="acciones">
+            //             <i class="fa-solid fa-eye" data-id="${trabajo.id}" title="Ver detalle"></i>
+            //             <i class="fa-solid fa-pen" data-id="${trabajo.id}" title="Editar"></i>  
+            //             <i class="fa-solid fa-trash" data-id="${trabajo.id}" title="Eliminar"></i>
+            //     </div>
+            // </td>
+        fila.addEventListener("click", async () => {
+            //const servicios = await ObtenerServicioPorTrabajo(trabajo.id);
+            window.location.href = `detalleTrabajo.html?id=${trabajo.id}`
+            //abrirModalDetalle(trabajo, servicios);
+        });
+
         tablaTrabajos.appendChild(fila);
     });
 }
@@ -481,19 +530,28 @@ function eliminarServicio(idServicio) {
 }
 function mostrarServiciosSeleccionados(){
     contenedorServiciosSeleccionados.innerHTML = "";
+    let total = 0;
+
     serviciosSeleccionados.forEach(idServicio => {
         const opcion = selectServicios.querySelector(
             `option[value="${idServicio}"]`
         );
         const nombre = opcion.textContent;
+        const precio = Number(opcion.dataset.precio);
+
+        total += precio;
 
         const servicio = document.createElement("div");
 
         servicio.classList.add("servicio-seleccionado");
 
-        servicio.textContent = nombre;
+        servicio.innerHTML = `
+            <span>${nombre}</span>
+            <span>$${precio.toLocaleString("es-AR")}</span>
+        `
 
         const btnEliminar = document.createElement("button");
+
         btnEliminar.type = "button";
         btnEliminar.textContent = "X";
 
@@ -505,6 +563,16 @@ function mostrarServiciosSeleccionados(){
 
         contenedorServiciosSeleccionados.appendChild(servicio);
     });
+    const totalDiv = document.createElement("div");
+
+    totalDiv.classList.add("total-servicios");
+
+    totalDiv.innerHTML = `
+        <strong>Total:</strong>
+        <span>$${total.toLocaleString("es-AR")}</span>
+    `;
+
+    contenedorServiciosSeleccionados.appendChild(totalDiv);
 }
 formNuevoTrabajo.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -547,6 +615,18 @@ formNuevoTrabajo.addEventListener("submit", async function (event) {
             await AgregarServicio(idTrabajo, idServicio);
         }
         
+        //Registrar pago
+        if(pagoTemporal !== null){
+
+            const pago = {
+                id_cliente: trabajo.id_cliente,
+                id_trabajo: idTrabajo,
+                importe: pagoTemporal.importe,
+                metodo_pago: pagoTemporal.metodo_pago
+            };
+            await CrearPago(pago);
+        }
+
         alert("Trabajo cargado con éxito");
     }
     cerrarModal();
@@ -589,5 +669,6 @@ function obtenerClaseEstados(estado){
         return "estado-entregado";
     }
 }
+
 CargarTrabajos();
 

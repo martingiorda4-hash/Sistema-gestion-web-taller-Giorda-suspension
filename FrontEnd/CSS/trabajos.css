@@ -117,6 +117,15 @@ tbody td{
     font-size: 14px;
     border-bottom: 1px solid #f3f4f6;
 }
+tbody tr{
+    transition: background-color 0.2s ease;
+    border-left: 3px solid transparent;
+}
+tbody tr:hover{
+    background-color: #f5f7fa;
+    border-left: 3px solid #3b82f6;
+    cursor: pointer;
+}
 .acciones{
     display: flex;
     gap: 14px;
@@ -247,7 +256,7 @@ tbody td{
     color: #111827;
 }
 .servicios-seleccionados{
-    max-height: 120px;
+    max-height: 160px;
     overflow-y: auto;
 }
 .btn-Agregar-Servicio{
@@ -261,8 +270,8 @@ tbody td{
     color: #ddd;
 }
 .servicio-seleccionado{
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 100px 30px;
     align-items: center;
     padding: 6px 8px;
     margin-bottom: 5px;
@@ -277,6 +286,106 @@ tbody td{
 }
 .servicio-seleccionado button:hover{
     color: #991b1b;
+}
+.total-servicios{
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #ddd;
+    margin-top: 8px;
+    padding-top: 10px;
+}
+.total-servicios strong{
+    font-size: 15px;
+}
+.total-servicios span{
+    font-weight: 600;
+}
+/*MODAL PAGO*/
+.pago-container{
+    width: 100%;
+    margin-top: 15px;
+}
+#modalNuevoPago{
+    z-index: 200;
+}
+#modalTrabajo{
+    z-index: 100;
+}
+.modal-nuevoPago{
+    width: 400px;
+}
+.modal-nuevoPago label{
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 5px;
+}
+.modal-nuevoPago input,
+.modal-nuevoPago select {
+    width: 100%;
+    box-sizing: border-box;
+    height: 40px;
+}
+.modal-nuevoPago .modal-botones{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+.modal-nuevoPago .modal-botones button{
+    margin-top: 0;
+    min-width: 85px;
+}
+#btnGuardarPago{
+    background: #2563eb;
+    color: white;
+}
+#btnCancelarPago{
+    background: #6b7280;
+    color: white;
+}
+#registrarNuevoPago{
+    padding: 9px 16px;
+    min-height: 30px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    margin-top: 5px;
+    background: #16a34a;
+    color: white;
+    align-items: center;
+    justify-content: center;
+}
+#registrarNuevoPago:hover{
+    background: #15803d;
+}
+.pago-registrado{
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #f0f4f4;
+    border: 1px solid #bbf7d0;
+}
+.pago-registrado strong{
+    display: block;
+    color: #16a34a;
+    font-size: 14px;
+    margin-bottom: 3px;
+    animation: aparecerMensaje 0.3s ease;
+}
+.pago-registrado span{
+    color: #374151;
+    font-size: 14px;
+}
+@keyframes aparecerMensaje {
+    from{
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* MODAL ELIMINAR TRABAJO */
