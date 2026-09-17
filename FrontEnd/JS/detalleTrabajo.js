@@ -24,10 +24,13 @@ const btnVolver = document.getElementById("btnVolver");
 const btnModificar = document.getElementById("modificarTrabajo");
 const btnEliminar = document.getElementById("eliminarTrabajo");
 
+
 async function CargarDatosDetalle() {
     const trabajo = await ObtenerPorId(idTrabajo);
 
     const servicios = await ObtenerServicioPorTrabajo(idTrabajo);
+
+    const pagos = await ObtenerPagoPorTrabajo(idTrabajo);
 
     if(trabajo.tipo_cliente === "particular"){
         clienteDetalle.textContent = trabajo.nombre + " " + trabajo.apellido; 
@@ -41,7 +44,6 @@ async function CargarDatosDetalle() {
 
     fechaDetalle.textContent = new Date(trabajo.fecha + "T00:00:00").toLocaleDateString("es-AR");
 
-    estadoDetalle.textContent = trabajo.estado;
 
     observacionesDetalle.textContent = trabajo.observaciones;
 
@@ -61,6 +63,50 @@ async function CargarDatosDetalle() {
         `;
 
     });
+
+    tablaPagos.innerHTML = "";
+
+    pagos.forEach(pago => {
+
+        tablaPagos.innerHTML += `
+            <tr>
+                <td>${new Date(pago.fecha).toLocaleDateString("es-AR")}</td>
+                <td>${pago.metodo_pago}</td>
+                <td>$${Number(pago.importe).toLocaleString("es-AR")}</td>
+            </tr>
+        `;
+    });
+
+    const claseEstado = obtenerClaseEstados(trabajo.estado);
+    estadoDetalle.innerHTML += `
+
+            <span class="estado ${claseEstado}">
+                ${trabajo.estado}
+            </span>
+        `;
     totalServicios.textContent = "$" + total.toLocaleString("es-AR");
 }
+function obtenerClaseEstados(estado){
+    if(estado === "Pendiente"){
+        return "estado-pendiente";
+    }
+    if(estado === "En progreso"){
+        return "estado-en-progreso";
+    }
+    if(estado === "Terminado"){
+        return "estado-terminado";
+    }
+    if(estado === "Entregado"){
+        return "estado-entregado";
+    }
+}
+btnVolver.addEventListener("click", () =>{
+    window.location.href = "trabajos.html";
+})
+btnModificar.addEventListener("click", () =>{
+    window.location.href = `trabajos.html?editar=${idTrabajo}`;
+});
+btnEliminar.addEventListener("click", () => {
+    window.location.href = `trabajos.html?eliminar=${idTrabajo}`;
+});
 CargarDatosDetalle();

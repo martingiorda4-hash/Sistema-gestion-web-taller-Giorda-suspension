@@ -15,7 +15,21 @@
 
         <div class="contenedor-superior">
             <section class="datos-cliente">
-                <h2>Datos del cliente</h2>
+                <div class="cabecera-datos-cliente">
+
+                    <h2>Datos del cliente</h2>
+                    <div class="acciones-cliente">
+                        <button type="button" id="modificarCliente">
+                            <i class="fa-solid fa-pen"></i>  
+                            Modificar
+                        </button>
+                        
+                        <button type="button" id="eliminarCliente">
+                            <i class="fa-solid fa-trash"></i>
+                            Eliminar
+                        </button>
+                    </div>
+                </div>
                 <div class="campo">
                     <span>Tipo de cliente:</span>
                     <strong id="tipoCliente"></strong>
@@ -77,6 +91,8 @@
                     <th>Trabajo</th>
                     <th>Estado</th>
                     <th>Importe</th>
+                    <th>Pagado</th>
+                    <th>Pendiente</th>
                 </tr>
             </thead>
             <tbody id="historialCliente">

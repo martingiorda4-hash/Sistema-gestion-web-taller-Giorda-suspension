@@ -7,6 +7,7 @@ import {
     ObtenerVehiculoId,
     EliminarVehiculo
 } from "./API/vehiculoAPI.js";
+import { ObtenerPagoPorCliente } from "./API/pagoAPI.js";
 
 const btnVolver = document.getElementById("btnVolver");
 //const clienteNombre = document.getElementById("cliente");
@@ -18,6 +19,9 @@ const btnCancelar = document.getElementById("btnCancelar");
 const modalEliminar = document.getElementById("modalEliminarVehiculo");
 const btnCancelarEliminar = document.getElementById("btnCancelarEliminarVehiculo");
 const btnConfirmarEliminar = document.getElementById("btnAceptarEliminarVehiculo");
+
+const btnModificarCliente = document.getElementById("modificarCliente");
+const btnEliminarCliente = document.getElementById("eliminarCliente");
 
 const vehiculoPatente = document.getElementById("patenteVehiculoNuevo");
 const vehiculoMarca = document.getElementById("marcaVehiculoNuevo");
@@ -39,6 +43,8 @@ const campoNombre = document.getElementById("campoNombre");
 const campoApellido = document.getElementById("campoApellido");
 const campoCuit = document.getElementById("campoCuit");
 const campoRazonSocial = document.getElementById("campoRazonSocial");
+
+
 
 if(cliente.tipo_cliente === "particular"){
     document.getElementById("cliente").textContent = cliente.nombre + " " + cliente.apellido;
@@ -223,21 +229,41 @@ formNuevoVehiculo.addEventListener("submit", async function (event) {
 })
 async function cargarHistorialTrabajos() {
     const trabajos = await ObtenerTrabajoPorCliente(idCliente);
+    
+    const pagos = await ObtenerPagoPorCliente(idCliente);
 
     tablaHistorialTrabajos.innerHTML = "";
 
     trabajos.forEach(trabajo => {
 
+        const pagosTrabajos = pagos.filter(
+            pago => String(pago.id_trabajo) === String(trabajo.id)
+        );
+        let totalPagado = 0;
+
+        pagosTrabajos.forEach(pago => {
+            totalPagado += Number(pago.importe);
+        });
+        const pendiente = Number(trabajo.importe_total) - totalPagado;
+
         const fila = document.createElement("tr");
 
         fila.innerHTML = `
             <td>${new Date(trabajo.fecha + "T00:00:00").toLocaleDateString("es-AR")}</td>
-            <td>${trabajo.marca} ${trabajo.modelo} ${trabajo.patente}</td>
+            <td>${trabajo.marca} ${trabajo.modelo}</td>
             <td>${trabajo.cantidad_servicios} servicios</td>
             <td>${trabajo.estado}</td>
             <td>$ ${Number(trabajo.importe_total).toLocaleString("es-AR")}</td>
+            <td>$${totalPagado.toLocaleString("es-AR")}</td>
+            <td>$${pendiente.toLocaleString("es-AR")}</td>
         `;
 
         tablaHistorialTrabajos.appendChild(fila);
     })
 }
+btnModificarCliente.addEventListener("click", () => {
+    window.location.href = `clientes.html?editar=${idCliente}`;
+});
+btnEliminarCliente.addEventListener("click", () => {
+    window.location.href = `clientes.html?eliminar=${idCliente}`;
+}); 

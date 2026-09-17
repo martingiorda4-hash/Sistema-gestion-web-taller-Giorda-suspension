@@ -16,6 +16,7 @@
 
 
     const parametros = new URLSearchParams(window.location.search);
+    const idCliente = parametros.get("id");
 
     const tipoCliente = document.getElementById("tipoCliente");
     const campoParticular = document.getElementById("camposParticular");
@@ -138,6 +139,10 @@
 
     function cerrarModal(){
         modalCliente.classList.add("oculto");
+
+        if(idEditar){
+            window.location.href = `historialClientes.html?id=${idEditar}`;
+        }
     }
 
     //MODAL ELIMINACION DE CLIENTE
@@ -146,6 +151,11 @@
     }
     function cerrarModalEliminar(){
         modalEliminarCliente.classList.add("oculto");
+
+        if(idEliminar){
+            
+            window.location.href = `historialClientes.html?id=${idEliminar}`;
+        }
     }
 
     btnCancelar.addEventListener("click", cerrarModalEliminar);
@@ -220,14 +230,10 @@ function MostrarClientes(clientes){
                     ${cliente.estado}
                 </span>
             </td>
-            <td>
-                <div class="acciones">
-                        <i class="fa-solid fa-eye" data-id="${cliente.id}" title="Ver detalle"></i>
-                        <i class="fa-solid fa-pen" data-id="${cliente.id}" title="Editar"></i>
-                        <i class="fa-solid fa-trash" data-id="${cliente.id}" title="Eliminar"></i>
-                </div>
-            </td>
         `;
+        fila.addEventListener("click", async () => {
+            window.location.href = `historialClientes.html?id=${cliente.id}`;
+        });
         tablaClientes.appendChild(fila);
     });
 }
@@ -347,6 +353,7 @@ formNuevoCliente.addEventListener("submit", async function (event) {
         cliente.id = clienteEditando.id;
         await EditarCliente(cliente);
         alert("Cliente modificado con éxito");
+
         
     }else{
         await CrearCliente(cliente);
@@ -384,4 +391,20 @@ function obtenerClaseEstados(estado){
         return "estado-inactivo";
     }
 }
-CargarClientes();
+await CargarClientes();
+
+const idEditar = parametros.get("editar");
+const idEliminar = parametros.get("eliminar");
+
+if(idEditar){
+    const cliente = await ObtenerPorId(idEditar);
+    await abrirModalEditar(cliente);
+
+    window.history.replaceState({}, document.title, "clientes.html");
+}
+if(idEliminar){
+    clienteAEliminar = idEliminar;
+    await abrirModalEliminar();
+
+    window.history.replaceState({}, document.title, "clientes.html");
+}

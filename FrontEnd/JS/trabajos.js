@@ -37,8 +37,7 @@ const modalEliminarTrabajo = document.getElementById("modalEliminarTrabajo");
 const btnCancelarEliminar = document.getElementById("btnCancelarEliminarTrabajo");
 const btnAceptarEliminar = document.getElementById("btnAceptarEliminarTrabajo");
 
-const modalDetalleTrabajo = document.getElementById("modalDetalleTrabajo");
-const btnCerrarModalDetalle = document.getElementById("btnCerrarModalDetalle");
+
 const btnCerrarModalNuevo = document.getElementById("btnCerrarModalNuevoTrabajo");
 const btnAgregarServicio = document.getElementById("btnAgregarServicio");
 const contenedorServiciosSeleccionados = document.getElementById("serviciosSeleccionados");
@@ -51,9 +50,6 @@ const parametros = new URLSearchParams(window.location.search);
 const selectCliente = document.getElementById("cliente");
 const selectVehiculo = document.getElementById("vehiculoCliente");
 const selectServicios = document.getElementById("servicio");
-const totalServicios = document.getElementById("totalServicios");
-
-const contenedorServiciosDetalle = document.getElementById("serviciosDetalle");
 
 const infoPagina = document.getElementById("infoPagina");
 const btnSiguiente = document.getElementById("btnSiguiente");
@@ -69,7 +65,7 @@ const importePago = document.getElementById("importePago");
 const metodoPago = document.getElementById("metodoPago");
 const pagoSeleccionado = document.getElementById("pagoSeleccionado");
 
-let pagoTemporal = null;
+let ArrayPagos = []; 
 let paginaActual = 1;
 const trabajosporPagina = 20;
 let trabajosActuales = [];
@@ -103,6 +99,9 @@ async function abrirModalCrear(){
 
     serviciosOriginales = [];
     serviciosSeleccionados = [];
+
+    ArrayPagos = [];
+    pagoSeleccionado.innerHTML = "";
 
     trabajoIdInput.value = "";
     tituloModalTrabajo.textContent = "Nuevo trabajo";
@@ -232,17 +231,7 @@ function cerrarModalEliminar(){
     modalEliminarTrabajo.classList.add("oculto");
 }
 
-function abrirModalDetalle(trabajo, servicios){
-    CargarDatosDetalle(trabajo, servicios);
-    
-    modalDetalleTrabajo.classList.remove("oculto");
-}
-function cerrarModalDetalle(){
-    modalDetalleTrabajo.classList.add("oculto");
-}
 
-
-btnCerrarModalDetalle.addEventListener("click", cerrarModalDetalle);
 btnCerrarModalNuevo.addEventListener("click", cerrarModal);
 
 
@@ -285,17 +274,23 @@ btnGuardarPago.addEventListener("click", function(){
         return;
     }
 
-    pagoTemporal = {
+    ArrayPagos.push({
         importe: importe,
         metodo_pago: metodo
-    };
+    });  
 
-    pagoSeleccionado.innerHTML = `
-        <div class="pago-registrado">
-            <strong>✓ Pago registrado</strong>
-            Pago: $${importe} - ${metodo}
-        </div>
-    `;
+    pagoSeleccionado.innerHTML = "";
+
+    ArrayPagos.forEach(pago => {
+        pagoSeleccionado.innerHTML += `
+            <div class="pago-registrado">
+                <strong>✓ Pago registrado</strong>
+                Pago: $${Number(pago.importe).toLocaleString("es-AR")} - ${pago.metodo_pago}
+            </div>
+        `;
+    })
+    importePago.value = "";
+    metodoPago.value = "";
     modalPago.classList.add("oculto");
 })
 
@@ -349,21 +344,13 @@ function MostrarTrabajos(trabajos){
         fila.innerHTML = `
             <td>${new Date(trabajo.fecha + "T00:00:00").toLocaleDateString("es-AR")}</td>
             <td>${trabajo.nombre_cliente}</td>
-            <td>${trabajo.marca} ${trabajo.modelo} ${trabajo.patente}</td>
+            <td>${trabajo.marca} ${trabajo.modelo}</td>
             <td>
                 <span class="estado ${claseEstado}">
                     ${trabajo.estado}
                 </span>
             </td>
-            </td>
             `
-            // <td>
-            //     <div class="acciones">
-            //             <i class="fa-solid fa-eye" data-id="${trabajo.id}" title="Ver detalle"></i>
-            //             <i class="fa-solid fa-pen" data-id="${trabajo.id}" title="Editar"></i>  
-            //             <i class="fa-solid fa-trash" data-id="${trabajo.id}" title="Eliminar"></i>
-            //     </div>
-            // </td>
         fila.addEventListener("click", async () => {
             //const servicios = await ObtenerServicioPorTrabajo(trabajo.id);
             window.location.href = `detalleTrabajo.html?id=${trabajo.id}`
@@ -422,80 +409,8 @@ async function CargarTrabajos(){
 
     MostrarTrabajos(trabajos);
 }
-function CargarDatosDetalle(trabajo, servicios){
-    if(trabajo.tipo_cliente === "particular"){
-        
-        document.getElementById("clienteDetalle").textContent = trabajo.nombre + " " + trabajo.apellido;
-    }else{
-        document.getElementById("clienteDetalle").textContent = trabajo.razon_social;
-    }
-    document.getElementById("vehiculoDetalle").textContent = trabajo.marca + " " + trabajo.modelo + " " + trabajo.patente;
-    document.getElementById("fechaDetalle").textContent = trabajo.fecha;
-    document.getElementById("estadoDetalle").textContent = trabajo.estado;
-
-    let total = 0;
-    contenedorServiciosDetalle.innerHTML = "";
-    servicios.forEach(servicio => {
-        total += Number(servicio.precio);
-        const fila = document.createElement("div");
-        fila.classList.add("servicio-detalle");
-
-        const nombre = document.createElement("p");
-        const precio = document.createElement("p");
-
-        nombre.textContent = servicio.nombre;
-        precio.textContent = "$" + Number(servicio.precio).toLocaleString("es-AR");
-
-        fila.appendChild(nombre);
-        fila.appendChild(precio);
-
-        contenedorServiciosDetalle.appendChild(fila);
-    })
-
-    const totalTexto = document.createElement("div");
-    totalTexto.classList.add("total-detalle");
-
-    const totalPrecio = document.createElement("p");
-    totalPrecio.textContent = "Total:";
-
-    const precioTotal = document.createElement("p");
-    precioTotal.textContent = "$" + total.toLocaleString("es-AR");   
-
-    totalTexto.appendChild(totalPrecio);
-    totalTexto.appendChild(precioTotal);
-
-    contenedorServiciosDetalle.appendChild(totalTexto);
-
-    document.getElementById("observacionesDetalle").textContent = trabajo.observaciones;
-}
-
 let trabajoAEliminar = null;
-tablaTrabajos.addEventListener("click", async (e)=>{
-    if(e.target.classList.contains("fa-trash")){
-        trabajoAEliminar = e.target.dataset.id;
 
-        
-        abrirModalEliminar();
-    }
-
-    if(e.target.classList.contains("fa-pen")){
-        const id = e.target.dataset.id;
-
-        const trabajo = await ObtenerPorId(id);
-        abrirModalEditar(trabajo);
-
-    }
-    if(e.target.classList.contains("fa-eye")){
-        const id = e.target.dataset.id;
-
-        
-        const trabajos = await ObtenerPorId(id)
-        const servicios = await ObtenerServicioPorTrabajo(id);
-
-
-        abrirModalDetalle(trabajos, servicios);
-    }
-})
 async function EditarTrabajo(trabajo) {
     await ModificarTrabajo(trabajo);
 }
@@ -616,16 +531,19 @@ formNuevoTrabajo.addEventListener("submit", async function (event) {
         }
         
         //Registrar pago
-        if(pagoTemporal !== null){
-
-            const pago = {
+        for(const pago of ArrayPagos){
+            
+            const nuevoPago = {
                 id_cliente: trabajo.id_cliente,
                 id_trabajo: idTrabajo,
-                importe: pagoTemporal.importe,
-                metodo_pago: pagoTemporal.metodo_pago
+                importe: pago.importe,
+                metodo_pago: pago.metodo_pago
             };
-            await CrearPago(pago);
+            await CrearPago(nuevoPago);
         }
+        
+        
+        
 
         alert("Trabajo cargado con éxito");
     }
@@ -669,6 +587,18 @@ function obtenerClaseEstados(estado){
         return "estado-entregado";
     }
 }
+await CargarTrabajos();
+const idEditar = parametros.get("editar");
+const idEliminar = parametros.get("eliminar");
 
-CargarTrabajos();
+if(idEditar){
+    const trabajo = await ObtenerPorId(idEditar);
+    await abrirModalEditar(trabajo);
+}
+
+if(idEliminar){
+    trabajoAEliminar = idEliminar;
+    abrirModalEliminar();
+}
+
 

@@ -137,8 +137,7 @@ class Trabajo {
                     OR v.modelo LIKE :txt
                     OR v.patente LIKE :txt
                 )
-                AND (:estado = 'todos' OR t.estado = :estado)
-                ORDER BY t.fecha DESC";
+                AND (:estado = 'todos' OR t.estado = :estado)";
                 
                 $parametros  = [
                     ":txt" => "%" . $txt . "%",
@@ -153,6 +152,7 @@ class Trabajo {
                     $sql .= " AND t.fecha <= :fechaHasta";
                     $parametros[":fechaHasta"] = $fechaHasta;
                 }
+                $sql .= " ORDER BY t.fecha DESC";
     
         $consulta = $this->pdo->prepare($sql);
 
@@ -170,6 +170,7 @@ class Trabajo {
     }
     public function ObtenerTrabajosPorCliente($id){
         $sql = "SELECT
+                    t.id,
                     t.fecha,
                     v.marca,
                     v.modelo,

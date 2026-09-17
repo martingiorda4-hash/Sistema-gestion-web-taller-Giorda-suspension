@@ -51,6 +51,37 @@ main{
     font-size: 15px;
     font-weight: 500;
 }
+.cabecera-datos-cliente{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.cabecera-datos-cliente h2{
+    margin: 0;
+}
+.acciones-cliente{
+    display: flex;
+    gap: 10px;
+}
+.acciones-cliente button{
+    padding: 7px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+#modificarCliente{
+    background-color: #2563eb;
+    color: white;
+}
+#eliminarCliente{
+    background: #dc2626;
+    color: white;
+}
+.acciones-cliente button:hover{
+    opacity: 0.9;
+}
 .seccion-vehiculos{
     display: flex;
     justify-content: space-between;

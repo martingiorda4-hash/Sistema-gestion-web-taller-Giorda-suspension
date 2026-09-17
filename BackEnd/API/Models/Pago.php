@@ -47,8 +47,8 @@ class Pago{
     }
     public function ObtenerPagoPorTrabajo($idTrabajo){
         $sql = "SELECT *
-                FROM trabajos
-                WHERE id_trabajo = :ïd_trabajo
+                FROM pagos
+                WHERE id_trabajo = :id_trabajo
                 ORDER BY fecha DESC";
         
         $consulta = $this->pdo->prepare($sql);
