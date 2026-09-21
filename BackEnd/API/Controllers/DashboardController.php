@@ -13,4 +13,7 @@ class DashboardController{
     public function ObtenerDatos(){
         return $this->dashboard->ObtenerDatos();
     }
+    public function ObtenerPagosPendientes(){
+        return $this->dashboard->ObtenerPagosPendientes();
+    }
 }

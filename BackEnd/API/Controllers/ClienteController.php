@@ -16,7 +16,7 @@ class ClienteController{
     }
     
     public function CrearCliente($datos){
-        $this->cliente->CrearCliente(
+        $idCliente = $this->cliente->CrearCliente(
             $datos["tipo_cliente"],
             $datos["nombre"] ?? null,
             $datos["apellido"] ?? null,
@@ -24,7 +24,10 @@ class ClienteController{
             $datos["razon_social"] ?? null,
             $datos["cuit"] ?? null
         );
-        return "Cliente creado correctamente";
+        if($idCliente === null){
+            return "El cliente ya existe";
+        }
+        return $idCliente;
     }
 
     public function ModificarCliente($datos){

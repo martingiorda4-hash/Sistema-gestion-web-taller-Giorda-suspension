@@ -102,6 +102,7 @@ async function abrirModalCrear(){
 
     ArrayPagos = [];
     pagoSeleccionado.innerHTML = "";
+    contenedorServiciosSeleccionados.innerHTML = "";
 
     trabajoIdInput.value = "";
     tituloModalTrabajo.textContent = "Nuevo trabajo";
@@ -594,11 +595,15 @@ const idEliminar = parametros.get("eliminar");
 if(idEditar){
     const trabajo = await ObtenerPorId(idEditar);
     await abrirModalEditar(trabajo);
+
+    window.history.replaceState({}, document.title, "trabajos.html");
 }
 
 if(idEliminar){
     trabajoAEliminar = idEliminar;
     abrirModalEliminar();
+
+    window.history.replaceState({}, document.title, "trabajos.html");
 }
 
 

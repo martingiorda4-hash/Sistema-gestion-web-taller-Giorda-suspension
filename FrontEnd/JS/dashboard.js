@@ -1,4 +1,4 @@
-import { ObtenerDatos } from "./API/dashboardAPI";
+import { ObtenerDatos, ObtenerPagosPendientes } from "./API/dashboardAPI";
 import{ObtenerTrabajos} from "./API/trabajoAPI";
 
 const btnNuevoCliente = document.getElementById("btnClienteNuevo");
@@ -9,10 +9,17 @@ const cardTrabajosPendientes = document.getElementById("cardTrabajosPendientes")
 const cardTrabajosEntrega = document.getElementById("cardTrabajosParaEntrega");
 const cardTrabajosEntregados = document.getElementById("resumenEntregados");
 const cardTerminados = document.getElementById("resumenTerminados");
+const cardPagos = document.getElementById("cardPagos");
 
 const tablaTrabajos = document.getElementById("tablaTrabajos");
 
 const nombreAdmin = document.getElementById("nombreAdmin");
+
+
+const btnVerPagos = document.getElementById("btnVerPendientes");
+const modalPagosPendientes = document.getElementById("modalPagosPendientes");
+const btnCerrarModal = document.getElementById("cerrarModalPagosPendientes");
+const tablaPagosPendientes = document.getElementById("tablaPagosPendientes");
 
 btnNuevoCliente.addEventListener("click", () => {
     window.location.href = "clientes.html?abrirModal=true"
@@ -21,6 +28,16 @@ btnNuevoCliente.addEventListener("click", () => {
 btnNuevoTrabajo.addEventListener("click", () => {
     window.location.href = "trabajos.html?abrirModal=true"
 });
+
+async function abrirModal(){
+    await CargarTablaPendientes();
+    modalPagosPendientes.classList.remove("oculto");
+}
+function cerrarModal(){
+    modalPagosPendientes.classList.add("oculto");
+}
+btnVerPagos.addEventListener("click", abrirModal);
+btnCerrarModal.addEventListener("click", cerrarModal);
 
 //LOGICA CARGAR DESDE LA API LOS VALORES
 
@@ -37,6 +54,8 @@ async function CargarDashboard() {
     cardTrabajosEntregados.textContent = datos.trabajosEntregados;
 
     cardTerminados.textContent = datos.trabajosTerminados;
+
+    cardPagos.textContent = `$${Number(datos.pagosPendientes).toLocaleString("es-AR")}`;
 }
 async function cargarTablaTrabajos() {
     
@@ -61,6 +80,30 @@ async function cargarTablaTrabajos() {
 function MostrarNombreUsuario() {
 
     nombreAdmin.textContent = localStorage.getItem("usuario"); 
+}
+async function CargarTablaPendientes(){
+    const pagosPendientes =  await ObtenerPagosPendientes();
+
+    console.log(pagosPendientes);
+
+    tablaPagosPendientes.innerHTML = "";
+
+    pagosPendientes.forEach(pendientes => {
+        const fila = document.createElement("tr");
+
+        fila.innerHTML = `
+            <td>#${pendientes.id}</td>
+            <td>${pendientes.tipo_cliente === "particular"
+                ? pendientes.nombre + " " + pendientes.apellido
+                : pendientes.razon_social}</td>
+            <td>${pendientes.marca} ${pendientes.modelo} ${pendientes.patente}</td>
+            <td>$${Number(pendientes.total).toLocaleString("es-AR")}</td>
+            <td>$${Number(pendientes.pendiente).toLocaleString("es-AR")}</td>
+        `;
+
+        tablaPagosPendientes.appendChild(fila);
+    });
+
 }
 CargarDashboard();
 cargarTablaTrabajos();

@@ -46,8 +46,9 @@
 
                 <div class="card">
                     <div class="card-infoPagos"> 
-                        <p class="label">Pagos pendientes</p>
+                        <p class="label">Total pendiente</p>
                         <p class="valor" id="cardPagos">0</p>
+                        <button type="button" id="btnVerPendientes">Ver →</button>
                     </div> 
                 </div>
             </section>
@@ -84,6 +85,25 @@
                 </div>
             </section>
         </main>
+    </div>
+    <div class="modal-pagosPendientes oculto" id="modalPagosPendientes">
+        <div class="modal-contenido">
+            <h2>Trabajos con pagos pendientes</h2>
+            <button type="button" class="btn-cerrarModalPagosPendientes" id="cerrarModalPagosPendientes">X</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Trabajo</th>
+                        <th>Cliente</th>
+                        <th>Vehículo</th>
+                        <th>Total</th>
+                        <th>Pendiente</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaPagosPendientes">
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 <script src="../JS/sidebar.js"></script>

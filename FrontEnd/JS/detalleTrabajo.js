@@ -1,4 +1,4 @@
-import { ObtenerPagoPorTrabajo } from "./API/pagoAPI";
+import { CrearPago, ObtenerPagoPorTrabajo } from "./API/pagoAPI";
 import { ObtenerPorId } from "./API/trabajoAPI";
 import { ObtenerServicioPorTrabajo } from "./API/trabajoServicioAPI";
 
@@ -24,6 +24,69 @@ const btnVolver = document.getElementById("btnVolver");
 const btnModificar = document.getElementById("modificarTrabajo");
 const btnEliminar = document.getElementById("eliminarTrabajo");
 
+const btnRegistrarNuevoPago = document.getElementById("registrarPagoDetalle");
+const btnCancelarPago = document.getElementById("btnCancelarPago");
+const btnCerrarModalPago = document.getElementById("btnCerrarModalPago");
+const modalPago = document.getElementById("modalNuevoPago");
+
+const btnGuardarPago = document.getElementById("btnGuardarPago");
+const importePago = document.getElementById("importePago");
+const metodoPago = document.getElementById("metodoPago");
+
+const pagosPendientes = document.getElementById("pendientePagos");
+
+function abrirModalNuevoPago(){
+    modalPago.classList.remove("oculto");
+}
+function cerrarModalNuevoPago(){
+    modalPago.classList.add("oculto");
+}
+
+btnRegistrarNuevoPago.addEventListener("click", function() {
+    if(pagosPendientesActual <= 0){
+        alert("Este trabajo ya está completamente pagado");
+        return;
+    }
+    abrirModalNuevoPago();
+})
+
+btnCancelarPago.addEventListener("click", cerrarModalNuevoPago);
+btnCerrarModalPago.addEventListener("click", cerrarModalNuevoPago);
+
+let pagosPendientesActual = 0;
+btnGuardarPago.addEventListener("click", async function () {
+
+    const importe = importePago.value;
+    const metodo = metodoPago.value;
+
+    if(importe === "" || metodo === ""){
+        alert("Complete todos los campos");
+        return;
+    }
+
+    const trabajo = await ObtenerPorId(idTrabajo);
+
+    if(Number(importe) > pagosPendientesActual){
+        alert("El importe no puede ser mayor al pendiente");
+        return;
+    }
+
+    const pago = {
+        id_cliente: trabajo.id_cliente,
+        id_trabajo: idTrabajo,
+        importe: importe,
+        metodo_pago: metodo
+    };
+    await CrearPago(pago);
+    alert("Pago registrado correctamente");
+
+    importePago.value = "";
+    metodoPago.value = "";
+
+    cerrarModalNuevoPago();
+
+    await CargarDatosDetalle();
+})
 
 async function CargarDatosDetalle() {
     const trabajo = await ObtenerPorId(idTrabajo);
@@ -66,7 +129,11 @@ async function CargarDatosDetalle() {
 
     tablaPagos.innerHTML = "";
 
+    let totalPagado = 0;
+
     pagos.forEach(pago => {
+
+        totalPagado += Number(pago.importe);
 
         tablaPagos.innerHTML += `
             <tr>
@@ -76,7 +143,9 @@ async function CargarDatosDetalle() {
             </tr>
         `;
     });
+    pagosPendientesActual = Math.max(0, total - totalPagado);
 
+    pagosPendientes.textContent = "$" + pagosPendientesActual.toLocaleString("es-AR");
     const claseEstado = obtenerClaseEstados(trabajo.estado);
     estadoDetalle.innerHTML += `
 

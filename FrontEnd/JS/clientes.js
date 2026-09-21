@@ -356,7 +356,13 @@ formNuevoCliente.addEventListener("submit", async function (event) {
 
         
     }else{
-        await CrearCliente(cliente);
+        const resultado = await CrearCliente(cliente);
+
+        if(resultado === "El cliente ya existe"){
+            alert(resultado);
+            return;
+        }
+
         alert("Cliente cargado con éxito");
     }
     cerrarModal();

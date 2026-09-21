@@ -49,6 +49,12 @@ main{
     gap: 20px;
     margin-bottom: 20px;
 }
+.titulo-pagos{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
 .detalle-card{
     background: white;
@@ -103,7 +109,8 @@ main{
     border-bottom: 1px solid #e5e7eb;
     color: #4b5563;
 }
-.servicios-detalle tfoot td {
+.servicios-detalle tfoot td,
+.pagos-detalle tfoot td{
     font-weight: 600;
     color: #111827;
     border-bottom: none;
@@ -111,13 +118,25 @@ main{
 .titulo-cliente,
 .titulo-vehiculo,
 .titulo-servicios,
-.titulo-pagos,
 .titulo-observaciones {
     display: flex;
     align-items: center;
     gap: 8px;
 }
-#totalServiciosDetalleTrabajo{
+#registrarPagoDetalle{
+    padding: 9px 14px;
+    border: none;
+    border-radius: 8px;
+    background: #16a34a;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+#registrarPagoDetalle:hover{
+    opacity: .9;
+}
+#totalServiciosDetalleTrabajo,
+#pendientePagos{
     text-align: right;
     font-size: 16px;
 }
@@ -160,4 +179,79 @@ main{
     background-color: #f1f3f5;
     color: #6b7280;
     border: 1px solid #e1e4e8;
+}
+
+#modalNuevoPago{
+    z-index: 200;
+}
+.modal{
+    background: white;
+    border-radius: 10px;
+    padding: 24px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+.modal-pago{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.oculto{
+    display: none;
+}
+.modal-nuevoPago{
+    width: 400px;
+}
+.modal .cerrar{
+    float: right;
+    border: none;
+    background: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+.modal-nuevoPago label{
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 5px;
+}
+.modal-nuevoPago input,
+.modal-nuevoPago select {
+    width: 100%;
+    box-sizing: border-box;
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    outline: none;
+}
+.modal-nuevoPago input:focus,
+.modal-nuevoPago select:focus{
+    border-color: #2563eb;
+}
+.modal-nuevoPago .modal-botones{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+.modal-nuevoPago .modal-botones button{
+    margin-top: 0;
+    min-width: 85px;
+}
+#btnGuardarPago{
+    background: #2563eb;
+    color: white;
+}
+#btnCancelarPago{
+    background: #6b7280;
+    color: white;
 }

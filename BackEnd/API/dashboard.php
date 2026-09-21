@@ -5,10 +5,12 @@ $controller = new DashboardController();
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-header("Content-Type: applicaction/json");
+header("Content-Type: application/json");
 
 $resultado = match($method){
-    'GET' => $controller->ObtenerDatos()
+    'GET' => isset($_GET["pendientes"])
+        ? $controller->ObtenerPagosPendientes()
+        : $controller->ObtenerDatos()
 };
 
 echo json_encode($resultado);

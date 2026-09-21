@@ -22,8 +22,50 @@ class Cliente {
         return $consulta->fetchAll(PDO::FETCH_ASSOC);
 
     }
+    public function ExisteCliente($tipoCliente, $nombre, $apellido, $telefono, $cuit){
+        if($tipoCliente === "particular"){
+
+            $sql = "SELECT id
+                    FROM clientes
+                    WHERE tipo_cliente = 'particular'
+                    AND nombre = :nombre
+                    AND apellido = :apellido
+                    AND telefono = :telefono";
+            
+            $parametros = [
+                ":nombre" => $nombre,
+                ":apellido" => $apellido,
+                ":telefono" => $telefono
+            ];
+        }else{
+
+            $sql = "SELECT id
+                    FROM clientes
+                    WHERE tipo_cliente = 'empresa'
+                    AND cuit = :cuit";
+            
+            $parametros = [
+                ":cuit" => $cuit
+            ];
+        }
+        $consulta = $this->pdo->prepare($sql);
+        $consulta->execute($parametros);
+
+        return $consulta->fetch(PDO::FETCH_ASSOC);
+    }
 
     public function CrearCliente($tipoCliente, $nombre, $apellido, $telefono, $razonSocial, $cuit){
+        $clienteExistente = $this->ExisteCliente(
+            $tipoCliente,
+            $nombre,
+            $apellido,
+            $telefono,
+            $cuit
+        );
+        if($clienteExistente){
+            return null;
+        }
+
         $sql = "INSERT INTO clientes
                 (tipo_cliente, nombre, apellido, telefono, razon_social, cuit)
                 VALUES

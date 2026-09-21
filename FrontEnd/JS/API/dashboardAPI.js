@@ -5,3 +5,8 @@ export async function ObtenerDatos() {
 
     return response.json();
 }
+export async function ObtenerPagosPendientes() {
+    const response = await fetch(`${url}?pendientes`);
+
+    return response.json();
+}
