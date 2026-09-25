@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/servicios.css">
+    <title>Servicios</title>
+</head>
+<body>
+    <div id="sidebar"></div>
+    <main>
+        
+        <div class="titulo">
+            <div>
+                <h1>Servicios</h1>
+                <p>Administrá los servicios y sus precios.</p>
+            </div>
+            <button id="nuevoServicio">
+                + Nuevo servicio
+            </button>
+        </div>
+        
+        <div class="servicios-container" id="contenedorServicios">
+        </div>
+        
+    </main>
+
+    <div class="modal-servicio oculto" id="modalNuevoServicio">
+        <div class="modal-servicio-contenido">
+            <form id="formNuevoServicio">
+
+                <h2 id="titulo">Nuevo servicio</h2>
+                <label>Nombre del servicio</label>
+                <input type="text" id="nombreServicio">
+
+                <label>Precio</label>
+                <input type="number" id="precioServicio" placeholder="Ej: 50000" min="0" step="0.01">
+
+                <div class="modal-servicio-botones">
+
+                    <button type="submit" id="guardarServicio">Guardar</button>
+                    <button type="button" id="cancelarServicio">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="../JS/sidebar.js"></script>
+<script type="module" src="../JS/servicios.js"></script>
+</html>

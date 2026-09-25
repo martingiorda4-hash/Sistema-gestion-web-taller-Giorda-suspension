@@ -115,6 +115,9 @@ main{
     color: #111827;
     border-bottom: none;
 }
+.pagos-detalle tfoot tr{
+    background: #fef4c7;
+}
 .titulo-cliente,
 .titulo-vehiculo,
 .titulo-servicios,

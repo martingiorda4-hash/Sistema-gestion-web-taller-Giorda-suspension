@@ -8,6 +8,13 @@ import {
     EliminarVehiculo
 } from "./API/vehiculoAPI.js";
 import { ObtenerPagoPorCliente } from "./API/pagoAPI.js";
+import { VerificarSesion } from "./API/sesionAPI";
+
+const sesionActiva = await VerificarSesion();
+
+if(!sesionActiva){
+    window.location.href = "login.html";
+}
 
 const btnVolver = document.getElementById("btnVolver");
 //const clienteNombre = document.getElementById("cliente");

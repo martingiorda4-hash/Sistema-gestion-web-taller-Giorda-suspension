@@ -8,15 +8,30 @@
         BuscarCliente
     }from "./API/clienteAPI.js";
     
+    import { VerificarSesion } from "./API/sesionAPI";
 
+    const sesionActiva = await VerificarSesion();
+
+    if(!sesionActiva){
+        window.location.href = "login.html";
+    }
 
     const botonNuevoCliente = document.getElementById("btnNuevoCliente");
     const botonCancelarModalCliente = document.getElementById("btnCancelarCliente");
     const modalCliente = document.getElementById("modalCliente");
+    
+    const tipo = document.getElementById("tipoCliente");
 
+    const nombre = document.getElementById("nombreCliente");
+    const apellido = document.getElementById("apellidoCliente");
+    const telefonoParticular = document.getElementById("telefonoParticular");
 
+    const razonSocial = document.getElementById("razonSocialCliente");
+    const cuitCliente = document.getElementById("cuitCliente");
+    const telefonoEmpresa = document.getElementById("telefonoEmpresa");
+    
     const parametros = new URLSearchParams(window.location.search);
-    const idCliente = parametros.get("id");
+    
 
     const tipoCliente = document.getElementById("tipoCliente");
     const campoParticular = document.getElementById("camposParticular");
@@ -51,50 +66,60 @@
 
     //Validaciones
     function ValidarClientes(){
-        const tipoCliente = document.getElementById("tipoCliente").value;
 
-        const nombre = document.getElementById("nombreCliente").value;
-        const apellido = document.getElementById("apellidoCliente").value;
-        const telefonoParticular = document.getElementById("telefonoParticular").value;
-
-        const razonSocial = document.getElementById("razonSocialCliente").value;
-        const cuit = document.getElementById("cuitCliente").value;
-        const telefonoEmpresa = document.getElementById("telefonoEmpresa").value;
-
-        if(tipoCliente === ""){
+        if(tipo.value === ""){
             alert("Debe seleccionar el tipo de cliente");
             return false;
         }
-        if(tipoCliente === "particular"){
+        if(tipo.value === "particular"){
             
-            if(nombre === ""){
+            if(nombre.value.trim() === ""){
                 alert("Debe ingresar un nombre");
+                nombre.focus();
                 return false;
             }
-            if(apellido === ""){
+            if(apellido.value.trim() === ""){
                 alert("Debe ingresar un apellido");
+                apellido.focus();
                 return false;
             }
-            if(telefonoParticular === ""){
+            if(telefonoParticular.value.trim() === ""){
                 alert("Debe ingresar un teléfono");
+                telefonoParticular.focus();
+                return false;
+            }
+            const numeroTelefono = telefonoParticular.replace(/\D/g, "");
+            if(numeroTelefono.length < 10 || numeroTelefono.length > 11){
+                alert("Ingrese un teléfono válido con característica");
+                numeroTelefono.focus();
                 return false;
             }
         }
 
-        if(tipoCliente === "empresa"){
+        if(tipo.value === "empresa"){
             
-            if(razonSocial === ""){
+            if(razonSocial.value.trim() === ""){
                 alert("Debe ingresar una razón social");
+                razonSocial.focus();
                 return false;
             }
-            if(cuit === ""){
+            if(cuitCliente.value.trim() === ""){
                 alert("Debe ingresar un CUIT");
+                cuitCliente.focus();
                 return false;
             }
-            if(telefonoEmpresa === ""){
+            if(telefonoEmpresa.value.trim() === ""){
                 alert("Debe ingresar un teléfono");
+                telefonoEmpresa.focus();
                 return false;
             }
+            const numeroTelefono = telefonoEmpresa.replace(/\D/g, "");
+            if(numeroTelefono.length < 10 || numeroTelefono.length > 11){
+                alert("Ingrese un teléfono válido con característica");
+                numeroTelefono.focus();
+                return false;
+            }
+
         }
         return true;
     }
@@ -389,6 +414,19 @@ buscarCliente.addEventListener("input", async () => {
 
     MostrarClientes(clientes);
 })
+cuitCliente.addEventListener("input", function(){
+
+    let cuit = cuitCliente.value.replace(/\D/g, "");
+
+    if(cuit.length > 2){
+        cuit = cuit.slice(0, 2) + "-" + cuit.slice(2);
+    }
+    if(cuit.length > 11){
+        cuit = cuit.slice(0, 11) + "-" + cuit.slice(11);
+    } 
+    cuitCliente.value = cuit;
+});
+
 function obtenerClaseEstados(estado){
     if(estado === "Activo"){
         return "estado-activo";

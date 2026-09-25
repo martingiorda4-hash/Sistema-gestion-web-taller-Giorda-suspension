@@ -1,5 +1,12 @@
 import { ObtenerDatos, ObtenerPagosPendientes } from "./API/dashboardAPI";
 import{ObtenerTrabajos} from "./API/trabajoAPI";
+import { VerificarSesion } from "./API/sesionAPI";
+
+const sesionActiva = await VerificarSesion();
+
+if(!sesionActiva){
+    window.location.href = "login.html";
+}
 
 const btnNuevoCliente = document.getElementById("btnClienteNuevo");
 const btnNuevoTrabajo = document.getElementById("btnTrabajoNuevo");

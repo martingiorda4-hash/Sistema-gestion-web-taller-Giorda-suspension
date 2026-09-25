@@ -26,6 +26,9 @@ class UsuarioController{
             return false;
         }
 
+        
+        $_SESSION["usuario"] = $usuario["usuario"];
+        
         unset($usuario["contrasenia"]);
         
         return $usuario;

@@ -1,7 +1,13 @@
 import { CrearPago, ObtenerPagoPorTrabajo } from "./API/pagoAPI";
 import { ObtenerPorId } from "./API/trabajoAPI";
 import { ObtenerServicioPorTrabajo } from "./API/trabajoServicioAPI";
+import { VerificarSesion } from "./API/sesionAPI";
 
+const sesionActiva = await VerificarSesion();
+
+if(!sesionActiva){
+    window.location.href = "login.html";
+}
 
 const parametros = new URLSearchParams(window.location.search);
 const idTrabajo = parametros.get("id");
@@ -147,7 +153,7 @@ async function CargarDatosDetalle() {
 
     pagosPendientes.textContent = "$" + pagosPendientesActual.toLocaleString("es-AR");
     const claseEstado = obtenerClaseEstados(trabajo.estado);
-    estadoDetalle.innerHTML += `
+    estadoDetalle.innerHTML = `
 
             <span class="estado ${claseEstado}">
                 ${trabajo.estado}

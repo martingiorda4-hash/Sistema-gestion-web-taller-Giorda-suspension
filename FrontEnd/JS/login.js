@@ -1,9 +1,16 @@
 import { IniciarSesion } from "./API/loginAPI";
+import { VerificarSesion } from "./API/sesionAPI";
+
+const sesionActiva = await VerificarSesion();
+
+if(sesionActiva){
+    window.location.replace("dashboard.html");
+}
 
 const usuario = document.getElementById("usuario");
 const contrasenia = document.getElementById("contraseña");
-const btnIngresar = document.getElementById("btnIngresar");
 const formLogin = document.getElementById("form-login");
+const btnMostrarContrasenia = document.getElementById("btnMostrarContraseña");
 
 formLogin.addEventListener("submit", async function(event){
 
@@ -27,12 +34,19 @@ formLogin.addEventListener("submit", async function(event){
     const resultado = await IniciarSesion(datos);   
     if(resultado){
         localStorage.setItem("usuario", resultado.usuario);
-        
-        window.location.href = "dashboard.html";
+        alert(`¡Bienvenido al sistema, ${resultado.usuario}!`);
+        window.location.replace("dashboard.html");
     }else{
         alert("Usuario o contraseña incorrectos");
     }
 
+});
+btnMostrarContrasenia.addEventListener("click", function(){
+    if(contrasenia.type === "password"){
+        contrasenia.type = "text";
+    }else{
+        contrasenia.type = "password";
+    }
 });
 
 

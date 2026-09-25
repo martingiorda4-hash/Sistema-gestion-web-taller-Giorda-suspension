@@ -1,4 +1,5 @@
 <?php
+require_once "verificarSesion.php";
 require_once "Controllers/DashboardController.php";
 
 $controller = new DashboardController();

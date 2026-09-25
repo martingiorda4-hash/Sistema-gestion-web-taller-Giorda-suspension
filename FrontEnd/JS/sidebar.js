@@ -1,3 +1,5 @@
+//import { CerrarSesion } from "./API/sesionAPI.js";
+
 fetch("sidebar.html")
     .then(Response=>Response.text())
     .then(data=>{
@@ -28,7 +30,8 @@ fetch("sidebar.html")
         cerrarSesion.addEventListener("click", abrirModal);
         btnCancelarCerrarSesion.addEventListener("click", cerrarModal);
         
-        btnAceptarCerrarSesion.addEventListener("click", () =>{
+        btnAceptarCerrarSesion.addEventListener("click", async() =>{
+            await fetch("http://giordasuspension/Backend/API/logout.php");
             window.location.href = "login.html";
         })
         

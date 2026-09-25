@@ -16,6 +16,15 @@ import {
 } from "./API/trabajoServicioAPI";
 import { CrearPago } from "./API/pagoAPI";
 
+import { VerificarSesion } from "./API/sesionAPI";
+
+const sesionActiva = await VerificarSesion();
+
+if(!sesionActiva){
+    window.location.href = "login.html";
+}
+
+
 let serviciosOriginales = [];
 let serviciosSeleccionados = [];
 

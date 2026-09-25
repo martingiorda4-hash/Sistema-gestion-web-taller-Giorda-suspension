@@ -1,4 +1,5 @@
 <?php
+require_once "verificarSesion.php";
 require_once "Controllers/TrabajoController.php";
 
 $controller = new TrabajoController();

@@ -1,4 +1,5 @@
 <?php
+require_once "verificarSesion.php";
 require_once "Controllers/ServicioController.php";
 
 $controller = new ServicioController();
@@ -7,8 +8,11 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 header("Content-Type: application/json");
 
-$resultado = match($method){
-    'GET' => $controller->ObtenerTodos()
+$datos = json_decode(file_get_contents("php://input"), true);
 
+$resultado = match($method){
+    'GET' => $controller->ObtenerTodos(),
+    'POST' => $controller->CrearServicio($datos),
+    'PUT' => $controller->ModificarServicio($datos)
 };
 echo json_encode($resultado);

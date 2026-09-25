@@ -1,4 +1,5 @@
 <?php
+require_once "verificarSesion.php";
 require_once "Controllers/PagoController.php";
 
 $controller = new PagoController();

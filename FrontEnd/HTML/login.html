@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="../CSS/login.css">
     <title>Inicio de sesión</title>
 </head>
@@ -17,7 +18,13 @@
             
             <input type="text" id="usuario" placeholder="Ingrese su usuario">
             
-            <input type="password" id="contraseña" placeholder="Ingrese su contraseña">
+            <div class="campo-contraseña">
+                <input type="password" id="contraseña" placeholder="Ingrese su contraseña">
+                <button type="button" id="btnMostrarContraseña">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+
+            </div>
             
     
             <button id="btnIngresar" type="submit">Iniciar sesión</button>

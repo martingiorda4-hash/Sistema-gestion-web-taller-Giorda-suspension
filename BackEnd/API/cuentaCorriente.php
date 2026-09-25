@@ -1,4 +1,5 @@
 <?php
+require_once "verificarSesion.php";
 include_once "Controllers/CuentaCorrienteController.php";
 
 $controller = new CuentaCorrienteController();

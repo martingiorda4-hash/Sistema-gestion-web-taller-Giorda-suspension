@@ -1,4 +1,12 @@
 <?php
+
+session_set_cookie_params([
+    "lifetime" => 28800,
+    "path" => "/"
+]);
+
+session_start();
+
 include_once "Controllers/UsuarioController.php";
 
 $controller = new UsuarioController();
