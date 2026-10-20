@@ -38,6 +38,7 @@ const textoHasta = fechaHasta.closest(".campo-fecha").querySelector("span");
 const botonNuevoTrabajo = document.getElementById("btnNuevoTrabajo");
 const botonCancelar = document.getElementById("btnCancelarTrabajo");
 const modalTrabajo = document.getElementById("modalTrabajo");
+const btnGuardar = document.getElementById("btnGuardarTrabajo");
 
 const tituloModalTrabajo = document.querySelector(".modal-trabajo .modal h2");
 const trabajoIdInput = document.getElementById("trabajoId");
@@ -59,6 +60,7 @@ const parametros = new URLSearchParams(window.location.search);
 const selectCliente = document.getElementById("cliente");
 const selectVehiculo = document.getElementById("vehiculoCliente");
 const selectServicios = document.getElementById("servicio");
+const estado = document.getElementById("estadoModal");
 
 const infoPagina = document.getElementById("infoPagina");
 const btnSiguiente = document.getElementById("btnSiguiente");
@@ -74,10 +76,18 @@ const importePago = document.getElementById("importePago");
 const metodoPago = document.getElementById("metodoPago");
 const pagoSeleccionado = document.getElementById("pagoSeleccionado");
 
+const idClienteURL = parametros.get("cliente");
+
 let ArrayPagos = []; 
 let paginaActual = 1;
 const trabajosporPagina = 20;
 let trabajosActuales = [];
+
+let modoEdicion = false;
+let trabajoEditando = null;
+let trabajoOriginal = null;
+
+let trabajoAEliminar = null;
 
 fechaDesde.addEventListener("change", function() {
     if(this.value !== ""){
@@ -99,31 +109,30 @@ fechaHasta.addEventListener("change", function() {
     }
 })
 
-let modoEdicion = false;
-let trabajoEditando = null;
 
 async function abrirModalCrear(){
     modoEdicion = false;
     trabajoEditando = null;
+    trabajoOriginal = null;
 
     serviciosOriginales = [];
     serviciosSeleccionados = [];
 
     ArrayPagos = [];
     pagoSeleccionado.innerHTML = "";
-    contenedorServiciosSeleccionados.innerHTML = "";
+    mostrarServiciosSeleccionados();
 
     trabajoIdInput.value = "";
     tituloModalTrabajo.textContent = "Nuevo trabajo";
     document.getElementById("formTrabajo").reset();
+    btnGuardar.disabled = false; 
 
     //Cargar clientes en select
     await cargarClienteSelect();
     //Cargar servicios en select
     await cargarServiciosSelect();
-    
-    modalTrabajo.classList.remove("oculto");
 
+    modalTrabajo.classList.remove("oculto");
 }
 selectCliente.addEventListener("change", async () => {
     const clienteId = selectCliente.value;
@@ -131,14 +140,20 @@ selectCliente.addEventListener("change", async () => {
     await cargarVehiculosSelect(clienteId);
 });
 
-
-
 async function abrirModalEditar(trabajo){
     modoEdicion = true;
     trabajoEditando = trabajo;
     
+    trabajoOriginal = {
+        idCliente: trabajo.id_cliente,
+        idVehiculo: trabajo.id_vehiculo,
+        estado: trabajo.estado,
+        observaciones: trabajo.observaciones
+    };
+
     trabajoIdInput.value = trabajo.id;
     tituloModalTrabajo.textContent = "Editar trabajo";
+    btnGuardar.disabled = true;
     
     await cargarClienteSelect();
     
@@ -157,10 +172,7 @@ async function abrirModalEditar(trabajo){
     serviciosSeleccionados = [];
 
     servicios.forEach(servicio => {
-        serviciosOriginales.push({
-            id: servicio.id,
-            id_servicio: servicio.id_servicio
-        });
+        serviciosOriginales.push(String(servicio.id_servicio));
         serviciosSeleccionados.push(String(servicio.id_servicio));
     })
     mostrarServiciosSeleccionados();
@@ -170,15 +182,37 @@ async function abrirModalEditar(trabajo){
 
     modalTrabajo.classList.remove("oculto");
 }
+function VerificarCambiosTrabajo(){
+    if(!trabajoEditando){
+        return;
+    }
+    const cambio = 
+        selectCliente.value != trabajoOriginal.idCliente ||
+        selectVehiculo.value != trabajoOriginal.idVehiculo||
+        estado.value != trabajoOriginal.estado ||
+        observaciones.value.trim() != (trabajoOriginal.observaciones || "").trim() ||
+        JSON.stringify(serviciosSeleccionados) != JSON.stringify(serviciosOriginales);
+    
+    btnGuardar.disabled = !cambio;
+}
+selectCliente.addEventListener("change", VerificarCambiosTrabajo);
+selectVehiculo.addEventListener("change", VerificarCambiosTrabajo);
+estado.addEventListener("change", VerificarCambiosTrabajo);
+observaciones.addEventListener("input", VerificarCambiosTrabajo);
 
 async function cargarClienteSelect() {
      //Cargar clientes en select
     const clientes = await ObtenerClientes();
     const selectCliente = document.getElementById("cliente");
 
+
     selectCliente.innerHTML = ` <option value="">Seleccione un cliente</option>`;
 
-    clientes.forEach(cliente => {
+    const clientesActivos = clientes.filter(
+        cliente=>cliente.estado === "Activo"
+    );
+
+    clientesActivos.forEach(cliente => {
         let nombreCliente;
 
         if(cliente.tipo_cliente === "particular"){
@@ -188,9 +222,14 @@ async function cargarClienteSelect() {
         }
 
         selectCliente.innerHTML += `
-            <option value="${cliente.id}">${nombreCliente}</option>;
+            <option value="${cliente.id}">${nombreCliente}</option>
         `;
     });
+
+    if(idClienteURL){
+        selectCliente.value = idClienteURL;
+        selectCliente.dispatchEvent(new Event("change"));
+    }
 }
 async function cargarVehiculosSelect(clienteId) {
     selectVehiculo.innerHTML = `<option value="">Seleccione un vehiculo respecto al cliente</option>`;
@@ -233,7 +272,6 @@ function cerrarModal(){
     modalTrabajo.classList.add("oculto")
 }
 
-
 function abrirModalEliminar(){
     modalEliminarTrabajo.classList.remove("oculto");
 }
@@ -244,19 +282,27 @@ function cerrarModalEliminar(){
 
 btnCerrarModalNuevo.addEventListener("click", cerrarModal);
 
-
 btnCancelarEliminar.addEventListener("click", cerrarModalEliminar);
-
 
 botonNuevoTrabajo.addEventListener("click", abrirModalCrear);
 
-
-if(parametros.get("abrirModal") === "true"){
+if(parametros.get("abrirModal") === "true" || idClienteURL){
     abrirModalCrear();
+
+    window.history.replaceState({}, document.title, "trabajos.html");
 }
 
+botonCancelar.addEventListener("click",  function(event){
+    event.preventDefault();
 
-botonCancelar.addEventListener("click", () => {
+    if(modoEdicion && !btnGuardar.disabled){
+            const confirmar = confirm("Tienes cambios sin guardar. ¿Deseas salir sin guardar?");
+
+            if(!confirmar){
+                return;
+            }
+
+    }
 
     if(parametros.get("abrirModal") === "true"){
         window.location.href = "dashboard.html";
@@ -303,6 +349,7 @@ btnGuardarPago.addEventListener("click", function(){
     metodoPago.value = "";
     modalPago.classList.add("oculto");
 })
+
 
 //LOGICA PARA CONSUMIR API, OBTENER VALORES DEL FORMULARIO Y MOSTRARLOS EN LA TABLA
 
@@ -419,7 +466,6 @@ async function CargarTrabajos(){
 
     MostrarTrabajos(trabajos);
 }
-let trabajoAEliminar = null;
 
 async function EditarTrabajo(trabajo) {
     await ModificarTrabajo(trabajo);
@@ -444,6 +490,8 @@ btnAgregarServicio.addEventListener("click", () =>{
 
     
     mostrarServiciosSeleccionados();
+
+    VerificarCambiosTrabajo();
 })
 function eliminarServicio(idServicio) {
     serviciosSeleccionados.forEach((id, indice) => {
@@ -452,9 +500,15 @@ function eliminarServicio(idServicio) {
         }
     });
     mostrarServiciosSeleccionados();
+    VerificarCambiosTrabajo();
 }
 function mostrarServiciosSeleccionados(){
     contenedorServiciosSeleccionados.innerHTML = "";
+
+    if(serviciosSeleccionados.length === 0){
+        contenedorServiciosSeleccionados.textContent = "Todavía no hay servicios seleccionados.";
+        return;
+    }
     let total = 0;
 
     serviciosSeleccionados.forEach(idServicio => {

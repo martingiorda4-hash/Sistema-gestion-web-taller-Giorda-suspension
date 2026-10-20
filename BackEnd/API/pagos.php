@@ -20,10 +20,19 @@ function CargarGet($controller){
     return $controller->ObtenerTodos();
 }
 
-$resultado = match($method){
-    'GET' => CargarGet($controller),
-    'POST' => $controller->CrearPago($datos)
-};
+try{
 
-echo json_encode($resultado);
+    $resultado = match($method){
+        'GET' => CargarGet($controller),
+        'POST' => $controller->CrearPago($datos)
+        };
+        echo json_encode($resultado);
+}catch(Exception $e){
+    http_response_code(500);
+
+    echo json_encode([
+        "error" => $e->getMessage()
+    ]);
+}
+
 

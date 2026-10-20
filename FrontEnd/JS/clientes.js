@@ -19,6 +19,7 @@
     const botonNuevoCliente = document.getElementById("btnNuevoCliente");
     const botonCancelarModalCliente = document.getElementById("btnCancelarCliente");
     const modalCliente = document.getElementById("modalCliente");
+    const btnGuardar = document.getElementById("btnGuardarCliente");
     
     const tipo = document.getElementById("tipoCliente");
 
@@ -36,32 +37,37 @@
     const tipoCliente = document.getElementById("tipoCliente");
     const campoParticular = document.getElementById("camposParticular");
     const campoEmpresa = document.getElementById("camposEmpresa");
-
-    //const btnVerClientes = document.getElementById("verCliente");
-
+    
+    
     const clienteIdInput = document.getElementById("clienteId");
     const tituloModalCliente = document.querySelector(".modal h2");
-
+    
     const modalEliminarCliente = document.getElementById("modalEliminarCliente");
-
+    
     const btnCancelar = document.getElementById("btnCancelarEliminar");
     const btnAceptarEliminar = document.getElementById("btnAceptarEliminar");
-
+    
     const formNuevoCliente = document.getElementById("formCliente");
     const tablaClientes = document.getElementById("tablaClientes");
-
+    
     const buscarCliente = document.getElementById("inputBuscarCliente");
-
+    
     const btnAnterior = document.getElementById("btnAnterior");
     const btnSiguiente = document.getElementById("btnSiguiente");
     const botonesPagina = document.querySelectorAll(".numero-pagina");
-
+    
     const infoPagina = document.getElementById("infoPagina");
-
+    
     let paginaActual = 1;
     const clientesPorPagina = 20;
     let clientesActuales = [];
-
+    
+    let modoEdicion = false;
+    let clienteEditando = null;
+    let clienteOriginal = null;
+    
+    let clienteAEliminar = null;
+    
     //LOGICA ABRIR MODAL PARA CREAR Y EDITAR CLIENTE
 
     //Validaciones
@@ -88,10 +94,10 @@
                 telefonoParticular.focus();
                 return false;
             }
-            const numeroTelefono = telefonoParticular.replace(/\D/g, "");
+            const numeroTelefono = telefonoParticular.value.replace(/\D/g, "");
             if(numeroTelefono.length < 10 || numeroTelefono.length > 11){
                 alert("Ingrese un teléfono válido con característica");
-                numeroTelefono.focus();
+                telefonoParticular.focus();
                 return false;
             }
         }
@@ -113,10 +119,10 @@
                 telefonoEmpresa.focus();
                 return false;
             }
-            const numeroTelefono = telefonoEmpresa.replace(/\D/g, "");
+            const numeroTelefono = telefonoEmpresa.value.replace(/\D/g, "");
             if(numeroTelefono.length < 10 || numeroTelefono.length > 11){
                 alert("Ingrese un teléfono válido con característica");
-                numeroTelefono.focus();
+                telefonoEmpresa.focus();
                 return false;
             }
 
@@ -124,15 +130,17 @@
         return true;
     }
 
-    let modoEdicion = false;
-    let clienteEditando = null;
     function abrirModalCrear(){
         modoEdicion = false;
         clienteEditando = null;
+        clienteOriginal = null;
 
         clienteIdInput.value = "";
         tituloModalCliente.textContent = "Nuevo cliente";
         document.getElementById("formCliente").reset();
+
+        btnGuardar.disabled = false;
+
         campoParticular.classList.add("oculto");
         campoEmpresa.classList.add("oculto");
         modalCliente.classList.remove("oculto");
@@ -143,8 +151,17 @@
         modoEdicion = true;
         clienteEditando = cliente;
 
+        clienteOriginal = {
+            nombre: cliente.nombre,
+            apellido: cliente.apellido,
+            telefono: cliente.telefono,
+            razonSocial: cliente.razon_social,
+            cuit: cliente.cuit
+        };
+
         clienteIdInput.value = cliente.id;
         tituloModalCliente.textContent = "Editar cliente";
+        btnGuardar.disabled = true;
 
         tipoCliente.value = cliente.tipo_cliente;
 
@@ -167,8 +184,31 @@
 
         if(idEditar){
             window.location.href = `historialClientes.html?id=${idEditar}`;
-        }
+        }   
     }
+    function verificarCambiosCliente(){
+        if(!clienteEditando){
+            return;
+        }
+
+    const cambio = 
+        nombre.value.trim() !== (clienteOriginal.nombre || "") ||
+        apellido.value.trim() !== (clienteOriginal.apellido || "") ||
+        telefonoParticular.value.trim() !== (clienteOriginal.telefono || "") ||
+        razonSocial.value.trim() !== (clienteOriginal.razon_social || "") ||
+        cuitCliente.value.trim() !== (clienteOriginal.cuit || "") ||
+        telefonoEmpresa.value.trim() !== (clienteOriginal.telefono || "");
+
+    btnGuardar.disabled = !cambio;
+}
+nombre.addEventListener("input", verificarCambiosCliente);
+apellido.addEventListener("input", verificarCambiosCliente);
+telefonoParticular.addEventListener("input", verificarCambiosCliente);
+razonSocial.addEventListener("input", verificarCambiosCliente);
+cuitCliente.addEventListener("input", verificarCambiosCliente);
+telefonoEmpresa.addEventListener("input", verificarCambiosCliente);
+
+
 
     //MODAL ELIMINACION DE CLIENTE
     function abrirModalEliminar(){
@@ -187,7 +227,7 @@
 
     
     botonNuevoCliente.addEventListener("click", abrirModalCrear);
-    botonCancelarModalCliente.addEventListener("click", cerrarModal);
+
 
 
 
@@ -196,12 +236,23 @@
         abrirModalCrear();
     }
 
-    botonCancelarModalCliente.addEventListener("click", () => {
-        if(parametros.get("abrirModal") === "true"){
-            window.location.href = "dashboard.html";
-        }else{
-            modalCliente.classList.add("oculto");
+    botonCancelarModalCliente.addEventListener("click", function(event){
+        event.preventDefault();
+
+        if(modoEdicion && !btnGuardar.disabled){
+            const confirmar = confirm("Tienes cambios sin guardar. ¿Deseas salir sin guardar?");
+
+            if(!confirmar){
+                return;
+            }
         }
+
+            if(parametros.get("abrirModal") === "true"){
+                window.location.href = "dashboard.html";
+            }else{
+                modalCliente.classList.add("oculto");
+            }
+
     });
 
     tipoCliente.addEventListener("change", () =>{
@@ -311,7 +362,6 @@ function ActualizarBotonActivo(){
     });
 }
 
-let clienteAEliminar = null;
 tablaClientes.addEventListener("click", async (e)=>{
     if(e.target.classList.contains("fa-trash")){
         clienteAEliminar = e.target.dataset.id;

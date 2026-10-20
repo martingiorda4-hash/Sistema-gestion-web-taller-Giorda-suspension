@@ -17,8 +17,17 @@ header("Content-Type: application/json");
 
 $datos = json_decode(file_get_contents("php://input"),true);
 
-$resultado = match($method){
-    'GET' => $controller->BuscarUsuario($_GET['usuario']),
-    'POST' => $controller->IniciarSesion($datos)
-};
-echo json_encode($resultado);
+try{
+
+    $resultado = match($method){
+        'GET' => $controller->BuscarUsuario($_GET['usuario']),
+        'POST' => $controller->IniciarSesion($datos)
+        };
+        echo json_encode($resultado);
+}catch(Exception $e){
+    http_response_code(500);
+
+    echo json_encode([
+        "error" => $e->getMessage()
+    ]);
+}

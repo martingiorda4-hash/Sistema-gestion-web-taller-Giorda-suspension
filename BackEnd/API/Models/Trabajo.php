@@ -26,6 +26,7 @@ class Trabajo {
                 FROM trabajos t
                 INNER JOIN clientes c ON t.id_cliente = c.id
                 INNER JOIN vehiculos v ON t.id_vehiculo = v.id
+                WHERE t.eliminado = FALSE
                 ORDER BY t.fecha DESC, t.id DESC";
 
         $consulta = $this->pdo->prepare($sql);
@@ -82,7 +83,9 @@ class Trabajo {
 
     }
     public function EliminarTrabajo($id){
-        $sql = "DELETE FROM trabajos WHERE id = :id";
+        $sql = "UPDATE trabajos 
+                SET eliminado = TRUE
+                WHERE id = :id";
 
         $consulta = $this->pdo->prepare($sql);
 
@@ -108,7 +111,8 @@ class Trabajo {
                         FROM trabajos t
                         INNER JOIN clientes c ON t.id_cliente = c.id
                         INNER JOIN vehiculos v ON t.id_vehiculo = v.id
-                        WHERE t.id = :id";
+                        WHERE t.id = :id
+                        AND t.eliminado = FALSE";
         
         $consulta = $this->pdo->prepare($sql);
 
@@ -137,7 +141,8 @@ class Trabajo {
                     OR v.modelo LIKE :txt
                     OR v.patente LIKE :txt
                 )
-                AND (:estado = 'todos' OR t.estado = :estado)";
+                AND (:estado = 'todos' OR t.estado = :estado)
+                AND t.eliminado = FALSE";
                 
                 $parametros  = [
                     ":txt" => "%" . $txt . "%",
@@ -182,6 +187,7 @@ class Trabajo {
                 INNER JOIN vehiculos v ON t.id_vehiculo = v.id
                 INNER JOIN trabajo_servicio ts ON ts.id_trabajo= t.id
                 WHERE t.id_cliente = :id_cliente
+                AND t.eliminado = FALSE
                 GROUP BY t.id
                 ORDER BY t.fecha DESC";
 

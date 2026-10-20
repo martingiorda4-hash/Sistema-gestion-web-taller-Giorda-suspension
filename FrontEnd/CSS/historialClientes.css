@@ -32,8 +32,7 @@ main{
     width: 100%;
 }
 .datos-cliente h2,
-.vehiculos h2,
-.historial h2{
+.vehiculos h2{
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 20px;
@@ -105,6 +104,22 @@ main{
 .historial{
     margin-top: 20px;
 }
+.seccion-trabajos{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.seccion-trabajos h2{
+    margin: 0;
+}
+.seccion-trabajos button{
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 9px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
 
 table{
     width: 100%;
@@ -131,13 +146,17 @@ tbody td{
     cursor: pointer;
     margin-bottom: 10px;
 }
-#cliente{
+h4{
     font-size: 24px;
     font-weight: 700;
     margin: 8px 0 18px;
+
 }
 .tabla-vehiculos{
 
+    margin-top: 10px;
+}
+.tabla-historial-trabajos{
     margin-top: 10px;
 }
 .acciones{
@@ -153,6 +172,13 @@ tbody td{
 .acciones i:hover{
     color: #2563eb;
 }
+.sin-trabajos,
+.sin-vehiculos{
+    padding: 20px;
+    text-align: center;
+    color: #6b7280;
+}
+
 /* MODAL NUEVO VEHICULO */
 
 .modal-nuevo-vehiculo{

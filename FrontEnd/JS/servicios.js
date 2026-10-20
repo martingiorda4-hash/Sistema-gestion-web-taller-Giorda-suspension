@@ -9,8 +9,11 @@ const modalServicio = document.getElementById("modalNuevoServicio");
 const nombreServicio = document.getElementById("nombreServicio");
 const precioServicio = document.getElementById("precioServicio");
 const tituloModal = document.getElementById("titulo");
+const btnGuardar = document.getElementById("guardarServicio");
 
 let servicioEditando = null;
+let servicioOriginal = null;
+
 
 const iconosServicios = {
     "Alineado y balanceado": "fa-solid fa-car",
@@ -60,7 +63,11 @@ async function CargarServicios() {
 }
 function abrirModalServicio(){
     servicioEditando = null;
+    servicioOriginal = null;
+
     formServicio.reset();
+
+    btnGuardar.disabled = false;    
     modalServicio.classList.remove("oculto");
 }
 function cerrarModalServicio(){
@@ -104,13 +111,32 @@ function abrirModalModificar(servicio){
 
     servicioEditando = servicio;
 
+    servicioOriginal = {
+        nombre: servicio.nombre,
+        precio_base: servicio.precio_base
+    };
+    
     nombreServicio.value = servicio.nombre;
     precioServicio.value = servicio.precio_base;
 
     tituloModal.textContent = "Modificar servicio";
+    btnGuardar.disabled = true; 
 
     modalServicio.classList.remove("oculto");
 }
+function VerificarCambios(){
+    if(!servicioEditando){
+        return;
+    }
+
+    const nombreCambio = nombreServicio.value.trim() !== servicioOriginal.nombre;
+
+    const precioCambio = precioServicio.value !== String(servicioOriginal.precio_base);
+    
+    btnGuardar.disabled = !(nombreCambio || precioCambio);
+}
+nombreServicio.addEventListener("input", VerificarCambios);
+precioServicio.addEventListener("input", VerificarCambios);
 function ValidarCampos(){
 
     if(nombreServicio.value.trim() === ""){

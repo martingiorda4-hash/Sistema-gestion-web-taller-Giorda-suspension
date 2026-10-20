@@ -41,6 +41,8 @@ const metodoPago = document.getElementById("metodoPago");
 
 const pagosPendientes = document.getElementById("pendientePagos");
 
+const sinObservaciones = document.getElementById("sinObservaciones");
+
 function abrirModalNuevoPago(){
     modalPago.classList.remove("oculto");
 }
@@ -113,8 +115,12 @@ async function CargarDatosDetalle() {
 
     fechaDetalle.textContent = new Date(trabajo.fecha + "T00:00:00").toLocaleDateString("es-AR");
 
+    if(trabajo.observaciones){
+        observacionesDetalle.textContent = trabajo.observaciones;
+    }else{
+        observacionesDetalle.textContent = "No hay observaciones para este trabajo.";
 
-    observacionesDetalle.textContent = trabajo.observaciones;
+    }
 
     let total = 0;
 

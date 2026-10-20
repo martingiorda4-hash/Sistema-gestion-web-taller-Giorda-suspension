@@ -10,15 +10,24 @@ header("Content-Type: application/json");
 
 $datos = json_decode(file_get_contents("php://input"), true);
 
-$resultado = match($method){ 
-    'GET' => isset($_GET["id"]) //ISSET-> SI LA URL VIENE CON UN PARAMETRO ID
-            ? $controller->ObtenerPorId($_GET["id"]) // -> OBTIENE POR ID
-            : (isset($_GET["buscar"])
-                ?$controller->BuscarCliente($_GET["buscar"])
-                :$controller->ObtenerTodos()), // -> : SINO, OBTIENE TODOS
+try{
+    $resultado = match($method){ 
+            'GET' => isset($_GET["id"]) //ISSET-> SI LA URL VIENE CON UN PARAMETRO ID
+                    ? $controller->ObtenerPorId($_GET["id"]) // -> OBTIENE POR ID
+                    : (isset($_GET["buscar"])
+                        ?$controller->BuscarCliente($_GET["buscar"])
+                        :$controller->ObtenerTodos()), // -> : SINO, OBTIENE TODOS
+        
+            'POST' => $controller->CrearCliente($datos),
+            'PUT' => $controller->ModificarCliente($datos),
+            'DELETE' => $controller->EliminarCliente($datos["id"])
+            
+            };
+            echo json_encode($resultado);
+}catch(Exception $e){
+        http_response_code(500);
 
-    'POST' => $controller->CrearCliente($datos),
-    'PUT' => $controller->ModificarCliente($datos),
-    'DELETE' => $controller->EliminarCliente($datos["id"])
-};
-echo json_encode($resultado);
+            echo json_encode([
+                "error" => $e->getMessage()
+            ]);
+}

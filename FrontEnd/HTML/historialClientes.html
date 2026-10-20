@@ -11,7 +11,7 @@
     <div id="sidebar"></div>
     <main>
         <button class="btn-volver" type="button" id="btnVolver">←Volver</button> 
-        <h4 class="nombre-cliente" id="cliente"></h4>
+        <h4>Cliente: <span id="cliente"></span></h4>
 
         <div class="contenedor-superior">
             <section class="datos-cliente">
@@ -38,23 +38,23 @@
                     <span>Nombre:</span>
                     <strong id="nombreCliente"></strong>
                 </div>
-            <div class="campo" id="campoApellido">
-                <span>Apellido:</span>
-                <strong id="apellidoCliente"></strong>
-            </div>
-            <div class="campo">
-                <span>Teléfono:</span>
-                <strong id="telefonoCliente"></strong>
-            </div>
-            <div class="campo" id="campoCuit">
-                <span>CUIT:</span>
-                <strong id="cuitCliente"></strong>
-            </div>
-            <div class="campo" id="campoRazonSocial">
-                <span>Razón social:</span>
-                <strong id="razonSocialCliente"></strong>
-            </div>
-        </section>
+                <div class="campo" id="campoApellido">
+                    <span>Apellido:</span>
+                    <strong id="apellidoCliente"></strong>
+                </div>
+                <div class="campo">
+                    <span>Teléfono:</span>
+                    <strong id="telefonoCliente"></strong>
+                </div>
+                <div class="campo" id="campoCuit">
+                    <span>CUIT:</span>
+                    <strong id="cuitCliente"></strong>
+                </div>
+                <div class="campo" id="campoRazonSocial">
+                    <span>Razón social:</span>
+                    <strong id="razonSocialCliente"></strong>
+                </div>
+            </section>
         
         <section class="vehiculos">
             <div class="seccion-vehiculos">
@@ -76,31 +76,42 @@
                     <tbody id="tablaVehiculos">
                     </tbody>
                 </table>
-
+                <p id="sinVehiculos" class="sin-vehiculos oculto">
+                    Aún no hay vehículos registrados para este cliente.
+                </p>
             </section>
         </section>
     </div>
     <section class="historial"> 
-        <h2>Trabajos</h2>
-        <table>
-            <thead>
-                <tr>
-                    
-                    <th>Fecha</th>
-                    <th>Vehiculo</th>
-                    <th>Trabajo</th>
-                    <th>Estado</th>
-                    <th>Importe</th>
-                    <th>Pagado</th>
-                    <th>Pendiente</th>
-                </tr>
-            </thead>
-            <tbody id="historialCliente">
-            </tbody>
-        </table>
+            <div class="seccion-trabajos">
+                <h2>Trabajos</h2>
+                <button type="button" id="btnAgregarTrabajo">+ Nuevo trabajo</button>
+            </div>
+        <section class="tabla-historial-trabajos">
+
+            <table>
+                <thead>
+                    <tr>
+                        
+                        <th>Fecha</th>
+                        <th>Vehiculo</th>
+                        <th>Trabajo</th>
+                        <th>Estado</th>
+                        <th>Importe</th>
+                        <th>Pagado</th>
+                        <th>Pendiente</th>
+                    </tr>
+                </thead>
+                <tbody id="historialCliente">
+                </tbody>
+            </table>
+            <p id="sinTrabajos" class="sin-trabajos oculto">
+                Aún no hay trabajos registrados para este cliente.
+            </p>
+        </section>
     </section>
-</main>
-<div class="modal-nuevo-vehiculo oculto" id="modalNuevoVehiculo">
+    </main>
+    <div class="modal-nuevo-vehiculo oculto" id="modalNuevoVehiculo">
     <div class="modal-contenido">
         <h2>Nuevo vehículo</h2>
         <form id="formNuevoVehiculo">

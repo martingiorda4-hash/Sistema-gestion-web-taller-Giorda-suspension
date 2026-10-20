@@ -140,6 +140,11 @@ main{
     background: #2563eb;
     color: #fff;
 }
+#guardarServicio:disabled{
+    background: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
 #cancelarServicio{
     background: #6b7280;
     border: 1px solid #e5e7eb;

@@ -20,7 +20,7 @@ const btnVolver = document.getElementById("btnVolver");
 //const clienteNombre = document.getElementById("cliente");
 
 const abrirModalNuevoVehiculo = document.getElementById("modalNuevoVehiculo");
-const modalNuevoVehiculo = document.getElementById("btnAgregarVehiculo");
+const btnNuevoVehiculo = document.getElementById("btnAgregarVehiculo");
 const btnCancelar = document.getElementById("btnCancelar");
 
 const modalEliminar = document.getElementById("modalEliminarVehiculo");
@@ -38,9 +38,13 @@ const formNuevoVehiculo = document.getElementById("formNuevoVehiculo");
 const tablaVehiculos = document.getElementById("tablaVehiculos");
 const parametros = new URLSearchParams(window.location.search);
 
+const sinTrabajos = document.getElementById("sinTrabajos");
+const sinVehiculos = document.getElementById("sinVehiculos"); 
+
 const tablaHistorialTrabajos = document.getElementById("historialCliente");
 
-//const id = parametros.get("id");
+const btnNuevoTrabajo = document.getElementById("btnAgregarTrabajo");
+
 
 const idCliente = parametros.get("id");
 
@@ -79,8 +83,13 @@ document.getElementById("cuitCliente").textContent = cliente.cuit;
 document.getElementById("razonSocialCliente").textContent = cliente.razon_social;
 
 
+
 btnVolver.addEventListener("click", () =>{
     window.location.href = "clientes.html"
+});
+
+btnNuevoTrabajo.addEventListener("click", () => {
+    window.location.href = `trabajos.html?cliente=${idCliente}`;
 });
 
 function abrirModalVehiculo(){
@@ -93,7 +102,7 @@ function abrirModalVehiculo(){
 function cerrarModalVehiculo(){
     abrirModalNuevoVehiculo.classList.add("oculto");
 }
-modalNuevoVehiculo.addEventListener("click", abrirModalVehiculo);
+btnNuevoVehiculo.addEventListener("click", abrirModalVehiculo);
 btnCancelar.addEventListener("click", cerrarModalVehiculo);
 
 function abrirModalEliminar(){
@@ -149,6 +158,15 @@ async function CargarVehiculos() {
     const vehiculos = await ObtenerVehiculoPorCliente(idCliente);
 
     tablaVehiculos.innerHTML = "";
+
+    if(vehiculos.length === 0){
+        tablaVehiculos.closest("table").style.display = "none";
+        sinVehiculos.classList.remove("oculto");
+        return;
+    }
+    tablaVehiculos.closest("table").style.display = "";
+    sinVehiculos.classList.add("oculto");
+    
 
     vehiculos.forEach(vehiculo => {
         
@@ -236,10 +254,21 @@ formNuevoVehiculo.addEventListener("submit", async function (event) {
 })
 async function cargarHistorialTrabajos() {
     const trabajos = await ObtenerTrabajoPorCliente(idCliente);
+
     
     const pagos = await ObtenerPagoPorCliente(idCliente);
 
     tablaHistorialTrabajos.innerHTML = "";
+
+    if(trabajos.length === 0){
+
+        tablaHistorialTrabajos.closest("table").style.display = "none";
+        sinTrabajos.classList.remove("oculto");
+        return;
+    }
+    tablaHistorialTrabajos.closest("table").style.display = "";
+    sinTrabajos.classList.add("oculto");
+
 
     trabajos.forEach(trabajo => {
 

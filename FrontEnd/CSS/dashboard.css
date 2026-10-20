@@ -8,12 +8,14 @@ body{
     color: #1f2937;
 }
 .barra-superior{
+    height: 52px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 18px 28px;
+    justify-content: flex-end;
+    padding: 0 25px;
     background: #fff;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 main{
     padding: 24px 28px;
@@ -99,7 +101,11 @@ th, td{
     border-bottom: 1px solid #e5e7eb;
 }
 .admin{
-    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #374151;
+    font-size: 18px;
 }
 #btnVerPendientes{
     background: #93c5fd;

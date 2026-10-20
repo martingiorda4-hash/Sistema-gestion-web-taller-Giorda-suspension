@@ -10,9 +10,18 @@ header("Content-Type: application/json");
 
 $datos = json_decode(file_get_contents("php://input"), true);
 
-$resultado = match($method){
-    'GET' => $controller->ObtenerTodos(),
-    'POST' => $controller->CrearServicio($datos),
-    'PUT' => $controller->ModificarServicio($datos)
-};
-echo json_encode($resultado);
+try{
+
+    $resultado = match($method){
+        'GET' => $controller->ObtenerTodos(),
+        'POST' => $controller->CrearServicio($datos),
+        'PUT' => $controller->ModificarServicio($datos)
+        };
+        echo json_encode($resultado);
+}catch(Exception $e){
+    http_response_code(500);
+
+    json_encode([
+        "error" => $e->getMessage()
+    ]);
+}

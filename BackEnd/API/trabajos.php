@@ -28,11 +28,19 @@ function cargarGet($controller){
     return $controller->ObtenerTodos();
 }
 
-$resultado = match($method){
-    'GET' => cargarGet($controller),
-    'POST' => $controller->CrearTrabajo($datos),
-    'PUT' => $controller->ModificarTrabajo($datos),
-    'DELETE' => $controller->EliminarTrabajo($datos["id"])
-};
+try{
 
-echo json_encode($resultado);
+    $resultado = match($method){
+        'GET' => cargarGet($controller),
+        'POST' => $controller->CrearTrabajo($datos),
+        'PUT' => $controller->ModificarTrabajo($datos),
+        'DELETE' => $controller->EliminarTrabajo($datos["id"])
+        };
+        echo json_encode($resultado);
+}catch(Exception $e){
+    http_response_code(500);
+
+    json_encode([
+        "error" => $e->getMessage()
+    ]);
+}

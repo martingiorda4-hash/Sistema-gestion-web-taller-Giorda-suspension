@@ -12,7 +12,8 @@ class Dashboard{
                     SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END) AS trabajosPendientes,
                     SUM(CASE WHEN estado = 'Terminado' THEN 1 ELSE 0 END) AS trabajosTerminados,
                     SUM(CASE WHEN estado = 'Entregado' THEN 1 ELSE 0 END) AS trabajosEntregados
-                FROM trabajos";
+                FROM trabajos
+                WHERE eliminado = FALSE";
 
         $consulta = $this->pdo->prepare($sql);
         $consulta->execute();
@@ -29,6 +30,7 @@ class Dashboard{
                     ) AS pagado
                 FROM trabajos t
                 INNER JOIN trabajo_servicio ts ON ts.id_trabajo = t.id
+                WHERE t.eliminado = FALSE
                 GROUP BY t.id";
         
         $consulta = $this->pdo->prepare($sql);
@@ -72,6 +74,7 @@ class Dashboard{
                 INNER JOIN clientes c ON t.id_cliente = c.id
                 INNER JOIN vehiculos v ON t.id_vehiculo = v.id
                 INNER JOIN trabajo_servicio ts ON ts.id_trabajo = t.id
+                WHERE t.eliminado = FALSE
                 GROUP BY t.id";
         
         $consulta = $this->pdo->prepare($sql);
