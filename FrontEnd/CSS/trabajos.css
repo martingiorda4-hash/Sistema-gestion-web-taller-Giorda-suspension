@@ -156,6 +156,7 @@ tbody tr:hover td{
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 2000;
 }
 .modal{
     position: relative;
@@ -312,10 +313,7 @@ tbody tr:hover td{
     margin-top: 15px;
 }
 #modalNuevoPago{
-    z-index: 200;
-}
-#modalTrabajo{
-    z-index: 100;
+    z-index: 3000;
 }
 .modal-nuevoPago{
     width: 400px;
@@ -632,4 +630,91 @@ tbody tr:hover td{
     background-color: #f1f3f5;
     color: #6b7280;
     border: 1px solid #e1e4e8;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px){
+    main{
+        margin-left: 150px;
+        padding: 20px 10px;
+    }
+    .titulo{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .btn-trabajos{
+        width: auto;
+    }
+    .filtros{
+        flex-direction: column;
+        width: 100%;
+    }
+    #estado{
+        margin-left: 0;
+        width: 100%;
+    }
+    .filtro-fecha{
+        width: 100%;
+    }
+    .campo-fecha{
+        flex: 1;
+        width: auto;
+    }
+    .buscador{
+        width: 100%;
+    }
+    .tabla-trabajos{
+        overflow-y: auto;
+        padding: 10px;
+    }
+    table{
+        min-width: 700px;
+    }
+    tbody td{
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+    .paginacion{
+        flex-direction: column;
+        gap: 10px;
+    }
+    .numero-pagina{
+        text-align: center;
+    }
+    .modal-trabajo .modal{
+        width: 95%;
+        max-width: 400px;
+        padding: 18px;
+    }
+    .modal-trabajo .modal h2{
+        margin-bottom: 10px;
+    }
+    .modal-trabajo .modal form{
+        gap: 3px;
+    }
+    .modal-trabajo .modal-botones{
+        flex-direction: column;
+        width: 100%;
+    }
+    .modal-trabajo .modal-botones button{
+        width: 100%;
+    }
+    .columnas{
+        grid-template-columns: 1fr;
+    }
+    .modal-nuevoPago{
+        width: 90%;
+        max-width: 350px;
+        padding: 18px;
+    }
+    .modal-nuevoPago .modal-botones{
+        flex-direction: column;
+        width: 100%;
+    }
+    .modal-nuevoPago .modal-botones button{
+        width: 100%;
+    }
+    
 }

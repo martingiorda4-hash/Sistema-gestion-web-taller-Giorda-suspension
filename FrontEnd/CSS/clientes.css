@@ -121,6 +121,7 @@ tbody tr:hover td{
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 2000;
 }
 .modal{
     background: #fff;
@@ -311,4 +312,54 @@ tbody tr:hover td{
     background-color: #f1f3f5;
     color: #6b7280;
     border: 1px solid #e1e4e8;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px){
+    main{
+        margin-left: 150px;
+        padding: 20px 10px;
+    }
+    .titulo{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .btn-nuevo{
+        width: auto;
+    }
+    .buscador{
+        max-width: 100%;
+    }
+    .tabla-clientes{
+        overflow-x: auto;
+        padding: 10px;
+    }
+    table{
+        min-width: 650px;
+    }
+    .paginacion{
+        flex-direction: column;
+        gap: 15px;
+    }
+    .numero-pagina{
+        text-align: center;
+    }
+    tbody td{
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+    .modal-clientes .modal{
+        width: 95%;
+        max-width: 400px;
+        padding: 18px;
+    }
+    .modal-clientes .modal-botones {
+        flex-direction: column;
+        width: 100%;
+    }
+    .modal-clientes .modal-botones button{
+        width: 100%;
+    }
 }

@@ -96,3 +96,33 @@ button:hover{
     padding: 0;
     background: transparent;
 }
+/* RESPONSIVE */
+
+@media (max-width: 768px){
+    body{
+        padding: 20px;
+    }
+    .login-container{
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+    }
+    .imagenes{
+        width: 100%;
+    }
+    .img-logo{
+        width: 220px;
+        max-width: 80%;
+    }
+    #form-login{
+        width: 100%;
+        max-width: 400px;
+        padding: 25px 20px;
+    }
+    h3{
+        font-size: 22px;
+    }
+
+
+}

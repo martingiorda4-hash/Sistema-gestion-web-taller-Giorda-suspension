@@ -150,3 +150,41 @@ main{
     border: 1px solid #e5e7eb;
     color: #fff;
 }
+/* RESPONSIVE */
+
+@media (max-width: 768px){
+    main{
+        margin-left: 150px;
+        padding: 20px 10px;
+    }
+    .titulo{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .servicios-container{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+    .servicio-card{
+        min-width: 0;
+        padding: 12px;
+        min-height: 125px;
+    }
+    .modal-servicio{
+        z-index: 2000;
+    }
+    .modal-servicio-contenido{
+        width: 90%;
+        max-width: 350px;
+        padding: 18px;
+        box-sizing: border-box;
+    }
+    .modal-servicio-botones{
+        flex-direction: column;
+        width: 100%;
+    }
+    .modal-servicio-botones button{
+        width: 100%;
+    }
+}

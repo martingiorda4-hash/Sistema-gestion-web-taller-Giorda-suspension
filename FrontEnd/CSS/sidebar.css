@@ -157,3 +157,24 @@ body{
     background: #c71f25;
     color: #fff;
 }
+
+/* RESPONSIVE */
+
+@media (max-width: 768px){
+    .sidebar{
+        width: 150px;
+        padding: 20px 10px;
+    }
+    .logo img{
+        width: 110px;
+    }
+    .menu{
+        gap: 8px;
+        margin-top: 20px;
+    }
+    .menu a,
+    .cerrar-sesion button{
+        padding: 11px 8px;
+        gap: 8px;
+    }
+}

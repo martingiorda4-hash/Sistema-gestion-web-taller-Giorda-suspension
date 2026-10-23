@@ -314,3 +314,65 @@ h4{
     background: #c71f25;
     color: #fff;
 }
+/* RESPONSIVE */
+
+@media (max-width: 768px){
+    main {
+        margin-left: 150px;
+        padding: 20px 10px;
+    }
+    .contenedor-superior{
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    .datos-cliente,
+    .historial,
+    .vehiculos{
+        padding: 10px;
+    }
+    .campo{
+        margin-bottom: 7px;
+    }
+    .cabecera-datos-cliente,
+    .seccion-vehiculos,
+    .seccion-trabajos{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .acciones-cliente{
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        gap: 5px;
+    }
+    .acciones-cliente button{
+        width: 120px;
+        padding: 5px 8px;
+        font-size: 12px;
+    }
+    .seccion-vehiculos button,
+    .seccion-trabajos button{
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    .tabla-vehiculos{
+        overflow-x: auto;
+    }
+    .tabla-historial-trabajos{
+        overflow-x: auto;
+    }
+    .tabla-vehiculos table{
+        min-width: 0;
+    }
+    .tabla-historial-trabajos table{
+        min-width: 500px;
+    }
+    .historial{
+        padding: 15px 10px;
+    }
+    .btn-volver{
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+}

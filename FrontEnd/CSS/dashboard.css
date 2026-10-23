@@ -132,7 +132,7 @@ th, td{
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 200;
+    z-index: 2000;
 }
 .modal-pagosPendientes .modal-contenido{
     position: relative;
@@ -197,4 +197,54 @@ th, td{
 }
 .oculto{
     display: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px){
+    main{
+        margin-left: 150px;
+        padding: 20px 15px;
+    }
+    .tarjetas{
+        grid-template-columns: 1fr;
+    }
+    .resumen-card{
+        grid-template-columns: 1fr;
+    }
+    .tabla-trabajos{
+        overflow-x: auto;
+    }
+    table{
+        min-width: 600px;
+    }
+    .titulo{
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 10px;
+
+    }
+    .btnTrabajo,
+    .btnCliente{
+        width: auto;
+        margin-left: 0;
+    }
+    .barra-superior{
+        padding: 0 10px;
+    }
+    .modal-pagosPendientes .modal-contenido {
+        width: 95%;
+        max-width: 95%;
+        padding: 15px;
+    }
+    .modal-pagosPendientes .modal-contenido table{
+        min-width: 600px;
+    }
+    .modal-pagosPendientes .modal-contenido {
+        width: 95%;
+        max-width: 95%;
+        max-height: 85vh;
+        padding: 15px;
+        overflow: auto;
+    }
 }
