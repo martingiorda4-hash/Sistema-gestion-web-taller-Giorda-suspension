@@ -192,6 +192,7 @@ h4{
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 2000;
 }
 .modal-contenido{
     background: #fff;
@@ -319,19 +320,23 @@ h4{
 @media (max-width: 768px){
     main {
         margin-left: 150px;
-        padding: 20px 10px;
+        padding: 20px 12px;
+        min-width: 0;
     }
     .contenedor-superior{
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 15px;
     }
     .datos-cliente,
     .historial,
     .vehiculos{
-        padding: 10px;
+        width: 100%;
+        min-width: 0;
+        padding: 15px;
     }
     .campo{
-        margin-bottom: 7px;
+        margin-bottom: 10px;
+        overflow-wrap: anywhere;
     }
     .cabecera-datos-cliente,
     .seccion-vehiculos,
@@ -341,38 +346,60 @@ h4{
         gap: 10px;
     }
     .acciones-cliente{
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
         width: 100%;
-        gap: 5px;
+        gap: 8px;
     }
     .acciones-cliente button{
         width: 120px;
-        padding: 5px 8px;
+        padding: 7px 8px;
         font-size: 12px;
     }
     .seccion-vehiculos button,
     .seccion-trabajos button{
-        padding: 6px 10px;
+        padding: 7px 10px;
         font-size: 12px;
     }
-    .tabla-vehiculos{
-        overflow-x: auto;
-    }
+    .tabla-vehiculos,
     .tabla-historial-trabajos{
+        width: 100%;
         overflow-x: auto;
     }
     .tabla-vehiculos table{
+        min-width: 450px;
         min-width: 0;
+        font-size: 11px;
+    }
+    .tabla-vehiculos th,
+    .tabla-vehiculos td {
+        padding: 6px 4px;
     }
     .tabla-historial-trabajos table{
-        min-width: 500px;
+        min-width: 600px;
     }
     .historial{
-        padding: 15px 10px;
+        margin-top: 15px;
     }
     .btn-volver{
-        padding: 6px 8px;
+        padding: 7px 9px;
         font-size: 12px;
+    }
+    h4{
+        font-size: 21px;
+        overflow-wrap: anywhere;
+    }
+    .modal-nuevo-vehiculo{
+        padding: 15px;
+        box-sizing: border-box;
+    }
+    .modal{
+        max-width: 100%;
+    }
+    .modal-nuevo-vehiculo input{
+        width: 100%;
+    }
+    .modal-nuevo-vehiculo .modal-botones{
+        flex-wrap: wrap;
     }
 }

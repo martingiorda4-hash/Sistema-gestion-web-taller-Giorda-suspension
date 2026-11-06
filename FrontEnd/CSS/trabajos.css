@@ -718,3 +718,69 @@ tbody tr:hover td{
     }
     
 }
+/*TABLET*/
+@media(min-width: 769px) and (max-width: 1100px){
+    main{
+        margin-left: 200px;
+        padding: 20px;
+    }
+    .titulo{
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    .filtros{
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .filtro-fecha{
+        flex-wrap: wrap;
+    }
+    .buscador{
+        width: 350px;
+        max-width: 100%;
+    }
+    .tabla-trabajos{
+        width: 100%;
+        overflow-x: auto;
+    }
+    table{
+        min-width: 650px;
+    }
+    tbody td{
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+    .paginacion{
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .modal-trabajo .modal{
+        width: 90%;
+        max-width: 600px;
+        padding: 25px;
+    }
+    .columnas{
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    .columna-izquierda,
+    .columna-derecha{
+        min-width: 0;
+    }
+    .modal select,
+    .modal input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .btn-Agregar-Servicio{
+        width: 100%;
+    }
+    .modal-nuevoPago{
+        width: 90%;
+        max-width: 400px;
+    }
+    #estado{
+        margin-left: 0;
+    } 
+
+}
