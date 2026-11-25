@@ -30,6 +30,12 @@ class TrabajoTest extends TestCase {
         $this->servicio = new Servicio($this->pdo);
     }
     protected function tearDown(): void {
+        foreach ($this->idsTrabajosCreados as $id) {
+            $consulta = $this->pdo->prepare(
+                "DELETE FROM trabajo_servicio WHERE id_trabajo = :id"
+            );
+            $consulta->execute([":id" => $id]);
+        }
         // eliminamos los trabajos de prueba.
         foreach ($this->idsTrabajosCreados as $id) {
             $consulta = $this->pdo->prepare(
@@ -56,18 +62,14 @@ class TrabajoTest extends TestCase {
 
             $consulta->execute([":id" => $id]);
         }
+        // eliminar servicios 
         foreach ($this->idsServiciosCreados as $id) {
             $consulta = $this->pdo->prepare(
                 "DELETE FROM servicios WHERE id = :id"
             );
             $consulta->execute([":id" => $id]);
         }
-        foreach ($this->idsTrabajosCreados as $id) {
-            $consulta = $this->pdo->prepare(
-                "DELETE FROM trabajo_servicio WHERE id_trabajo = :id"
-            );
-            $consulta->execute([":id" => $id]);
-        }
+        
     }
     private function crearVehiculoYCliente(): array {
          $cliente = new Cliente($this->pdo);

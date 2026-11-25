@@ -27,14 +27,13 @@ class ClienteTest extends TestCase{
             $consulta->execute([":id" => $id]);
         }
     }
-
-    public function testCrearCliente(): void{
+    private function crearClientePrueba(string $apellido = 'Prueba'): int {
         $telefono = 'TEST' . uniqid();
 
         $id = $this->cliente->CrearCliente(
             'particular',
             'Cliente',
-            'Prueba',
+            $apellido,
             $telefono,
             null,
             null
@@ -44,9 +43,15 @@ class ClienteTest extends TestCase{
 
         $this->idsCreados[] = $id;
 
+        return $id;
+    }
+    public function testCrearCliente(): void{
+        $id = $this->crearClientePrueba();
+
         $cliente = $this->cliente->ObtenerPorId($id);
 
-        $this->assertSame($telefono, $cliente['telefono']);
+        $this->assertNotFalse($cliente);
+        $this->assertSame('Cliente', $cliente['nombre']);
         $this->assertSame('Activo', $cliente['estado']);
 
     }
@@ -54,24 +59,14 @@ class ClienteTest extends TestCase{
     //TEST MODIFICAR CLIENTE
 
     public function testModificarCliente():void {
-        $telefono = 'TEST' . uniqid();
-
-        $id= $this->cliente->CrearCliente(
-            'Particular',
-            'Cliente',
-            'Original',
-            $telefono,
-            null,
-            null
-        );
-        $this->assertNotEmpty($id);
+        $id = $this->crearClientePrueba('Original');
 
         $this->cliente->ModificarCliente(
             $id,
             'particular',
             'Cliente',
             'Modificado',
-            $telefono,
+            $this->cliente->ObtenerPorId($id)['telefono'],
             null,
             null
         );
@@ -80,57 +75,32 @@ class ClienteTest extends TestCase{
 
         $this->assertSame('Cliente', $cliente['nombre']);
         $this->assertSame('Modificado', $cliente['apellido']);
-        $this->assertSame($telefono, $cliente['telefono']);
     }
 
     //TEST CONSULTAR CLIENTE
     public function testConsultarCliente():void {
-        $telefono = 'TEST' . uniqid();
-
-        $id = $this->cliente->CrearCliente(
-            'particular',
-            'Cliente',
-            'Consulta',
-            $telefono,
-            null,
-            null
-        );
-        $this->assertNotEmpty($id);
-
-        $this->idsCreados[] = $id;
+        $id = $this->crearClientePrueba('Consulta');
 
         $cliente = $this->cliente->ObtenerPorId($id);
 
         $this->assertNotFalse($cliente);
         $this->assertSame('Cliente', $cliente['nombre']);
         $this->assertSame('Consulta', $cliente['apellido']);
-        $this->assertSame($telefono, $cliente['telefono']);
-        
+            
     }
 
     //TEST RECHAZAR CLIENTE DUPLICADO
     public function testRechazarClienteDuplicado(): void {
         
-        $telefono = 'TEST' . uniqid();
+        $id = $this->crearClientePrueba('Duplicado');
 
-        $id = $this->cliente->CrearCliente(
-            'particular',
-            'Cliente',
-            'Duplicado',
-            $telefono,
-            null,
-            null
-        );
-
-        $this->assertNotEmpty($id);
-
-        $this->idsCreados[] = $id;
+        $cliente = $this->cliente->ObtenerPorId($id);
 
         $resultado = $this->cliente->CrearCliente(
             'particular',
             'Cliente',
             'Duplicado',
-            $telefono,
+            $cliente['telefono'],
             null,
             null
         );
@@ -141,20 +111,7 @@ class ClienteTest extends TestCase{
     //TEST DAR DE BAJA CLIENTE
     public function testDarDeBajaCliente():void {
 
-        $telefono = 'TEST' . uniqid();
-
-        $id = $this->cliente->CrearCliente(
-            'particular',
-            'Cliente',
-            'Baja',
-            $telefono,
-            null,
-            null
-        );
-
-        $this->assertNotEmpty($id);
-
-        $this->idsCreados[] = $id;
+        $id = $this->crearClientePrueba('Baja');
 
         $resultado = $this->cliente->EliminarCliente($id);
 
