@@ -340,7 +340,7 @@ btnGuardarPago.addEventListener("click", function(){
     ArrayPagos.forEach(pago => {
         pagoSeleccionado.innerHTML += `
             <div class="pago-registrado">
-                <strong>✓ Pago registrado</strong>
+                <strong>✓ Pago agregado al trabajo</strong>
                 Pago: $${Number(pago.importe).toLocaleString("es-AR")} - ${pago.metodo_pago}
             </div>
         `;
@@ -393,6 +393,20 @@ function MostrarTrabajos(trabajos){
 
     tablaTrabajos.innerHTML = "";
 
+    if(trabajos.length === 0){
+        tablaTrabajos.innerHTML = `
+            <tr>
+                <td colspan="4" class="sin-datos">
+                    Todavía no hay trabajos registrados.
+                    <br>
+                    Comenzá agregando un nuevo trabajo.
+                </td>
+            </tr>
+        `;
+        infoPagina.textContent = "No hay trabajos registrados";
+        return;
+    }
+
     trabajosPagina.forEach(trabajo => {
 
         const claseEstado = obtenerClaseEstados(trabajo.estado);
@@ -409,9 +423,9 @@ function MostrarTrabajos(trabajos){
             </td>
             `
         fila.addEventListener("click", async () => {
-            //const servicios = await ObtenerServicioPorTrabajo(trabajo.id);
+            
             window.location.href = `detalleTrabajo.html?id=${trabajo.id}`
-            //abrirModalDetalle(trabajo, servicios);
+
         });
 
         tablaTrabajos.appendChild(fila);

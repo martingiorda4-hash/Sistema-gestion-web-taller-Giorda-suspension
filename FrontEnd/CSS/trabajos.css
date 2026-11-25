@@ -631,6 +631,12 @@ tbody tr:hover td{
     color: #6b7280;
     border: 1px solid #e1e4e8;
 }
+.sin-datos{
+    text-align: center;
+    padding: 30px;
+    color: #777;
+    font-size: 14px;
+}
 
 /* RESPONSIVE */
 

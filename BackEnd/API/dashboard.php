@@ -19,7 +19,7 @@ try{
 }catch(Exception $e){
     http_response_code(500);
 
-    json_encode([
+    echo json_encode([
         "error" => $e->getMessage()
     ]);
 }

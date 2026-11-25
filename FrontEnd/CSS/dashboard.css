@@ -198,6 +198,13 @@ th, td{
 .oculto{
     display: none;
 }
+.sin-datos{
+    text-align: center;
+    padding: 25px;
+    color: #777;
+    font-size: 14px;
+}
+
 
 /* RESPONSIVE */
 @media (max-width: 768px){

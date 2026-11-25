@@ -70,6 +70,18 @@ async function cargarTablaTrabajos() {
     const ultimosTrabajos = trabajos.slice(0, 5);
     tablaTrabajos.innerHTML = "";
     
+
+    if(ultimosTrabajos.length === 0){
+        tablaTrabajos.innerHTML = `
+            <tr>
+                <td colspan="5" class="sin-datos">
+                    Todavía no hay trabajos registrados.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
     ultimosTrabajos.forEach(trabajo => {
         const fila = document.createElement("tr");
 
@@ -91,9 +103,19 @@ function MostrarNombreUsuario() {
 async function CargarTablaPendientes(){
     const pagosPendientes =  await ObtenerPagosPendientes();
 
-    console.log(pagosPendientes);
 
     tablaPagosPendientes.innerHTML = "";
+
+    if(pagosPendientes.length === 0){
+        tablaPagosPendientes.innerHTML = `
+            <tr>
+                <td colspan="5" class="sin-datos">
+                    No hay pagos pendientes registrados.
+                </td>
+            </tr>
+        `;
+        return;
+    }
 
     pagosPendientes.forEach(pendientes => {
         const fila = document.createElement("tr");

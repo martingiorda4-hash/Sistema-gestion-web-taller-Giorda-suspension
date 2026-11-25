@@ -8,10 +8,10 @@ class Dashboard{
     }
     public function ObtenerDatos(){
         $sql = "SELECT
-                    SUM(CASE WHEN estado = 'En progreso' THEN 1 ELSE 0 END) AS trabajosEnCurso,
-                    SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END) AS trabajosPendientes,
-                    SUM(CASE WHEN estado = 'Terminado' THEN 1 ELSE 0 END) AS trabajosTerminados,
-                    SUM(CASE WHEN estado = 'Entregado' THEN 1 ELSE 0 END) AS trabajosEntregados
+                   COALESCE(SUM(CASE WHEN estado = 'En progreso' THEN 1 ELSE 0 END), 0) AS trabajosEnCurso,
+                   COALESCE(SUM(CASE WHEN estado = 'Pendiente' THEN 1 ELSE 0 END), 0) AS trabajosPendientes,
+                   COALESCE(SUM(CASE WHEN estado = 'Terminado' THEN 1 ELSE 0 END), 0) AS trabajosTerminados,
+                   COALESCE(SUM(CASE WHEN estado = 'Entregado' THEN 1 ELSE 0 END), 0) AS trabajosEntregados
                 FROM trabajos
                 WHERE eliminado = FALSE";
 

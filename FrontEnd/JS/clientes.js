@@ -286,6 +286,21 @@ function MostrarClientes(clientes){
 
     tablaClientes.innerHTML = "";
 
+    if(clientes.length === 0){
+        tablaClientes.innerHTML = `
+            <tr>
+                <td colspan="4" class="sin-datos">
+                    Todavía no hay clientes registrados.
+                    <br>
+                    Comenzá agregando un nuevo cliente.
+                </td>
+            </tr>
+        `;
+
+        infoPagina.textContent = "No hay clientes registrados";
+        return;
+    }
+
     clientesPagina.forEach(cliente => {
         let nombreCliente;
 
