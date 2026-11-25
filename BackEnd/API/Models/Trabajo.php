@@ -73,7 +73,7 @@ class Trabajo {
         
         $consulta = $this->pdo->prepare($sql);
 
-        $consulta->execute([
+        return $consulta->execute([
             ":id" => $id,
             ":id_cliente" => $idCliente,
             ":id_vehiculo" => $idVehiculo,

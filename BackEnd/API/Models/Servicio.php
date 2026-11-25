@@ -45,15 +45,4 @@ class Servicio{
         ]);
 
     }
-    // public function EliminarServicio($id){
-    //     $sql = "UPDATE servicios 
-    //             SET activo = 0
-    //             WHERE id = :id";
-
-    //     $consulta = $this->pdo->prepare($sql);
-
-    //     return $consulta->execute([
-    //         ":id" => $id
-    //     ]);
-    // }
 }
