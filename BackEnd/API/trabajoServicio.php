@@ -15,8 +15,8 @@ try{
     $resultado = match($method){
         'GET' => $controller->ObtenerPorTrabajo($_GET["id_trabajo"]),
         'POST' => $controller->AgregarServicio($datos),
-        'DELETE' => $controller->EliminarServicio($datos["id_servicio"])
-        };
+        'DELETE' => $controller->EliminarServicio($datos["id_servicio"] ?? null)
+    };
         echo json_encode($resultado);
 }catch(Exception $e){
     http_response_code(500);

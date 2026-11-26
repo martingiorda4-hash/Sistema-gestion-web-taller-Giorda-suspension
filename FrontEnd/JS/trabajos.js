@@ -172,7 +172,7 @@ async function abrirModalEditar(trabajo){
     serviciosSeleccionados = [];
 
     servicios.forEach(servicio => {
-        serviciosOriginales.push(String(servicio.id_servicio));
+        serviciosOriginales.push(servicio);
         serviciosSeleccionados.push(String(servicio.id_servicio));
     })
     mostrarServiciosSeleccionados();
@@ -238,7 +238,7 @@ async function cargarVehiculosSelect(clienteId) {
         return;
     }
     const vehiculos = await ObtenerVehiculoPorCliente(clienteId);
-    console.log(vehiculos);
+
 
     vehiculos.forEach(vehiculo => {
         selectVehiculo.innerHTML += `
@@ -497,7 +497,7 @@ btnAceptarEliminar.addEventListener("click", async() =>{
 btnAgregarServicio.addEventListener("click", () =>{
     const idServicio = selectServicios.value;
 
-    if(idServicio === ""){
+    if(idServicio === "" || serviciosSeleccionados.includes(idServicio)){
         return;
     }
     serviciosSeleccionados.push(idServicio);
@@ -508,14 +508,15 @@ btnAgregarServicio.addEventListener("click", () =>{
     VerificarCambiosTrabajo();
 })
 function eliminarServicio(idServicio) {
-    serviciosSeleccionados.forEach((id, indice) => {
-        if(id === idServicio){
-            serviciosSeleccionados.splice(indice, 1) // desde la posicion indice, elimina 1 elemento
-        }
-    });
+
+    serviciosSeleccionados = serviciosSeleccionados.filter(
+        id => id !== String(idServicio)
+    );
+
     mostrarServiciosSeleccionados();
     VerificarCambiosTrabajo();
 }
+
 function mostrarServiciosSeleccionados(){
     contenedorServiciosSeleccionados.innerHTML = "";
 
@@ -586,16 +587,16 @@ formNuevoTrabajo.addEventListener("submit", async function (event) {
         trabajo.id = trabajoEditando.id;
         await EditarTrabajo(trabajo);
 
-        //Eliminar servicios quitados
-        for(const servicio of serviciosOriginales){
-            if(!serviciosSeleccionados.includes(String(servicio.id_servicio))){
+        for (const servicio of serviciosOriginales) {
+            if (!serviciosSeleccionados.includes(String(servicio.id_servicio))) {
+
                 await EliminarServicio(servicio.id);
             }
         }
 
         //Agregar servicios nuevos
         for(const idServicio of serviciosSeleccionados){
-            if(!serviciosOriginales.some(servicio => String(servicio.id_servicio) === idServicio)){
+            if(!serviciosOriginales.some(servicio => String(servicio.id_servicio) === String(idServicio))){
                 await AgregarServicio(trabajo.id, idServicio);
             }
         }
